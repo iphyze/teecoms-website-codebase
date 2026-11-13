@@ -1,0 +1,61 @@
+.laptop {
+  position: relative;
+  width: 100%;
+}
+
+.lid {
+  position: relative;
+  padding: 2.2% 2.2% 2.6%;
+  border-radius: 1.1rem 1.1rem 0.4rem 0.4rem;
+  background: linear-gradient(180deg, #1c2638, #0c1322);
+  box-shadow: 0 0 0 1px #2c3a52, var(--shadow-lg);
+}
+
+.camera {
+  position: absolute;
+  top: 0.9%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #2b3a55;
+  transform: translateX(-50%);
+}
+
+.screen {
+  container-type: inline-size;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 0.35rem;
+  background: var(--color-bg);
+}
+
+.base {
+  position: relative;
+  width: 112%;
+  height: clamp(0.6rem, 1.6vw, 1.05rem);
+  margin-left: -6%;
+  border-radius: 0 0 1.2rem 1.2rem / 0 0 0.9rem 0.9rem;
+  background: linear-gradient(180deg, #d5dbe5, #a9b3c4 70%, #8d97a8);
+  box-shadow: 0 18px 30px -12px rgb(10 30 69 / 0.45);
+}
+
+.notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 16%;
+  height: 38%;
+  border-radius: 0 0 0.6rem 0.6rem;
+  background: #9aa4b5;
+  transform: translateX(-50%);
+}
+
+:global([data-theme='dark']) .base {
+  background: linear-gradient(180deg, #4a5468, #2a3245 70%, #1d2433);
+}
+
+:global([data-theme='dark']) .notch {
+  background: #222a3a;
+}

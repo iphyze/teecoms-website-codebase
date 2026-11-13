@@ -1,0 +1,15 @@
+sequenceDiagram
+  autonumber
+  participant U as Issuer
+  participant DI as DigitalInvoice API
+  participant Q as Local queue and dry-run worker
+  participant N as NRS MBS (licence-gated)
+  U->>DI: Approve simplified B2C invoice [implemented]
+  DI->>Q: Enqueue with 24-hour due time [implemented]
+  Q->>Q: Dry-run log + overdue monitor [implemented]
+  Q-->>DI: No network submission, no official evidence
+  Note over Q,N: Target reporting sequence only; production worker is NOT connected
+  DI-->>Q: Prepare approved UBL payload [future]
+  Q-->>N: Validate / report within statutory window [future]
+  N-->>Q: Acceptance or error response [future]
+  Q-->>DI: Persist accepted status / retries / alerts [future]

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 108 108" width="108" height="108" role="img" aria-label="Teecoms">
+  <title>Teecoms</title>
+  <defs>
+    <linearGradient id="md-top" x1="0" y1="0" x2="100" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4FB3FF"/><stop offset="1" stop-color="#E8F1FF"/>
+    </linearGradient>
+    <linearGradient id="md-t" x1="0" y1="17" x2="0" y2="76" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3EA2FF"/><stop offset="1" stop-color="#1F6FE0"/>
+    </linearGradient>
+    <linearGradient id="md-acc" x1="0" y1="52" x2="0" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7CCBFF"/><stop offset="1" stop-color="#3EA2FF"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke-linejoin="round" stroke-width="10">
+    <path d="M7 7H95V30" stroke="url(#md-top)" stroke-linecap="round"/>
+    <path d="M95 30V41H65V95H5V41H25V81H57" stroke="#F2F6FC"/>
+    <path d="M11 22H30" stroke="url(#md-t)" stroke-width="11" stroke-linecap="round"/>
+    <path d="M85 22H11M48.5 16.5V73" stroke="url(#md-t)" stroke-width="11"/>
+    <path d="M93 56H81V99" stroke="url(#md-acc)"/>
+  </g>
+</svg>

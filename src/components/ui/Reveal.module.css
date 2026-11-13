@@ -1,0 +1,66 @@
+/*
+  First entrance: 1.5rem travel, 800ms. Replays: 0.9rem, 560ms, tighter stagger.
+  --reveal-y flips sign when the element returns from above the viewport.
+*/
+.reveal {
+  --reveal-distance: 1.5rem;
+  --reveal-duration: 800ms;
+  --reveal-fade: 700ms;
+  --reveal-step: 70ms;
+  --reveal-y: var(--reveal-distance);
+}
+
+.reveal[data-replay] {
+  --reveal-distance: 0.9rem;
+  --reveal-duration: 560ms;
+  --reveal-fade: 480ms;
+  --reveal-step: 45ms;
+}
+
+.reveal[data-enter='above'] {
+  --reveal-y: calc(var(--reveal-distance) * -1);
+}
+
+.reveal:not([data-stagger]),
+.reveal[data-stagger] > * {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y), 0);
+  transition:
+    opacity var(--reveal-fade) var(--ease-out),
+    transform var(--reveal-duration) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal[data-from='left']:not([data-stagger]) { transform: translate3d(calc(var(--reveal-distance) * -1.33), 0, 0); }
+.reveal[data-from='right']:not([data-stagger]) { transform: translate3d(calc(var(--reveal-distance) * 1.33), 0, 0); }
+.reveal[data-from='scale']:not([data-stagger]) { transform: scale(0.96); }
+
+/* Children appear one after another (up to 8), after the container's own delay */
+.reveal[data-stagger] > :nth-child(2) { transition-delay: calc(var(--reveal-delay) + var(--reveal-step) * 1); }
+.reveal[data-stagger] > :nth-child(3) { transition-delay: calc(var(--reveal-delay) + var(--reveal-step) * 2); }
+.reveal[data-stagger] > :nth-child(4) { transition-delay: calc(var(--reveal-delay) + var(--reveal-step) * 3); }
+.reveal[data-stagger] > :nth-child(5) { transition-delay: calc(var(--reveal-delay) + var(--reveal-step) * 4); }
+.reveal[data-stagger] > :nth-child(6) { transition-delay: calc(var(--reveal-delay) + var(--reveal-step) * 5); }
+.reveal[data-stagger] > :nth-child(7) { transition-delay: calc(var(--reveal-delay) + var(--reveal-step) * 6); }
+.reveal[data-stagger] > :nth-child(n + 8) { transition-delay: calc(var(--reveal-delay) + var(--reveal-step) * 7); }
+
+/* Off-screen reset happens instantly: no point animating what nobody sees */
+.reveal[data-visible='false'][data-replay]:not([data-stagger]),
+.reveal[data-visible='false'][data-replay][data-stagger] > * {
+  transition: none;
+}
+
+.reveal[data-visible='true']:not([data-stagger]),
+.reveal[data-visible='true'][data-stagger] > * {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal:not([data-stagger]),
+  .reveal[data-stagger] > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

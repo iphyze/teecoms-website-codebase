@@ -1,0 +1,148 @@
+{
+    "business_id": "6389237e-4f6e-4371-aece-aea5d2536df3",
+    "irn": "INV001-94ND90NR-20261106",
+    "issue_date": "2026-11-06",
+    "due_date": "2026-12-06",
+    "invoice_type_code": "380",
+    "invoice_kind": "B2B",
+    "payment_status": "PENDING",
+    "note": null,
+    "document_currency_code": "NGN",
+    "tax_currency_code": "NGN",
+    "buyer_reference": null,
+    "order_reference": null,
+    "accounting_supplier_party": {
+        "party_name": "Seller Ltd",
+        "tin": "RN-847789",
+        "email": "demo@example.test",
+        "telephone": "+2348000000000",
+        "business_description": null,
+        "postal_address": {
+            "street_name": "10 Test Avenue",
+            "city_name": "Lagos",
+            "postal_zone": "100001",
+            "lga": "NG-LA-IKJ",
+            "state": "NG-LA",
+            "country": "NG"
+        }
+    },
+    "accounting_customer_party": {
+        "party_name": "Buyer Ltd",
+        "tin": "RN-847789",
+        "email": "demo@example.test",
+        "telephone": "+2348000000000",
+        "business_description": null,
+        "postal_address": {
+            "street_name": "10 Test Avenue",
+            "city_name": "Lagos",
+            "postal_zone": "100001",
+            "lga": "NG-LA-IKJ",
+            "state": "NG-LA",
+            "country": "NG"
+        }
+    },
+    "payment_means": [
+        {
+            "payment_means_code": "30",
+            "payment_due_date": "2026-12-06"
+        }
+    ],
+    "allowance_charge": [],
+    "tax_total": [
+        {
+            "tax_amount": 7.5,
+            "tax_subtotal": [
+                {
+                    "taxable_amount": 100,
+                    "tax_amount": 7.5,
+                    "tax_category": {
+                        "id": "STANDARD_VAT",
+                        "percent": 7.5
+                    }
+                },
+                {
+                    "taxable_amount": 100,
+                    "tax_amount": 0,
+                    "tax_category": {
+                        "id": "Exempted",
+                        "percent": 0
+                    }
+                }
+            ]
+        }
+    ],
+    "legal_monetary_total": {
+        "line_extension_amount": 200,
+        "tax_exclusive_amount": 200,
+        "tax_inclusive_amount": 207.5,
+        "payable_amount": 207.5
+    },
+    "invoice_line": [
+        {
+            "id": "1",
+            "invoiced_quantity": 1,
+            "line_extension_amount": 100,
+            "discount_amount": 0,
+            "discount_rate": null,
+            "fee_amount": 0,
+            "item": {
+                "name": "Test supply",
+                "description": "Fictional test item",
+                "sellers_item_identification": "ITEM-1"
+            },
+            "price": {
+                "price_amount": 100,
+                "base_quantity": 1,
+                "price_unit": "EA"
+            },
+            "tax_total": {
+                "tax_amount": 7.5,
+                "tax_subtotal": [
+                    {
+                        "taxable_amount": 100,
+                        "tax_amount": 7.5,
+                        "tax_category": {
+                            "id": "STANDARD_VAT",
+                            "percent": 7.5
+                        }
+                    }
+                ]
+            },
+            "hsn_code": "00000000",
+            "product_category": "TEST_GOODS"
+        },
+        {
+            "id": "2",
+            "invoiced_quantity": 1,
+            "line_extension_amount": 100,
+            "discount_amount": 0,
+            "discount_rate": null,
+            "fee_amount": 0,
+            "item": {
+                "name": "Test supply",
+                "description": "Fictional test item",
+                "sellers_item_identification": "ITEM-1"
+            },
+            "price": {
+                "price_amount": 100,
+                "base_quantity": 1,
+                "price_unit": "EA"
+            },
+            "tax_total": {
+                "tax_amount": 0,
+                "tax_subtotal": [
+                    {
+                        "taxable_amount": 100,
+                        "tax_amount": 0,
+                        "tax_category": {
+                            "id": "Exempted",
+                            "percent": 0
+                        }
+                    }
+                ]
+            },
+            "isic_code": "0000",
+            "service_category": "TEST_SERVICES"
+        }
+    ]
+}

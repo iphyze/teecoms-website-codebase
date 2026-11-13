@@ -1,0 +1,142 @@
+.section {
+  padding-block: var(--section-y);
+  background: var(--gradient-band);
+  color: var(--color-band-ink);
+}
+
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: end;
+  gap: 4rem;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.title {
+  max-width: 18ch;
+  color: var(--color-band-ink);
+  font-size: var(--text-h2);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.intro {
+  max-width: 34rem;
+  justify-self: end;
+  color: var(--color-band-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  min-width: 0;
+}
+
+.card {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+  border: 1px solid var(--color-band-line);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-band-ink) 4%, transparent);
+}
+
+.iconTile {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--color-brand-blue) 14%, transparent);
+  color: color-mix(in srgb, var(--color-brand-blue) 47%, var(--color-band-ink));
+}
+
+.iconTile::after {
+  position: absolute;
+  inset: -0.2rem;
+  z-index: -1;
+  border: 1px solid currentColor;
+  border-radius: 1rem;
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+}
+
+.grid[data-visible='true'] .iconTile::after {
+  animation: pulseRing 850ms var(--ease-out) both;
+  animation-delay: 180ms;
+}
+
+.grid[data-visible='true'] .item:nth-child(2) .iconTile::after {
+  animation-delay: 250ms;
+}
+
+.grid[data-visible='true'] .item:nth-child(3) .iconTile::after {
+  animation-delay: 320ms;
+}
+
+.cardTitle {
+  margin-bottom: 0.4rem;
+  color: var(--color-band-ink);
+  font-size: 1.1875rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.tagline {
+  margin-bottom: 0.75rem;
+  color: color-mix(in srgb, var(--color-brand-blue) 45%, var(--color-band-ink));
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.body {
+  color: var(--color-band-muted);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+@keyframes pulseRing {
+  0% { opacity: 0; transform: scale(0.82); }
+  30% { opacity: 0.52; }
+  100% { opacity: 0; transform: scale(1.42); }
+}
+
+@media (max-width: 860px) {
+  .head {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .intro {
+    justify-self: start;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .card {
+    padding: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid[data-visible='true'] .iconTile::after {
+    animation: none;
+  }
+}

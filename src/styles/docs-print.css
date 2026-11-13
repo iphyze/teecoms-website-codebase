@@ -1,0 +1,15 @@
+/* Shared print rules; document-specific table and diagram styling stays in CSS modules. */
+@page { size: A4 portrait; margin: 16mm 15mm; }
+@media print {
+  html, body { overflow: visible !important; background: #fff !important; color: #111 !important; }
+  body { font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  header, footer, nav[aria-label='On this page'], [data-print-hide] { display: none !important; }
+  main { padding: 0 !important; min-height: 0 !important; }
+  a { text-decoration: none; }
+  pre, blockquote, figure, img, svg { break-inside: avoid; }
+  table { width: 100%; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; }
+  h1, h2, h3, h4 { break-after: avoid; }
+  button { display: none !important; }
+}

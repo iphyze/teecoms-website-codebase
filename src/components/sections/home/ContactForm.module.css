@@ -1,0 +1,149 @@
+.card {
+  display: grid;
+  gap: 1.1rem;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  background: var(--card-fill);
+  box-shadow: var(--shadow-lg);
+  min-width: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.field { display: grid; gap: 0.45rem; min-width: 0; align-content: start; }
+.field label { color: var(--color-ink); font-size: 0.78125rem; font-weight: 600; }
+
+.field > input,
+.field textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 0.72rem 0.9rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 0.625rem;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font: 500 0.875rem/1.45 var(--font-sans);
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.field > input::placeholder,
+.field textarea::placeholder { color: var(--color-ink-subtle); opacity: 1; }
+
+.field textarea { resize: vertical; min-height: 6.5rem; }
+.field > input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+.field [aria-invalid='true'] { border-color: var(--color-danger); }
+.field [aria-invalid='true']:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger) 18%, transparent); }
+.error { color: var(--color-danger); font-size: 0.75rem; line-height: 1.4; }
+/* react-select's unstyled mode lets all states follow the existing CSS tokens. */
+.selectWrap { position: relative; min-width: 0; z-index: 1; }
+.selectWrap:focus-within { z-index: 20; }
+.serviceSelect { width: 100%; min-width: 0; font: 500 0.875rem/1.45 var(--font-sans); }
+.selectWrap :global(.service-select__control) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3rem;
+  padding: 0.15rem 0.7rem 0.15rem 0.95rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 0.625rem;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.selectWrap :global(.service-select__control--is-focused) {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+.selectWrap :global(.service-select__value-container) { flex: 1; padding: 0.55rem 0; min-width: 0; }
+.selectWrap :global(.service-select__input-container) { color: var(--color-ink); }
+.selectWrap :global(.service-select__input) { color: var(--color-ink) !important; }
+.selectWrap :global(.service-select__single-value) { color: var(--color-ink); }
+.selectWrap :global(.service-select__placeholder) { color: var(--color-ink-subtle); }
+.selectWrap :global(.service-select__indicator) { padding: 0.45rem; color: var(--color-ink-muted); }
+.selectWrap :global(.service-select__indicator:hover) { color: var(--color-primary); }
+.selectWrap :global(.service-select__menu) {
+  margin-top: 0.45rem;
+  overflow: hidden;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 0.85rem;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-lg);
+  z-index: 30;
+}
+/* Keep the dropdown scrollbar understated and theme-aware. */
+.selectWrap :global(.service-select__menu-list) {
+  padding: 0.4rem;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--color-scroll-thumb) transparent;
+}
+.selectWrap :global(.service-select__menu-list)::-webkit-scrollbar {
+  width: 5px;
+}
+.selectWrap :global(.service-select__menu-list)::-webkit-scrollbar-track {
+  background: transparent;
+}
+.selectWrap :global(.service-select__menu-list)::-webkit-scrollbar-thumb {
+  background: var(--color-scroll-thumb);
+  border-radius: 999px;
+}
+.selectWrap :global(.service-select__menu-list)::-webkit-scrollbar-thumb:hover {
+  background: var(--color-scroll-thumb-hover);
+}
+.selectWrap :global(.service-select__option) {
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  line-height: 1.45;
+  white-space: normal;
+}
+.selectWrap :global(.service-select__option--is-focused) {
+  background: var(--color-primary-soft);
+  color: var(--color-ink);
+}
+.selectWrap :global(.service-select__option--is-selected) {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+.selectWrap :global(.service-select__no-options-message) { padding: 0.8rem; color: var(--color-ink-muted); }
+
+
+.submit { width: 100%; min-height: 3.125rem; }
+.submit:disabled { opacity: 0.65; cursor: wait; }
+.submitLabel { display: inline-flex; align-items: center; gap: 0.5rem; }
+
+.notice { font-size: 0.875rem; line-height: 1.5; color: var(--color-ink-muted); }
+.notice[data-kind='error'] { color: var(--color-danger); }
+
+.success { display: grid; justify-items: start; align-content: center; gap: 1rem; min-height: 16rem; }
+.success > svg { color: var(--color-success); }
+.success h3 { font-size: var(--text-h3); }
+.success p { overflow-wrap: anywhere; color: var(--color-ink-muted); }
+.success strong { color: var(--color-ink); }
+
+/* Included in the DOM for basic spam filtering, but never visible/focusable. */
+.honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+@media (max-width: 560px) {
+  .row { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field > input, .field textarea, .selectWrap :global(.service-select__control) { transition: none; }
+}
+
+/* Cloudflare Turnstile container: empty (no height) unless a visible check is needed */
+.turnstile { min-width: 0; }

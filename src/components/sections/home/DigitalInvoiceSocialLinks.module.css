@@ -1,0 +1,71 @@
+.social {
+  margin-top: 1.65rem;
+}
+
+.heading {
+  margin-bottom: 0.8rem;
+  color: var(--color-ink);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1.5px solid var(--color-di-ink);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-di-ink);
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.unconfigured {
+  cursor: default;
+  opacity: 0.62;
+}
+
+@media (hover: hover) {
+  a.icon:hover {
+    transform: translateY(-3px);
+    background: var(--color-di-ink);
+    color: var(--color-surface);
+  }
+}
+
+a.icon:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon { transition: none; }
+}
+
+/* Footer stays navy in both themes; maintain readable contrast on that band. */
+.social[data-tone='on-dark'] .heading { color: var(--color-band-ink); }
+.social[data-tone='on-dark'] .icon {
+  color: var(--color-di-green);
+  border-color: var(--color-di-green);
+  background: var(--color-band-raised);
+}
+@media (hover: hover) {
+  .social[data-tone='on-dark'] a.icon:hover {
+    color: var(--color-band);
+    background: var(--color-di-green);
+  }
+}
+.social[data-compact] { margin-top: 1.1rem; }
+.social[data-compact] .list { gap: 0.4rem; }
+.social[data-compact] .icon { width: 2.3rem; height: 2.3rem; }

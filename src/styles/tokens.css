@@ -1,0 +1,257 @@
+/*
+  Teecoms design tokens
+  ---------------------------------------------------------------------------
+  Components use the semantic names (--color-ink, --color-surface …) only.
+  Theme switching happens here and nowhere else.
+
+  Brand anchors
+    Teecoms navy        #0A1E45   wordmark, headings, light-mode ink
+    Teecoms / DI blue   #2487DA   logo & illustration colour (3.8:1 on white —
+                                  not for small text or white-text buttons)
+    Action blue         #1766C8   buttons and links (5.6:1 with white)
+    DigitalInvoice green #19D8A4  product accent, fills only in light mode
+*/
+
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  /* Surfaces */
+  --color-bg: #f5f8fc;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #eaf0f8;
+  --color-surface-raised: #ffffff;
+  --color-overlay: rgb(7 22 54 / 0.55);
+  --gradient-canvas: none;
+  --card-fill: linear-gradient(145deg, #ffffff 0%, #fcfdff 55%, #f3f8ff 100%);
+  --card-fill-hover: linear-gradient(145deg, #ffffff 0%, #f8fbff 50%, #eaf3ff 100%);
+
+  /* Fixed navigation glass and page scrollbar */
+  --color-header-glass: rgb(246 250 255 / 0.72);
+  --color-header-glass-scrolled: rgb(246 250 255 / 0.84);
+  --color-header-glass-sheen: rgb(255 255 255 / 0.3);
+  --color-header-glass-line: rgb(255 255 255 / 0.52);
+  --shadow-header: 0 10px 30px rgb(10 30 69 / 0.11);
+
+  /* Hero (Aurora) */
+  --hero-bg: #f4f8fd;
+  --hero-ink: #0a1e45;
+  --hero-muted: #46557a;
+  --hero-eyebrow: #1766c8;
+  --hero-sheen: #5fb0ff;
+  --hero-dot: rgb(10 30 69 / 0.14);
+  --hero-spot: rgb(23 102 200 / 0.85);
+  --hero-halo-alpha: 12%;
+  --hero-veil: rgb(244 248 253 / 0.72);
+  --hero-grain-opacity: 0.045;
+  --hero-grain-blend: multiply;
+  --aurora-alpha-1: 46%;
+  --aurora-alpha-2: 34%;
+  --aurora-alpha-3: 26%;
+  --aurora-alpha-ribbon: 26%;
+  --hero-line: rgb(23 102 200 / 0.3);
+  --hero-ring: rgb(23 102 200 / 0.2);
+  --hero-packet: #1766c8;
+  --hero-packet-glow: rgb(36 135 218 / 0.55);
+  --hero-card-shadow: rgb(10 30 69 / 0.16);
+  --hero-tab: rgb(10 30 69 / 0.5);
+  --hero-tab-active: #0a1e45;
+  --hero-track: rgb(10 30 69 / 0.12);
+  --hero-control-bg: rgb(255 255 255 / 0.85);
+  --hero-control-border: #b9c6da;
+  --hero-control-ink: #0a1e45;
+  --color-scroll-track: #e8eef7;
+  --color-scroll-thumb: #7b99bc;
+  --color-scroll-thumb-hover: #1766c8;
+
+  /* Text */
+  --color-ink: #0a1e45;
+  --color-ink-muted: #46557a;
+  --color-ink-subtle: #5a6987;
+
+  /* Lines */
+  --color-line: #d6dfec;
+  --color-line-strong: #b9c6da;
+
+  /* Teecoms action colour */
+  --color-primary: #1766c8;
+  --color-primary-hover: #1255a8;
+  --color-on-primary: #ffffff;
+  --color-primary-soft: #e3eefc;
+  --color-brand-blue: #2487da;
+  --color-focus: #2487da;
+
+  /* Dark band: hero, stats strip and footer stay navy in light mode too */
+  --color-band: #071636;
+  --color-band-raised: #0d2350;
+  --color-band-ink: #eaf1fb;
+  --color-band-muted: #a6b4ce;
+  --color-band-line: rgb(234 241 251 / 0.12);
+
+  /* DigitalInvoice product accent */
+  --color-di-green: #19d8a4;
+  --color-di-blue: #2487da;
+  --color-di-ink: #087a5b; /* green text on light surfaces, 5.3:1 */
+  --color-di-soft: #e2f8f1;
+  --color-on-di: #0a1e45; /* navy text on the green fill, 8.9:1 */
+
+  /* Status (DigitalInvoice states: paid, pending, failed) */
+  --color-success: #0e8a5f;
+  --color-warning: #a65f00;
+  --color-danger: #c8323c;
+
+  /* Gradients */
+  --gradient-di: linear-gradient(180deg, #19d8a4 0%, #2295d0 100%);
+  --gradient-band: radial-gradient(120% 90% at 85% 0%, #123676 0%, #071636 55%);
+
+  /* Elevation: navy-tinted so shadows don't look grey on blue surfaces */
+  --shadow-sm: 0 1px 2px rgb(10 30 69 / 0.06), 0 1px 1px rgb(10 30 69 / 0.04);
+  --shadow-md: 0 6px 18px -6px rgb(10 30 69 / 0.14), 0 2px 4px rgb(10 30 69 / 0.05);
+  --shadow-lg: 0 24px 48px -16px rgb(10 30 69 / 0.22), 0 6px 12px -6px rgb(10 30 69 / 0.08);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Matches DigitalInvoice's calmer slate/navy balance, not deep electric blue. */
+  --color-bg: #09131f;
+  --color-surface: #0f1c2c;
+  --color-surface-sunken: #0b1622;
+  --color-surface-raised: #152539;
+  --color-overlay: rgb(3 8 15 / 0.72);
+  --gradient-canvas:
+    radial-gradient(70rem 35rem at 86% 0%, rgb(56 111 151 / 0.13), transparent 78%),
+    radial-gradient(45rem 35rem at 2% 36%, rgb(37 114 140 / 0.07), transparent 78%);
+  --card-fill: linear-gradient(145deg, #18293c 0%, #152538 55%, #102031 100%);
+  --card-fill-hover: linear-gradient(145deg, #1b3044 0%, #182b3e 55%, #13273a 100%);
+
+  --color-header-glass: rgb(13 27 42 / 0.68);
+  --color-header-glass-scrolled: rgb(13 27 42 / 0.88);
+  --color-header-glass-sheen: rgb(255 255 255 / 0.06);
+  --color-header-glass-line: rgb(226 236 248 / 0.12);
+  --shadow-header: 0 12px 32px rgb(0 0 0 / 0.28);
+
+  --hero-bg: #09131f;
+  --hero-ink: #ffffff;
+  --hero-muted: rgb(234 241 251 / 0.84);
+  --hero-eyebrow: #ffffff;
+  --hero-sheen: rgb(255 255 255 / 0.95);
+  --hero-dot: rgb(255 255 255 / 0.12);
+  --hero-spot: rgb(124 192 255 / 0.95);
+  --hero-halo-alpha: 16%;
+  --hero-veil: rgb(9 19 31 / 0.53);
+  --hero-grain-opacity: 0.07;
+  --hero-grain-blend: overlay;
+  --aurora-alpha-1: 52%;
+  --aurora-alpha-2: 34%;
+  --aurora-alpha-3: 28%;
+  --aurora-alpha-ribbon: 24%;
+  --hero-line: rgb(255 255 255 / 0.22);
+  --hero-ring: rgb(255 255 255 / 0.2);
+  --hero-packet: #ffffff;
+  --hero-packet-glow: rgb(122 190 255 / 0.9);
+  --hero-card-shadow: rgb(0 0 0 / 0.5);
+  --hero-tab: rgb(234 241 251 / 0.56);
+  --hero-tab-active: #ffffff;
+  --hero-track: rgb(255 255 255 / 0.16);
+  --hero-control-bg: rgb(255 255 255 / 0.07);
+  --hero-control-border: rgb(255 255 255 / 0.22);
+  --hero-control-ink: #ffffff;
+  --color-scroll-track: #0b1622;
+  --color-scroll-thumb: #2c4259;
+  --color-scroll-thumb-hover: #496781;
+
+  --color-ink: #eef3f9;
+  --color-ink-muted: #aab6c8;
+  --color-ink-subtle: #8a98ad;
+
+  --color-line: #1f3145;
+  --color-line-strong: #2c4259;
+
+  --color-primary: #5ba4f5;
+  --color-primary-hover: #7db7f7;
+  --color-on-primary: #06121f; /* dark text on the light-blue action fill */
+  --color-primary-soft: #13283f;
+  --color-brand-blue: #5ba4f5;
+  --color-focus: #7db7f7;
+
+  --color-band: #0c1929;
+  --color-band-raised: #172b41;
+  --color-band-ink: #eef3f9;
+  --color-band-muted: #aab6c8;
+  --color-band-line: rgb(226 236 248 / 0.1);
+
+  --color-di-green: #2ee5b3;
+  --color-di-blue: #5ba4f5;
+  --color-di-ink: #42e8bb;
+  --color-di-soft: #102e2b;
+  --color-on-di: #041230;
+
+  --color-success: #3ddc97;
+  --color-warning: #ffb547;
+  --color-danger: #ff6b74;
+
+  --gradient-di: linear-gradient(180deg, #2ee5b3 0%, #2b9fe0 100%);
+  --gradient-band: radial-gradient(120% 90% at 85% 0%, #17344d 0%, #0c1929 56%, #09131f 100%);
+
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 8px 20px -8px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(226 236 248 / 0.04);
+  --shadow-lg: 0 24px 52px -18px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(226 236 248 / 0.05);
+}
+
+:root {
+  /* Type: one family across the site and the DigitalInvoice app */
+  --font-sans: var(--font-jakarta), system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  --text-display: clamp(2.5rem, 1.55rem + 3.8vw, 4.75rem);
+  --text-h1: clamp(2.25rem, 1.6rem + 2.6vw, 3.75rem);
+  --text-h2: clamp(1.875rem, 1.45rem + 1.7vw, 2.875rem);
+  --text-h3: clamp(1.25rem, 1.12rem + 0.5vw, 1.5rem);
+  --text-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-xs: 0.75rem;
+
+  --leading-tight: 1.08;
+  --leading-snug: 1.25;
+  --leading-body: 1.65;
+
+  --tracking-display: -0.035em;
+  --tracking-heading: -0.022em;
+
+  /* Space (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --section-y: clamp(4.5rem, 3rem + 6vw, 8rem);
+
+  --container: 76rem;
+  --container-narrow: 46rem;
+  --gutter: clamp(1.25rem, 0.75rem + 2vw, 2.5rem);
+  --header-h: 5.125rem;
+
+  /* Radius: controls small, cards larger; the leaf shape comes from the
+     DigitalInvoice icon and is reserved for DigitalInvoice surfaces */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-pill: 999px;
+  --radius-leaf: 2rem 0.5rem 2rem 0.5rem;
+
+  /* Motion: transform/opacity only, keeps animations off the main thread */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 640ms;
+
+  --z-header: 50;
+  --z-overlay: 80;
+}

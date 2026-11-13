@@ -1,0 +1,183 @@
+.button {
+  --btn-bg: #1766c8;
+  --btn-bg-hover: #1255a8;
+  --btn-ink: #ffffff;
+  --btn-border: rgb(255 255 255 / 0.1);
+  --btn-shadow: 0 1px 2px rgb(10 30 69 / 0.22), 0 8px 22px -10px rgb(23 102 200 / 0.6);
+  --btn-sheen: rgb(255 255 255 / 0.28);
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  height: 2.875rem;
+  padding: 0 1.15rem 0 1.25rem;
+  border: 0;
+  border-radius: 0.625rem;
+  overflow: hidden;
+  background: var(--btn-bg);
+  color: var(--btn-ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  word-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: inset 0 0 0 1px var(--btn-border), var(--btn-shadow);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Fine top highlight: reads as a crisp edge, not gloss */
+.button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.14), rgb(255 255 255 / 0) 55%);
+  pointer-events: none;
+}
+
+/* Light sweep (from the Lambert hero), transform-only */
+.button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 32%;
+  background: linear-gradient(90deg, transparent, var(--btn-sheen), transparent);
+  transform: translate3d(-120%, 0, 0) skewX(-20deg);
+  pointer-events: none;
+}
+
+.button[data-shine='loop']::after {
+  animation: btnSweep 4.8s var(--ease-in-out) 1.4s infinite;
+  animation-play-state: var(--loop-state, running);
+}
+
+.label {
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+
+.label > svg {
+  flex: 0 0 auto;
+}
+
+.arrow {
+  position: relative;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.arrow svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 360ms var(--ease-out);
+}
+
+.arrow svg:last-child {
+  transform: translate3d(-130%, 0, 0);
+}
+
+@media (hover: hover) {
+  .button:hover {
+    background: var(--btn-bg-hover);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .button:hover .arrow svg:first-child {
+    transform: translate3d(130%, 0, 0);
+  }
+
+  .button:hover .arrow svg:last-child {
+    transform: none;
+  }
+
+  .button[data-shine='hover']:hover::after {
+    animation: btnSweep 1.4s var(--ease-in-out) 1;
+  }
+}
+
+.button:active {
+  transform: translate3d(0, 0, 0) scale(0.98);
+  transition-duration: 80ms;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 0.625rem;
+}
+
+.button[data-size='sm'] {
+  height: 2.5rem;
+  padding: 0 1rem;
+  font-size: 0.8125rem;
+  border-radius: 0.5rem;
+}
+
+/* DigitalInvoice: green fill, navy text (10:1) */
+.button[data-variant='di'] {
+  --btn-bg: #19d8a4;
+  --btn-bg-hover: #2ee5b3;
+  --btn-ink: #041230;
+  --btn-border: rgb(4 18 48 / 0.08);
+  --btn-shadow: 0 1px 2px rgb(4 18 48 / 0.2), 0 8px 22px -10px rgb(25 216 164 / 0.7);
+  --btn-sheen: rgb(255 255 255 / 0.45);
+}
+
+/* Secondary on navy bands */
+.button[data-variant='glass'] {
+  --btn-bg: rgb(255 255 255 / 0.06);
+  --btn-bg-hover: rgb(255 255 255 / 0.12);
+  --btn-ink: #ffffff;
+  --btn-border: rgb(255 255 255 / 0.36);
+  --btn-shadow: none;
+}
+
+.button[data-variant='glass']::before,
+.button[data-variant='outline']::before {
+  display: none;
+}
+
+/* Secondary on page surfaces, follows the theme */
+.button[data-variant='outline'] {
+  --btn-bg: var(--color-surface);
+  --btn-bg-hover: var(--color-surface-sunken);
+  --btn-ink: var(--color-ink);
+  --btn-border: var(--color-line-strong);
+  --btn-shadow: var(--shadow-sm);
+  --btn-sheen: color-mix(in srgb, var(--color-primary) 14%, transparent);
+}
+
+@keyframes btnSweep {
+  0% { transform: translate3d(-120%, 0, 0) skewX(-20deg); }
+  30%, 100% { transform: translate3d(420%, 0, 0) skewX(-20deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button::after { display: none; }
+}

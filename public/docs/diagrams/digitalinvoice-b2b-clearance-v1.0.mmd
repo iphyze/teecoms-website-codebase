@@ -1,0 +1,18 @@
+sequenceDiagram
+  autonumber
+  participant U as Issuer / Web app
+  participant DI as DigitalInvoice API
+  participant L as Local UBL validation
+  participant N as NRS MBS (licence-gated)
+  participant B as Buyer / APP
+  U->>DI: Create and approve B2B invoice [implemented]
+  DI->>L: Build local UBL-style JSON [implemented]
+  L-->>DI: Local validation and readiness result [implemented]
+  Note over DI,N: Following exchanges are target steps, NOT a live production flow
+  DI-->>N: Validate invoice [future]
+  N-->>DI: Authenticated validation response [future]
+  DI-->>N: Sign invoice [future]
+  N-->>DI: Genuine IRN / CSID / QR evidence [future]
+  DI-->>N: Confirm signed invoice [future]
+  DI-->>B: Deliver cleared invoice / transmit [future]
+  B-->>N: Acknowledge / verify in approved role [future]

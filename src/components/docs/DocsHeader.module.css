@@ -1,0 +1,27 @@
+.band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: calc(var(--header-h) + 3.5rem) 0 3.25rem;
+  border-bottom: 1px solid var(--color-line);
+  background: radial-gradient(70% 115% at 98% -5%, var(--color-primary-soft) 0%, transparent 80%), linear-gradient(135deg, var(--color-surface), var(--color-bg));
+}
+.inner { position: relative; z-index: 1; }
+.breadcrumbs { margin-bottom: 2rem; }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; list-style: none; padding: 0; }
+.breadcrumbs li { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--color-ink-muted); font-size: 0.775rem; }
+.breadcrumbs li:last-child { color: var(--color-ink); font-weight: 600; }
+.breadcrumbs a:hover { color: var(--color-primary); }
+.title { max-width: 23ch; margin: 0.9rem 0 0.85rem; font-size: clamp(2.15rem, 4.35vw, 3.65rem); line-height: 1.15; letter-spacing: -0.035em; }
+.description { color: var(--color-ink-muted); font-size: clamp(1rem, 1.35vw, 1.15rem); line-height: 1.8; max-width: 65ch; }
+.bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.25rem; margin-top: 2rem; }
+.meta { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 1.2rem; color: var(--color-ink-muted); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+.status { display: inline-flex; padding: 0.35rem 0.7rem; border: 1px solid var(--color-line-strong); border-radius: var(--radius-pill); color: var(--color-ink); background: var(--color-surface-raised); font-weight: 650; text-transform: capitalize; }
+.status[data-status='draft'], .status[data-status='foundation'], .status[data-status='planned'] { color: var(--color-warning); }
+.actions { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem; }
+@media (max-width: 600px) {
+  .band { padding-top: calc(var(--header-h) + 2.5rem); padding-bottom: 2.5rem; }
+  .breadcrumbs { margin-bottom: 1.4rem; }
+  .title { letter-spacing: -0.025em; }
+}
+@media print { .band { padding: 0 0 1rem; background: none; border-color: #ddd; } .actions, .breadcrumbs { display: none !important; } }

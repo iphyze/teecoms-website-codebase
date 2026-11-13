@@ -1,0 +1,4 @@
+.callout { padding: 1rem 1.2rem; border: 1px solid var(--color-line-strong); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm); background: var(--color-primary-soft); color: var(--color-ink-muted); }
+.callout strong { display: block; margin-bottom: 0.4rem; color: var(--color-ink); }
+.callout[data-tone='warning'] { border-left-color: var(--color-warning); background: var(--color-surface-sunken); }
+.callout[data-tone='planned'] { border-left-color: var(--color-ink-subtle); background: var(--color-surface); }

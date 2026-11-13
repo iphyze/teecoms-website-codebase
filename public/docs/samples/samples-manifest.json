@@ -1,0 +1,78 @@
+{
+  "source": "DigitalInvoice frontend documentModels.js + pdf.jsx",
+  "disclaimer": "Fictional samples for document design review. Mock identifiers and QR values are illustrations, not official verification evidence.",
+  "items": [
+    {
+      "title": "B2B tax invoice",
+      "state": "current",
+      "pdf": "digitalinvoice-b2b-tax-invoice-current-v1.0.pdf",
+      "preview": "digitalinvoice-b2b-tax-invoice-current-v1.0.png",
+      "fictional": true,
+      "nrsIssued": false,
+      "nrsValidated": false
+    },
+    {
+      "title": "B2B tax invoice",
+      "state": "mock-post-validation",
+      "pdf": "digitalinvoice-b2b-tax-invoice-mock-post-validation-v1.0.pdf",
+      "preview": "digitalinvoice-b2b-tax-invoice-mock-post-validation-v1.0.png",
+      "fictional": true,
+      "nrsIssued": false,
+      "nrsValidated": false
+    },
+    {
+      "title": "B2C simplified invoice",
+      "state": "current",
+      "pdf": "digitalinvoice-b2c-simplified-invoice-current-v1.0.pdf",
+      "preview": "digitalinvoice-b2c-simplified-invoice-current-v1.0.png",
+      "fictional": true,
+      "nrsIssued": false,
+      "nrsValidated": false
+    },
+    {
+      "title": "B2C simplified invoice",
+      "state": "mock-post-validation",
+      "pdf": "digitalinvoice-b2c-simplified-invoice-mock-post-validation-v1.0.pdf",
+      "preview": "digitalinvoice-b2c-simplified-invoice-mock-post-validation-v1.0.png",
+      "fictional": true,
+      "nrsIssued": false,
+      "nrsValidated": false
+    },
+    {
+      "title": "Credit note",
+      "state": "current",
+      "pdf": "digitalinvoice-credit-note-current-v1.0.pdf",
+      "preview": "digitalinvoice-credit-note-current-v1.0.png",
+      "fictional": true,
+      "nrsIssued": false,
+      "nrsValidated": false
+    },
+    {
+      "title": "Credit note",
+      "state": "mock-post-validation",
+      "pdf": "digitalinvoice-credit-note-mock-post-validation-v1.0.pdf",
+      "preview": "digitalinvoice-credit-note-mock-post-validation-v1.0.png",
+      "fictional": true,
+      "nrsIssued": false,
+      "nrsValidated": false
+    },
+    {
+      "title": "Payment receipt",
+      "state": "current",
+      "pdf": "digitalinvoice-payment-receipt-current-v1.0.pdf",
+      "preview": "digitalinvoice-payment-receipt-current-v1.0.png",
+      "fictional": true,
+      "nrsIssued": false,
+      "nrsValidated": false
+    },
+    {
+      "title": "Payment receipt",
+      "state": "mock-post-validation",
+      "pdf": "digitalinvoice-payment-receipt-mock-post-validation-v1.0.pdf",
+      "preview": "digitalinvoice-payment-receipt-mock-post-validation-v1.0.png",
+      "fictional": true,
+      "nrsIssued": false,
+      "nrsValidated": false
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+.footer {
+  background: var(--color-band);
+  color: var(--color-band-muted);
+  padding-block: 5rem 2rem;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: 1.25fr 0.78fr 0.88fr 1fr 1.1fr;
+  gap: clamp(1.4rem, 2.5vw, 3rem);
+  padding-bottom: 3.5rem;
+  border-bottom: 1px solid var(--color-band-line);
+}
+
+.brand,
+.column,
+.product {
+  min-width: 0;
+}
+
+.brandLink,
+.productLogoLink {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+}
+
+.brandLink {
+  margin-bottom: 1.25rem;
+}
+
+.brandLink img,
+.productLogoLink img {
+  max-width: 100%;
+}
+
+.tagline {
+  color: var(--color-band-ink);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.description,
+.productDescription {
+  color: var(--color-band-muted);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.heading {
+  color: var(--color-band-ink);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0;
+  margin: 0 0 1.1rem;
+}
+
+.links {
+  list-style: none;
+  padding: 0;
+}
+
+.links li + li {
+  margin-top: 0.6rem;
+}
+
+.links a {
+  color: var(--color-band-muted);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.productLogoLink {
+  margin-bottom: 0.8rem;
+}
+
+.productDescription {
+  max-width: 28ch;
+}
+
+.productButton {
+  margin-top: 1.25rem;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  padding-top: 1.75rem;
+  font-size: 0.8125rem;
+}
+
+.copyright {
+  color: var(--color-band-muted);
+  line-height: 1.6;
+}
+
+.toTop {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.4rem;
+  color: var(--color-band-ink);
+  font-weight: 600;
+  transition: color var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .links a:hover,
+  .toTop:hover {
+    color: var(--color-band-ink);
+  }
+
+  .toTop:hover {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+@media (max-width: 1100px) {
+  .top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.75rem 3rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .footer {
+    padding-block: 4rem 1.75rem;
+  }
+
+  .top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.25rem;
+    padding-bottom: 3rem;
+  }
+
+  .bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .links a,
+  .toTop {
+    transition: none;
+  }
+}

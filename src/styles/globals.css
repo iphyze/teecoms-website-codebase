@@ -1,0 +1,183 @@
+/* Base styles. Tokens live in tokens.css, imported first in app/layout.js. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  /* Content waiting to slide in from the side must never widen the page */
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+  background: var(--color-bg);
+  scrollbar-color: var(--color-scroll-thumb) var(--color-scroll-track);
+  scrollbar-width: thin;
+}
+
+/* Rounded, brand-coloured scrollbar in Chromium and WebKit. The standards
+   properties above provide an equivalent theme-aware treatment in Firefox. */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-scroll-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scroll-thumb);
+  border: 3px solid var(--color-scroll-track);
+  border-radius: var(--radius-pill);
+  min-height: 40px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-scroll-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--color-scroll-track);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  overflow-x: clip;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-ink);
+  background-color: var(--color-bg);
+  background-image: var(--gradient-canvas);
+  background-repeat: no-repeat;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'calt' 1, 'liga' 1;
+  /* Plus Jakarta Sans has a narrow space (0.18em); open it slightly */
+  word-spacing: 0.02em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 700;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-heading);
+  /* Negative tracking narrows spaces too; give that width back */
+  word-spacing: 0.06em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Amounts, invoice numbers, stats: digits line up in columns */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.container {
+  width: min(100% - 2 * var(--gutter), var(--container));
+  margin-inline: auto;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Theme swap: logos switch with CSS so there is no flash before hydration */
+[data-theme='dark'] .on-light-only,
+:root:not([data-theme='dark']) .on-dark-only {
+  display: none !important;
+}
+
+/* Theme switch: everything changes in the same frame (see ThemeContext) */
+.theme-instant,
+.theme-instant *,
+.theme-instant *::before,
+.theme-instant *::after {
+  transition: none !important;
+}
+
+/* The new theme is revealed by a clip-path circle animated from JS; the
+   browser's default cross-fade is switched off so the two don't mix. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

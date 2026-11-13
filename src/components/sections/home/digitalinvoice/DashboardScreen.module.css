@@ -1,0 +1,369 @@
+/* Sizes in em off a cqw font-size, so the whole screen scales with the laptop */
+.app {
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  height: 100%;
+  font-size: 1.3cqw;
+  line-height: 1.35;
+  color: var(--color-ink);
+  background: var(--color-bg);
+}
+
+.app svg {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+}
+
+/* ---- Sidebar ---- */
+.side {
+  padding: 1.4em 0.9em;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-line);
+}
+
+.side img {
+  width: auto;
+  height: 1.7em;
+}
+
+.org {
+  margin: 1.4em 0 1.2em;
+  padding: 0.7em 0.8em;
+  border-radius: 0.7em;
+  background: var(--color-surface-sunken);
+}
+
+.org small {
+  display: block;
+  color: var(--color-ink-subtle);
+  font-size: 0.8em;
+}
+
+.org strong {
+  font-size: 0.92em;
+}
+
+.nav {
+  display: grid;
+  gap: 0.3em;
+}
+
+.nav span {
+  display: flex;
+  align-items: center;
+  gap: 0.65em;
+  padding: 0.6em 0.75em;
+  border-radius: 0.6em;
+  color: var(--color-ink-muted);
+  font-weight: 600;
+}
+
+.nav span[data-active] {
+  background: var(--color-di-soft);
+  color: var(--color-di-ink);
+}
+
+.nav .chev {
+  margin-left: auto;
+  width: 1em;
+  height: 1em;
+}
+
+/* ---- Main ---- */
+.main {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 1em;
+  min-width: 0;
+  padding: 1.3em 1.5em;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.top > div {
+  margin-right: auto;
+}
+
+.top strong {
+  display: block;
+  font-size: 1.4em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.top small {
+  color: var(--color-ink-subtle);
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  width: 13em;
+  padding: 0.55em 0.8em;
+  border-radius: 0.6em;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-ink-subtle);
+}
+
+.newBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.6em 1em;
+  border-radius: 0.6em;
+  background: linear-gradient(135deg, #19d8a4, #2487da);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* ---- Metric cards (tones from the app) ---- */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8em;
+}
+
+.metric {
+  --tone: #2487da;
+  padding: 0.85em 0.95em;
+  border-radius: 0.8em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+}
+
+.metric[data-tone='teal'] { --tone: #12b48d; }
+.metric[data-tone='amber'] { --tone: #e59520; }
+.metric[data-tone='red'] { --tone: #dc4c55; }
+
+.metricTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6em;
+}
+
+.metricIcon {
+  display: grid;
+  place-items: center;
+  width: 2.1em;
+  height: 2.1em;
+  border-radius: 0.6em;
+  background: color-mix(in srgb, var(--tone) 14%, transparent);
+  color: var(--tone);
+}
+
+.metricNote {
+  padding: 0.15em 0.55em;
+  border-radius: 1em;
+  background: var(--color-surface-sunken);
+  color: var(--color-ink-subtle);
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+.metric p {
+  color: var(--color-ink-muted);
+  font-size: 0.88em;
+  font-weight: 600;
+}
+
+.metric strong {
+  display: block;
+  margin-top: 0.1em;
+  font-size: 1.35em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* ---- Chart + recent invoices ---- */
+.row {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 0.8em;
+  min-height: 0;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0.9em 1em;
+  border-radius: 0.8em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.7em;
+}
+
+.panelHead strong {
+  font-size: 1em;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--color-ink-subtle);
+  font-size: 0.8em;
+}
+
+.legend i {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  margin-left: 0.5em;
+}
+
+.legend i[data-s='inv'] { background: #2487da; }
+.legend i[data-s='col'] { background: #19d8a4; }
+
+.chart {
+  position: relative;
+  flex: 1;
+  min-height: 7em;
+  background: repeating-linear-gradient(180deg, transparent 0 calc(25% - 1px), var(--color-line) calc(25% - 1px) 25%);
+}
+
+.bars {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: end;
+  justify-items: center;
+}
+
+.bars i {
+  width: 32%;
+  height: var(--h);
+  border-radius: 0.35em 0.35em 0 0;
+  background: #19d8a4;
+  transform-origin: bottom;
+}
+
+.area {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.months {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin-top: 0.4em;
+  color: var(--color-ink-subtle);
+  font-size: 0.78em;
+  text-align: center;
+}
+
+.list {
+  display: grid;
+  list-style: none;
+  padding: 0;
+}
+
+.list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+  padding: 0.5em 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.list li > span {
+  min-width: 0;
+}
+
+.list strong {
+  display: block;
+  font-size: 0.88em;
+}
+
+.list small {
+  display: block;
+  overflow: hidden;
+  color: var(--color-ink-subtle);
+  font-size: 0.8em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.amount {
+  display: grid;
+  justify-items: end;
+  gap: 0.2em;
+}
+
+.badge {
+  padding: 0.1em 0.55em;
+  border-radius: 1em;
+  font-size: 0.74em;
+  font-weight: 700;
+  white-space: nowrap;
+  background: var(--color-surface-sunken);
+  color: var(--color-ink-muted);
+}
+
+.badge[data-tone='success'] {
+  background: var(--color-di-soft);
+  color: var(--color-di-ink);
+}
+
+.badge[data-tone='warning'] {
+  background: color-mix(in srgb, #e59520 14%, transparent);
+  color: var(--color-warning);
+}
+
+/* Entrance, once the laptop has revealed (Reveal sets data-visible) */
+:global([data-visible='true']) .bars i {
+  animation: growY 760ms var(--ease-out) backwards;
+  animation-delay: calc(500ms + var(--i) * 70ms);
+}
+
+:global([data-visible='true']) .area {
+  animation: fadeIn 900ms var(--ease-out) 900ms backwards;
+}
+
+:global([data-visible='true']) .metric {
+  animation: rise 700ms var(--ease-out) backwards;
+  animation-delay: calc(300ms + var(--i) * 80ms);
+}
+
+@keyframes growY {
+  from { transform: scaleY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(0, 0.8em, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global([data-visible='true']) .bars i,
+  :global([data-visible='true']) .area,
+  :global([data-visible='true']) .metric {
+    animation: none;
+  }
+}

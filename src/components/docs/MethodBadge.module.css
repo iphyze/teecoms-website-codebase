@@ -1,0 +1,4 @@
+.badge { display: inline-flex; padding: 0.18rem 0.5rem; border: 1px solid currentColor; border-radius: 5px; font-size: 0.73rem; font-weight: 750; color: var(--color-success); }
+.badge[data-method='POST'] { color: var(--color-primary); }
+.badge[data-method='PUT'], .badge[data-method='PATCH'] { color: var(--color-warning); }
+.badge[data-method='DELETE'] { color: var(--color-danger); }

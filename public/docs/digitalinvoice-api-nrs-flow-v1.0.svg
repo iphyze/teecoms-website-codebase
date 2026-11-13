@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 515" role="img" aria-labelledby="title desc">
+<title id="title">Local invoice readiness and future NRS MBS flow</title>
+<desc id="desc">Current: business user approves invoice in DigitalInvoice, backend prepares and validates a UBL payload and records a local dry-run status. After NRS licensing and separate enablement only: backend would submit to NRS, receive independently validated official evidence and expose it to the app. This does not show a live NRS connection.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#61d6eb"/></marker><style>.h{font:700 27px system-ui,sans-serif;fill:#f5f9ff}.sub{font:400 15px system-ui,sans-serif;fill:#c5d3e5}.lane{fill:#173655;stroke:#496e99;stroke-width:1.4}.txt{font:700 16px system-ui,sans-serif;fill:#fff}.small{font:500 13px system-ui,sans-serif;fill:#d1e1ed}.line{stroke:#7293b7;stroke-dasharray:5 7;stroke-width:1.5}.arrow{stroke:#61d6eb;stroke-width:2.5;fill:none;marker-end:url(#arrow)}.future{stroke:#f3b15a;stroke-width:2;stroke-dasharray:7 6;fill:none;marker-end:url(#farr)}.label{font:500 13px system-ui,sans-serif;fill:#e2edf7}.futureLabel{font:600 13px system-ui,sans-serif;fill:#fdd79f}</style><marker id="farr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#f3b15a"/></marker></defs>
+<rect width="1160" height="515" rx="24" fill="#0c213b"/>
+<text x="35" y="49" class="h">NRS MBS: current versus future integration</text><text x="35" y="76" class="sub">Local readiness works separately from external production submission (not licensed)</text>
+<rect class="lane" x="42" y="103" width="208" height="55" rx="10"/><text class="txt" x="146" y="136" text-anchor="middle">Business user</text>
+<rect class="lane" x="346" y="103" width="208" height="55" rx="10"/><text class="txt" x="450" y="136" text-anchor="middle">DigitalInvoice web</text>
+<rect class="lane" x="650" y="103" width="208" height="55" rx="10"/><text class="txt" x="754" y="136" text-anchor="middle">DigitalInvoice API</text>
+<rect x="949" y="103" width="170" height="55" rx="10" fill="#3d3026" stroke="#d09b54"/><text class="txt" x="1034" y="136" text-anchor="middle">NRS MBS</text>
+<path class="line" d="M146 158V461 M450 158V461 M754 158V461 M1034 158V461"/>
+<path class="arrow" d="M146 194H450"/><text class="label" x="298" y="187" text-anchor="middle">Approve invoice</text>
+<path class="arrow" d="M450 237H754"/><text class="label" x="602" y="230" text-anchor="middle">Persist approval</text>
+<rect x="631" y="255" width="246" height="47" rx="9" fill="#22496a" stroke="#4c9ab3"/><text x="754" y="275" text-anchor="middle" class="small">Map and validate UBL locally</text><text x="754" y="291" text-anchor="middle" class="small">Dry-run queue / readiness</text>
+<path class="arrow" d="M754 326H450"/><text class="label" x="602" y="320" text-anchor="middle">Local result — not NRS accepted</text>
+<rect x="25" y="346" width="1110" height="144" rx="14" fill="#302b2e" stroke="#a87544" stroke-dasharray="8 6"/>
+<text x="48" y="371" class="futureLabel">FUTURE ONLY — licence, credentials, go-live and independent response verification required</text>
+<path class="future" d="M754 396H1034"/><text class="futureLabel" x="894" y="388" text-anchor="middle">Submit to NRS</text>
+<path class="future" d="M1034 428H754"/><text class="futureLabel" x="894" y="420" text-anchor="middle">Official response</text>
+<path class="future" d="M754 461H450"/><text class="futureLabel" x="602" y="453" text-anchor="middle">Verified IRN / CSID / QR</text>
+</svg>

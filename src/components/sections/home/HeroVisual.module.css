@@ -1,0 +1,829 @@
+/*
+  Visual canvas scales with its column: sizes use cqw (1% of the stage width)
+  and text uses em off a cqw-based font size, so every piece keeps its
+  proportions from tablet-wide to large desktop.
+*/
+
+.stage {
+  container-type: inline-size;
+  position: relative;
+  width: min(100%, 36rem);
+  aspect-ratio: 100 / 90;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  font-size: clamp(0.62rem, 2.35cqw, 0.86rem);
+  color: var(--color-ink);
+}
+
+/* ---- Shared pieces -------------------------------------------------------- */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 1.1em;
+  box-shadow:
+    0 2.4em 4.8em -1.6em var(--hero-card-shadow),
+    0 0 0 1px rgb(255 255 255 / 0.04);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: 700;
+  font-size: 0.95em;
+  color: var(--color-ink);
+}
+
+.cardHead svg {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.caption {
+  display: block;
+  color: var(--color-ink-subtle);
+  font-size: 0.82em;
+  font-weight: 500;
+}
+
+.skeleton {
+  display: block;
+  width: var(--sw, 60%);
+  height: 0.5em;
+  margin-top: 0.55em;
+  border-radius: 1em;
+  background: var(--color-surface-sunken);
+}
+
+.floatCard {
+  position: absolute;
+}
+
+.lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.lines line,
+.lines path {
+  fill: none;
+  stroke: var(--hero-line);
+  stroke-width: 0.35;
+  stroke-dasharray: 1.2 1.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.lines line {
+  stroke-width: 1.4;
+  stroke-dasharray: 3 5;
+}
+
+.lines path {
+  stroke-width: 1.4;
+  stroke-dasharray: 3 5;
+}
+
+/* Entrance: replays every time the slide becomes active */
+.stage[data-active='true'] .in {
+  animation: pieceIn 900ms var(--ease-out) backwards;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Idle float lives on an inner element so it never fights the entrance */
+.stage[data-active='true'] .bob {
+  animation: bob 6s var(--ease-in-out) infinite;
+  animation-delay: var(--b, 0s);
+  animation-play-state: var(--loop-state, running);
+}
+
+/* ---- 1. Network ----------------------------------------------------------- */
+.hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22cqw;
+  height: 22cqw;
+  margin: -11cqw 0 0 -11cqw;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  /* White disc in both themes so the full-colour Teecoms mark reads clearly */
+  background:
+    radial-gradient(circle at 32% 26%, #ffffff 0%, #ffffff 34%, #eef4fc 62%, #d7e3f4 100%);
+  box-shadow:
+    inset 0 -0.6cqw 1.6cqw rgb(10 30 69 / 0.08),
+    0 0 0 1px rgb(255 255 255 / 0.7),
+    0 0 0 1.4cqw rgb(74 155 255 / 0.14),
+    0 0 8cqw rgb(74 155 255 / 0.4);
+}
+
+.hub img {
+  width: 70%; /* the T + globe mark is wider than it is tall */
+  height: auto;
+}
+
+.ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  border: 1px dashed var(--hero-ring);
+  pointer-events: none;
+}
+
+.ringA {
+  width: 46cqw;
+  height: 46cqw;
+  margin: -23cqw 0 0 -23cqw;
+}
+
+.ringB {
+  width: 72cqw;
+  height: 72cqw;
+  margin: -36cqw 0 0 -36cqw;
+  border-color: color-mix(in srgb, var(--hero-ring) 50%, transparent);
+}
+
+.stage[data-active='true'] .ringA {
+  animation: spin 40s linear infinite;
+  animation-play-state: var(--loop-state, running);
+}
+
+.stage[data-active='true'] .ringB {
+  animation: spin 70s linear infinite reverse;
+  animation-play-state: var(--loop-state, running);
+}
+
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.node .bob {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.45em 0.95em 0.45em 0.45em;
+  border-radius: 2em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 1.2em 2.4em -1em var(--hero-card-shadow);
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.nodeIcon {
+  display: grid;
+  place-items: center;
+  width: 2.1em;
+  height: 2.1em;
+  border-radius: 50%;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.packet {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1.6cqw;
+  height: 1.6cqw;
+  margin: -0.8cqw 0 0 -0.8cqw;
+  border-radius: 50%;
+  background: var(--hero-packet);
+  box-shadow: 0 0 1.4cqw 0.3cqw var(--hero-packet-glow);
+  opacity: 0;
+}
+
+.stage[data-active='true'] .packet {
+  animation: packet 3.2s var(--ease-in-out) infinite;
+  animation-delay: calc(1200ms + var(--p));
+  animation-direction: var(--dir);
+  animation-play-state: var(--loop-state, running);
+}
+
+/* ---- 2. Infrastructure ----------------------------------------------------- */
+.rack {
+  position: absolute;
+  left: 2%;
+  top: 6%;
+  width: 56%;
+  padding: 1.1em;
+  display: grid;
+  gap: 0.6em;
+}
+
+.unit {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.8em;
+  padding: 0.75em 0.85em;
+  border-radius: 0.7em;
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-line);
+}
+
+.leds {
+  display: flex;
+  gap: 0.35em;
+}
+
+.leds i {
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #19d8a4;
+  box-shadow: 0 0 0.6em #19d8a4;
+}
+
+.leds i + i {
+  background: #4a9bff;
+  box-shadow: 0 0 0.6em #4a9bff;
+}
+
+.stage[data-active='true'] .leds i {
+  animation: blink 2.4s steps(1, end) infinite;
+  animation-delay: var(--blink);
+  animation-play-state: var(--loop-state, running);
+}
+
+.vent {
+  height: 0.9em;
+  border-radius: 0.2em;
+  background: repeating-linear-gradient(90deg, var(--color-line-strong) 0 2px, transparent 2px 6px);
+  opacity: 0.7;
+}
+
+.unitLabel {
+  font-size: 0.82em;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+}
+
+.netCard {
+  right: 0;
+  top: 2%;
+  width: 40%;
+}
+
+.netCard .card,
+.cloudCard .card {
+  padding: 1em 1.1em;
+}
+
+.live {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-size: 0.78em;
+  color: var(--color-di-ink);
+}
+
+.live::before {
+  content: '';
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #19d8a4;
+  box-shadow: 0 0 0 0.25em rgb(25 216 164 / 0.2);
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.3em;
+  height: 4.2em;
+  margin: 0.9em 0 0.6em;
+}
+
+.bars i {
+  flex: 1;
+  height: var(--h);
+  border-radius: 0.25em 0.25em 0.1em 0.1em;
+  background: linear-gradient(180deg, #4a9bff, color-mix(in srgb, #4a9bff 35%, transparent));
+  transform-origin: bottom;
+}
+
+.stage[data-active='true'] .bars i {
+  animation: wave 2.2s var(--ease-in-out) infinite alternate;
+  animation-delay: var(--w);
+  animation-play-state: var(--loop-state, running);
+}
+
+.cloudCard {
+  right: 4%;
+  bottom: 6%;
+  width: 40%;
+}
+
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.8em;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+.tick {
+  display: grid;
+  place-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: var(--color-di-soft);
+  color: var(--color-di-ink);
+}
+
+.meter {
+  height: 0.4em;
+  margin-top: 0.8em;
+  border-radius: 1em;
+  background: var(--color-surface-sunken);
+  overflow: hidden;
+}
+
+.meter i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #19d8a4, #2295d0);
+  transform-origin: left;
+}
+
+.stage[data-active='true'] .meter i {
+  animation: fillX 1.6s var(--ease-out) 900ms backwards;
+}
+
+/* ---- 3. Transformation ----------------------------------------------------- */
+.window {
+  position: absolute;
+  left: 0;
+  top: 12%;
+  width: 64%;
+  overflow: hidden;
+}
+
+.windowBar {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.8em 1em;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-surface-sunken);
+}
+
+.windowBar i {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: var(--color-line-strong);
+}
+
+.windowBar span {
+  margin-left: 0.6em;
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+.steps {
+  position: relative;
+  list-style: none;
+  padding: 1.1em 1.1em 1.3em;
+  display: grid;
+  gap: 1.05em;
+}
+
+.stepLine {
+  position: absolute;
+  left: calc(1.1em + 1.15em);
+  top: 2.4em;
+  bottom: 2.6em;
+  width: 2px;
+  background: var(--color-line);
+  border-radius: 2px;
+}
+
+.stepLine i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, #4a9bff, #19d8a4);
+  transform-origin: top;
+}
+
+.stage[data-active='true'] .stepLine i {
+  animation: fillY 2.2s var(--ease-in-out) 700ms backwards;
+}
+
+.steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.85em;
+}
+
+.stepIcon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.3em;
+  height: 2.3em;
+  border-radius: 0.7em;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  box-shadow: 0 0 0 0.3em var(--color-surface);
+}
+
+.stepText strong {
+  display: block;
+  font-size: 0.92em;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.stepText .skeleton {
+  margin-top: 0.45em;
+  height: 0.42em;
+}
+
+.stepDone {
+  display: grid;
+  place-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  background: var(--color-di-soft);
+  color: var(--color-di-ink);
+}
+
+.stage[data-active='true'] .stepDone {
+  animation: pop 520ms var(--ease-out) backwards;
+  animation-delay: var(--s);
+}
+
+.codeCard {
+  right: 0;
+  top: 50%;
+  width: 42%;
+}
+
+.code {
+  padding: 1.1em;
+  background: #0b1b3d;
+  border-color: color-mix(in srgb, var(--hero-ring) 50%, transparent);
+  display: grid;
+  gap: 0.6em;
+}
+
+.codeLine {
+  display: block;
+  width: var(--cw);
+  height: 0.5em;
+  margin-left: calc(var(--indent) * 1.2em);
+  border-radius: 1em;
+  background: linear-gradient(90deg, #4a9bff, #7aa7ff 60%, rgb(255 255 255 / 0.35));
+  transform-origin: left;
+}
+
+.codeLine:nth-child(3n) {
+  background: linear-gradient(90deg, #19d8a4, rgb(255 255 255 / 0.35));
+}
+
+.stage[data-active='true'] .codeLine {
+  animation: fillX 520ms var(--ease-out) backwards;
+  animation-delay: calc(800ms + var(--ci) * 180ms);
+}
+
+.cursor {
+  width: 0.5em;
+  height: 0.9em;
+  border-radius: 0.1em;
+  background: #ffffff;
+}
+
+.stage[data-active='true'] .cursor {
+  animation: blink 1s steps(1, end) infinite;
+  animation-play-state: var(--loop-state, running);
+}
+
+.shieldCard {
+  right: 2%;
+  top: 22%;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.5em 1.1em 0.5em 0.5em;
+  border-radius: 2em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 1.4em 2.8em -1em var(--hero-card-shadow);
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.pulse {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.2em;
+  height: 2.2em;
+  border-radius: 50%;
+  background: var(--color-di-soft);
+  color: var(--color-di-ink);
+}
+
+.pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #19d8a4;
+  opacity: 0;
+}
+
+.stage[data-active='true'] .pulse::after {
+  animation: ping 2.4s var(--ease-out) infinite;
+  animation-play-state: var(--loop-state, running);
+}
+
+/* ---- 4. DigitalInvoice ----------------------------------------------------- */
+.dash {
+  position: absolute;
+  left: 0;
+  top: 8%;
+  width: 74%;
+  padding: 1.2em;
+  border-radius: var(--radius-leaf);
+}
+
+.dashHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.9em;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 0.7em;
+  margin-top: 0.9em;
+}
+
+.kpis div {
+  padding: 0.7em 0.8em;
+  border-radius: 0.8em;
+  background: var(--color-surface-sunken);
+}
+
+.kpis strong {
+  display: block;
+  margin-top: 0.2em;
+  font-size: 1.25em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.45em;
+  height: 4.6em;
+  margin-top: 0.9em;
+  padding: 0 0.2em;
+}
+
+.chart i {
+  flex: 1;
+  height: var(--h);
+  border-radius: 0.35em 0.35em 0.15em 0.15em;
+  background: linear-gradient(180deg, #19d8a4, #2295d0);
+  transform-origin: bottom;
+}
+
+.stage[data-active='true'] .chart i {
+  animation: growY 760ms var(--ease-out) backwards;
+  animation-delay: calc(600ms + var(--ci) * 70ms);
+}
+
+.rows {
+  margin-top: 0.8em;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.6em 0;
+  border-top: 1px solid var(--color-line);
+  font-size: 0.86em;
+}
+
+.row > span:first-child {
+  color: var(--color-ink-subtle);
+}
+
+.status {
+  min-width: 5.6em;
+  text-align: center;
+  padding: 0.2em 0.6em;
+  border-radius: 2em;
+  font-size: 0.86em;
+  font-weight: 650;
+  background: var(--color-surface-sunken);
+  color: var(--color-ink-muted);
+}
+
+.status[data-status='paid'] {
+  background: var(--color-di-soft);
+  color: var(--color-di-ink);
+}
+
+.status[data-status='pending'] {
+  color: var(--color-warning);
+}
+
+.status[data-status='submitted'] {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.paperWrap {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 36%;
+}
+
+.paper {
+  padding: 1em;
+  transform: rotate(5deg);
+  transform-origin: top right;
+}
+
+.paper.bob {
+  --rot: 5deg;
+}
+
+.paperHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6em;
+  margin-bottom: 0.4em;
+}
+
+.paperHead strong {
+  font-size: 0.9em;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.qr {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 3.6em;
+  aspect-ratio: 1;
+  gap: 1px;
+}
+
+.qr i[data-on='true'] {
+  background: var(--color-ink);
+  border-radius: 1px;
+}
+
+.paperTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 1em;
+  padding-top: 0.6em;
+  border-top: 1px dashed var(--color-line-strong);
+  font-size: 0.82em;
+}
+
+.toastWrap {
+  left: 30%;
+  bottom: 2%;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.75em 1.1em 0.75em 0.75em;
+  border-radius: 1em;
+  white-space: nowrap;
+}
+
+.toast strong {
+  display: block;
+  font-size: 0.95em;
+}
+
+.toastIcon {
+  display: grid;
+  place-items: center;
+  width: 2.4em;
+  height: 2.4em;
+  border-radius: 0.8em;
+  background: linear-gradient(160deg, #19d8a4, #2295d0);
+  color: #ffffff;
+}
+
+/* ---- Keyframes ------------------------------------------------------------- */
+@keyframes pieceIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.6rem, 0) scale(0.96);
+  }
+}
+
+/* .node pieces are centred with translate(-50%,-50%), so they need their own */
+.stage[data-active='true'] .node.in {
+  animation-name: nodeIn;
+}
+
+@keyframes nodeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -30%) scale(0.9);
+  }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg)); }
+  50% { transform: translate3d(0, -0.5em, 0) rotate(var(--rot, 0deg)); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes packet {
+  0% { transform: translate3d(0, 0, 0) scale(0.6); opacity: 0; }
+  12% { opacity: 1; }
+  70% { opacity: 1; }
+  82%, 100% { transform: translate3d(var(--dx), var(--dy), 0) scale(1); opacity: 0; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes wave {
+  from { transform: scaleY(0.55); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes fillX {
+  from { transform: scaleX(0); }
+}
+
+@keyframes fillY {
+  from { transform: scaleY(0); }
+}
+
+@keyframes growY {
+  from { transform: scaleY(0); }
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.4); }
+}
+
+@keyframes ping {
+  0% { transform: scale(1); opacity: 0.7; }
+  80%, 100% { transform: scale(1.8); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage .bob,
+  .stage .packet,
+  .stage .ring,
+  .stage .leds i,
+  .stage .bars i,
+  .stage .cursor,
+  .stage .pulse::after {
+    animation: none !important;
+  }
+}

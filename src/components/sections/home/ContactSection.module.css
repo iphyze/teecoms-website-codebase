@@ -1,0 +1,65 @@
+.section {
+  padding-block: var(--section-y);
+  background: var(--color-bg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(3rem, 6vw, 6rem);
+  align-items: start;
+}
+
+.copy, .formWrap { min-width: 0; }
+
+.title {
+  max-width: 14ch;
+  margin-block: 1rem 1.25rem;
+  font-size: var(--text-h2);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.lead {
+  max-width: 43ch;
+  font-size: var(--text-lead);
+  line-height: 1.6;
+  color: var(--color-ink);
+}
+
+.details {
+  display: grid;
+  gap: 1.1rem;
+  list-style: none;
+  padding: 0;
+  margin-top: 2.5rem;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.iconTile {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  border-radius: 0.75rem;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.detailText { display: grid; gap: 0.1rem; min-width: 0; }
+.detailLabel { color: var(--color-ink-subtle); font-size: var(--text-xs); font-weight: 600; }
+.detailValue { color: var(--color-ink); font-size: 0.9375rem; font-weight: 700; overflow-wrap: anywhere; }
+.unconfirmed { color: var(--color-ink-subtle); font-size: 0.9375rem; font-style: italic; font-weight: 500; }
+
+@media (max-width: 860px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 3rem; }
+  .lead { max-width: 55ch; }
+}

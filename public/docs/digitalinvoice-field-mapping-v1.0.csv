@@ -1,0 +1,55 @@
+DigitalInvoice source,NRS MBS JSON field,Database column,Required / condition,Implementation notes
+nrs_business_id,business_id,organization_compliance_profiles.nrs_business_id,Yes,Must be an NRS-issued UUID. Mock IDs in generated fixtures are test-only.
+nrs_irn,irn,invoices.nrs_invoice_identifier,Yes,NRS IRN required for local preflight; not fabricated or issued by adapter. Credit notes lack their own IRN DB column.
+issue_date,issue_date,invoices.invoice_date / credit_notes.credit_note_date,Yes,Document issue date YYYY-MM-DD.
+due_date,due_date,invoices.due_date / credit_notes.credit_note_date,Optional,For credit notes the date is set to credit note date.
+firs_metadata.invoice_type_code,invoice_type_code,invoices.firs_invoice_type_code; credit-note kind from credit_notes,Yes,Adapter maps commercial_invoice to 380 and credit_note to 381; other local types have no verified adapter mapping.
+firs_metadata.transaction_type,invoice_kind,invoices.firs_transaction_type,Yes,Adapter uppercases b2b or b2c; B2G/G2B recognised by schema but not selectable in current local invoice options.
+payment.payment_status,payment_status,invoices.payment_status,Optional,Maps unpaid to PENDING; paid to PAID; partially_paid to PARTIAL. Credit-note preview inherits source invoice payment status.
+note,note,invoices.notes / credit_notes.reason,Optional,Free-text document note.
+currency_code,document_currency_code,invoices.currency / credit_notes.currency,Yes,Uppercase ISO 4217 three-letter currency code.
+currency_code,tax_currency_code,invoices.currency / credit_notes.currency,Yes,Same source currency in supplied adapter.
+buyer_reference,buyer_reference,invoices.reference,Optional,Credit-note preview inherits original invoice reference.
+order_reference,order_reference,invoices.purchase_order_number,Optional,Credit-note preview inherits original invoice order reference.
+supplier.name,accounting_supplier_party.party_name,organizations.name / organizations.trading_name,Yes,Organisation name selected by adapter; uses name when nonempty.
+supplier.tin,accounting_supplier_party.tin,organizations.tax_identification_number,Yes,Supplier tax identifier needed for preflight.
+supplier.email,accounting_supplier_party.email,organizations.business_email,Yes,Supplier email needed for preflight.
+supplier.phone,accounting_supplier_party.telephone,organizations.phone,Optional,Contact telephone.
+supplier.business_description,accounting_supplier_party.business_description,organizations.industry,Optional,Organisation industry text.
+supplier.postal_address.street_name,accounting_supplier_party.postal_address.street_name,organizations.address_line_1,Yes,NRS local preflight requires a populated street name.
+supplier.postal_address.city_name,accounting_supplier_party.postal_address.city_name,organizations.city,Yes,NRS local preflight requires city name.
+supplier.postal_address.postal_zone,accounting_supplier_party.postal_address.postal_zone,organization_compliance_profiles.nrs_postal_zone,Yes,Configured local NRS postal-zone code.
+supplier.postal_address.state,accounting_supplier_party.postal_address.state,organization_compliance_profiles.nrs_state_code,Yes,Must be mapped against authoritative NRS resources.
+supplier.postal_address.lga,accounting_supplier_party.postal_address.lga,organization_compliance_profiles.nrs_lga_code,Yes,Must be mapped against authoritative NRS resources.
+supplier.postal_address.country,accounting_supplier_party.postal_address.country,organizations.country,Yes,ISO 3166 alpha-2 country code.
+buyer.name,accounting_customer_party.party_name,invoices.customer_name_snapshot / credit_notes.customer_name_snapshot,Yes,Buyer name from document snapshot.
+buyer.tin,accounting_customer_party.tin,invoices.customer_tin_snapshot / credit_notes.customer_tin_snapshot,Conditional,For B2C missing tax ID raises local warning rather than local error; confirm current NRS rules.
+buyer.email,accounting_customer_party.email,invoices.customer_email_snapshot / credit_notes.customer_email_snapshot,Conditional,For B2C missing email raises local warning rather than local error; confirm current NRS rules.
+buyer.phone,accounting_customer_party.telephone,invoices.customer_phone_snapshot / credit_notes.customer_phone_snapshot,Optional,Buyer contact number from snapshot.
+buyer.postal_address.street_name,accounting_customer_party.postal_address.street_name,invoices.customer_address_snapshot / credit_notes.customer_address_snapshot,Yes,Credit-note street comes from its own snapshot.
+buyer.postal_address.city_name,accounting_customer_party.postal_address.city_name,invoices.customer_city_snapshot,Yes,Credit-note preview inherits source invoice city snapshot.
+buyer.postal_address.postal_zone,accounting_customer_party.postal_address.postal_zone,invoices.customer_nrs_postal_zone_snapshot,Yes,Current implementation uses invoice snapshot; missing values on historical invoices are not sourced from a changed customer master record.
+buyer.postal_address.state,accounting_customer_party.postal_address.state,invoices.customer_nrs_state_code_snapshot,Yes,Current implementation uses invoice snapshot.
+buyer.postal_address.lga,accounting_customer_party.postal_address.lga,invoices.customer_nrs_lga_code_snapshot,Yes,Current implementation uses invoice snapshot.
+buyer.postal_address.country,accounting_customer_party.postal_address.country,invoices.customer_country_snapshot,Yes,Credit-note preview inherits source invoice country.
+firs_metadata.payment_means_code,payment_means[].payment_means_code,invoices.firs_payment_means_code,Conditional,Adapter currently maps cash to 10 and transfer variants to 30; other local options return no code and require official resource mapping.
+due_date,payment_means[].payment_due_date,invoices.due_date,Optional,Returned only when a recognised payment code is available.
+amounts.invoice_discount_amount,allowance_charge[].amount,invoices.invoice_discount_amount / credit_notes.invoice_discount_amount,If discount,Separate invoice-level allowance with charge_indicator false. JSON amount is nonnegative.
+amounts.tax_amount,tax_total[].tax_amount,invoices.tax_amount / credit_notes.tax_amount,Yes,Headline tax amount is verified against line and tax-category totals at integer kobo precision.
+items[].taxable_amount / tax_amount / tax_rate_percent,tax_total[].tax_subtotal,invoice_items.taxable_amount / tax_amount / tax_rate_percent; credit_note_items equivalents,Yes,Group tax amounts by final NRS category code and rate; sum in kobo.
+items[].gross_amount / discount_amount,legal_monetary_total.line_extension_amount,invoice_items.gross_amount / line_discount_amount; credit_note_items equivalents,Yes,"Sum gross less line discounts, before invoice-level discount."
+amounts.net_amount,legal_monetary_total.tax_exclusive_amount,invoices.net_amount / credit_notes.net_amount,Yes,Equals extensions minus invoice-level allowances.
+amounts.total_amount,legal_monetary_total.tax_inclusive_amount,invoices.total_amount / credit_notes.total_amount,Yes,Equals tax-exclusive amount plus tax.
+amounts.total_amount,legal_monetary_total.payable_amount,invoices.total_amount / credit_notes.total_amount,Yes,Matches total_amount in current adapter; no deduction of payments.
+items[].quantity,invoice_line[].invoiced_quantity,invoice_items.quantity / credit_note_items.quantity,Yes,Must be greater than zero; stored decimal precision is four fractional digits.
+items[].gross_amount / discount_amount,invoice_line[].line_extension_amount,invoice_items.gross_amount / line_discount_amount; credit_note_items equivalents,Yes,Line gross less line discount.
+items[].name / description / item_code,invoice_line[].item,invoice_items.item_name_snapshot / item_description_snapshot / item_code_snapshot; credit_note_items equivalents,Yes,Item name required in local preflight.
+items[].unit_price,invoice_line[].price.price_amount,invoice_items.unit_price / credit_note_items.unit_price,Yes,Money serialized to two decimal places.
+items[].unit_code,invoice_line[].price.price_unit,invoice_items.firs_unit_code_snapshot / unit_code_snapshot; credit_note_items.unit_code_snapshot,Yes,Official NRS unit code must be verified; local unit codes alone are not proof.
+items[].classification_code when item_type=goods,invoice_line[].hsn_code,invoice_items.nrs_item_classification_snapshot,Goods,Must be an official HS code; fixtures use fictional code values.
+items[].product_category,invoice_line[].product_category,Not persisted or populated by current firsLocalInvoicePayload,Goods,Adapter accepts property but supplied invoice extraction does not provide it; local preflight therefore blocks goods without additional source mapping.
+items[].classification_code when item_type=service,invoice_line[].isic_code,invoice_items.nrs_item_classification_snapshot,Service,Must be an official service classification code; fixtures use fictional code values.
+items[].service_category,invoice_line[].service_category,Not persisted or populated by current firsLocalInvoicePayload,Service,Adapter accepts property but supplied invoice extraction does not provide it; local preflight therefore blocks services without additional source mapping.
+items[].tax_code / tax_rate_percent,invoice_line[].tax_total.tax_subtotal[].tax_category,invoice_items.firs_tax_category_code_snapshot / tax_code_snapshot / tax_rate_percent; credit_note_items tax_code_snapshot / tax_rate_percent,Yes,For standard treatment adapter fallback is STANDARD_VAT; other local placeholders are not assumed valid NRS codes.
+source_irn,billing_reference[].irn,invoices.nrs_invoice_identifier,Credit note,Must reference original invoice NRS-issued IRN; not invented.
+source_issue_date,billing_reference[].issue_date,Not currently populated from original invoices.invoice_date in credit-note preview,Credit note (optional date),"Credit-note preparation reads credit_notes.invoice_date (not present in supplied schema), so this value may be null; verify before production integration."

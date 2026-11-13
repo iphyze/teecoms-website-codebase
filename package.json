@@ -1,0 +1,23 @@
+{
+  "name": "teecoms",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "node scripts/build.mjs",
+    "start": "next start",
+    "dev:php": "php -S 127.0.0.1:8000 -t public"
+  },
+  "dependencies": {
+    "lucide-react": "^1.58.0",
+    "marked": "18.0.14",
+    "motion": "^13.1.1",
+    "next": "16.3.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-hook-form": "^7.86.0",
+    "react-select": "5.10.2",
+    "sharp": "^0.35.3",
+    "swiper": "^12.2.0"
+  }
+}

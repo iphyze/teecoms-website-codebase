@@ -1,0 +1,131 @@
+.section {
+  padding-block: calc(var(--section-y) * 0.8);
+  background: var(--color-bg);
+}
+
+.panel {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+  align-items: center;
+  gap: 2rem;
+  min-height: 32rem;
+  padding: clamp(2.5rem, 5vw, 4.5rem);
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(60% 90% at 90% 10%, color-mix(in srgb, var(--color-di-green) 22%, transparent), transparent 60%),
+    radial-gradient(70% 90% at 0% 100%, color-mix(in srgb, var(--color-brand-blue) 35%, transparent), transparent 60%),
+    var(--color-band);
+  color: var(--color-band-ink);
+}
+
+.copy {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.title {
+  max-width: 16ch;
+  margin-bottom: 1rem;
+  color: var(--color-band-ink);
+  font-size: var(--text-h2);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.body,
+.followup {
+  max-width: 50ch;
+  color: var(--color-band-muted);
+  line-height: 1.65;
+}
+
+.followup {
+  margin-top: 0.7rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.phoneStage {
+  position: relative;
+  align-self: stretch;
+  min-width: 0;
+  min-height: 22rem;
+  pointer-events: none;
+}
+
+/* Reveal provides the delayed entrance; angle and float use nested wrappers
+   so their transforms never compete with the reveal transform. */
+.phoneReveal {
+  position: absolute;
+  top: 0.5rem;
+  right: 0;
+  width: clamp(12rem, 20vw, 17.5rem);
+}
+
+.phoneStage .phoneReveal[data-visible='false'] {
+  transform: translate3d(0, 3rem, 0);
+}
+
+.phoneAngle {
+  transform: rotate(-8deg);
+  transform-origin: center top;
+}
+
+.phoneFloat {
+  animation: ctaFloat 6s var(--ease-in-out) infinite;
+}
+
+.phoneStage[data-loops='paused'] .phoneFloat {
+  animation-play-state: paused;
+}
+
+@keyframes ctaFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -6px, 0); }
+}
+
+@media (max-width: 860px) {
+  .panel {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .phoneStage {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .panel {
+    padding: 2rem 1.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions > * {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phoneFloat {
+    animation: none;
+  }
+
+  .phoneStage .phoneReveal[data-visible='false'] {
+    transform: none;
+  }
+}
