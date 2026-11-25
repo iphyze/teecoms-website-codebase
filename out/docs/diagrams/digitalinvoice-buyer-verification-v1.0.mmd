@@ -1,0 +1,15 @@
+sequenceDiagram
+  autonumber
+  participant DI as DigitalInvoice evidence gate
+  participant PDF as Cleared PDF (future)
+  participant Buyer as Buyer
+  participant App as MBS360 (external)
+  participant N as NRS verification service
+  Note over DI,PDF: Only confirmed production evidence can be displayed as verified
+  DI-->>PDF: Genuine IRN / CSID / QR [future after licensing]
+  PDF-->>Buyer: Receive authentic cleared invoice [future]
+  Buyer-->>App: Scan QR with external MBS360 [external workflow]
+  App-->>N: Ask for verification [external workflow]
+  N-->>App: Official verification result [external workflow]
+  App-->>Buyer: Display result [external workflow]
+  Note over PDF,N: Fictional/mock PDF QR is NOT an NRS verification credential

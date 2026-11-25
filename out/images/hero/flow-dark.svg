@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1020" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="upper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#253c5d" stop-opacity="0"/>
+      <stop offset=".64" stop-color="#476fba" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#628fd4" stop-opacity=".25"/>
+    </linearGradient>
+    <linearGradient id="sweep" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#213958" stop-opacity=".05"/>
+      <stop offset=".46" stop-color="#385577" stop-opacity=".11"/>
+      <stop offset="1" stop-color="#567fae" stop-opacity=".18"/>
+    </linearGradient>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a719e" stop-opacity=".16"/>
+      <stop offset=".58" stop-color="#29415f" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#172637" stop-opacity=".05"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#4d80c4" stop-opacity="0"/>
+      <stop offset=".55" stop-color="#86b6f2" stop-opacity=".23"/>
+      <stop offset="1" stop-color="#6298e0" stop-opacity=".30"/>
+    </linearGradient>
+  </defs>
+  <!-- Navy-blue liquid ribbons and fine light accents; no large circles -->
+  <path fill="url(#upper)" d="M 1110 -140 C 1253 118, 1314 250, 1660 311 L 1660 -140 Z"/>
+  <path fill="url(#sweep)" d="M 1650 104 C 1430 287, 1260 365, 1050 433 C 787 519, 492 508, -70 283 L -70 470 C 426 702, 789 614, 1125 488 C 1403 384, 1504 313, 1650 209 Z"/>
+  <path fill="url(#base)" d="M -100 675 C 225 512, 429 625, 662 736 C 951 874, 1188 773, 1660 532 L 1660 1110 L -100 1110 Z"/>
+  <path fill="#36547a" opacity=".06" d="M -100 845 C 186 716, 375 692, 605 805 C 901 976, 1220 906, 1660 683 L 1660 1110 L -100 1110 Z"/>
+  <path d="M -70 649 C 219 496, 460 632, 674 729 C 1002 871, 1305 698, 1660 491" fill="none" stroke="url(#edge)" stroke-width="2"/>
+  <path d="M 1620 128 C 1442 286, 1132 428, 822 519" fill="none" stroke="#80aee7" stroke-width="1.3" opacity=".11"/>
+  <path d="M 1650 243 C 1400 420, 1139 536, 870 610" fill="none" stroke="#87b0e5" stroke-width="1" opacity=".10"/>
+</svg>

@@ -1,0 +1,619 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digitalinvoice.ng/schemas/nrs-ubl-v1.1-local.json",
+  "title": "DigitalInvoice NRS MBS v1.1 UBL JSON adapter (local projection; not an official NRS schema)",
+  "description": "Strict local preflight structure; NRS remote validation and current resource lists remain authoritative. Null fields deliberately fail validation until configured. Conditional B2C tax ID/email allowances are enforced by PHP preflight.",
+  "type": "object",
+  "properties": {
+    "business_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "irn": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]+-[A-Za-z0-9]{8}-[0-9]{8}$"
+    },
+    "issue_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "due_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "invoice_type_code": {
+      "type": "string",
+      "pattern": "^\\d{3}$"
+    },
+    "invoice_kind": {
+      "enum": [
+        "B2B",
+        "B2C",
+        "B2G",
+        "G2B"
+      ]
+    },
+    "payment_status": {
+      "enum": [
+        "PENDING",
+        "PAID",
+        "PARTIAL",
+        "REJECTED"
+      ]
+    },
+    "note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "document_currency_code": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "tax_currency_code": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "buyer_reference": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "order_reference": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "accounting_supplier_party": {
+      "type": "object",
+      "properties": {
+        "party_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tin": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "email": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "telephone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "business_description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "postal_address": {
+          "type": "object",
+          "properties": {
+            "street_name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "city_name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "postal_zone": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "lga": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "state": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "country": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "street_name",
+            "city_name",
+            "postal_zone",
+            "lga",
+            "state",
+            "country"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "party_name",
+        "tin",
+        "email",
+        "postal_address"
+      ],
+      "additionalProperties": false
+    },
+    "accounting_customer_party": {
+      "type": "object",
+      "properties": {
+        "party_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tin": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "email": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "telephone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "business_description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "postal_address": {
+          "type": "object",
+          "properties": {
+            "street_name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "city_name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "postal_zone": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "lga": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "state": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "country": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "street_name",
+            "city_name",
+            "postal_zone",
+            "lga",
+            "state",
+            "country"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "party_name",
+        "tin",
+        "email",
+        "postal_address"
+      ],
+      "additionalProperties": false
+    },
+    "payment_means": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "payment_means_code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "payment_due_date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "payment_means_code"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "allowance_charge": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "charge_indicator": {
+            "type": "boolean"
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0,
+            "multipleOf": 0.01
+          }
+        },
+        "required": [
+          "charge_indicator",
+          "amount"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "tax_total": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tax_amount": {
+            "type": "number",
+            "minimum": 0,
+            "multipleOf": 0.01
+          },
+          "tax_subtotal": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "taxable_amount": {
+                  "type": "number",
+                  "minimum": 0,
+                  "multipleOf": 0.01
+                },
+                "tax_amount": {
+                  "type": "number",
+                  "minimum": 0,
+                  "multipleOf": 0.01
+                },
+                "tax_category": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "percent": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "percent"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "taxable_amount",
+                "tax_amount",
+                "tax_category"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "tax_amount",
+          "tax_subtotal"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "legal_monetary_total": {
+      "type": "object",
+      "properties": {
+        "line_extension_amount": {
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        },
+        "tax_exclusive_amount": {
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        },
+        "tax_inclusive_amount": {
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        },
+        "payable_amount": {
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        }
+      },
+      "required": [
+        "line_extension_amount",
+        "tax_exclusive_amount",
+        "tax_inclusive_amount",
+        "payable_amount"
+      ],
+      "additionalProperties": false
+    },
+    "invoice_line": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "invoiced_quantity": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "line_extension_amount": {
+            "type": "number",
+            "minimum": 0,
+            "multipleOf": 0.01
+          },
+          "discount_amount": {
+            "type": "number",
+            "minimum": 0,
+            "multipleOf": 0.01
+          },
+          "discount_rate": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "fee_amount": {
+            "type": "number",
+            "minimum": 0,
+            "multipleOf": 0.01
+          },
+          "item": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "description": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "sellers_item_identification": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "price": {
+            "type": "object",
+            "properties": {
+              "price_amount": {
+                "type": "number",
+                "minimum": 0,
+                "multipleOf": 0.01
+              },
+              "base_quantity": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "price_unit": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "price_amount",
+              "base_quantity",
+              "price_unit"
+            ],
+            "additionalProperties": false
+          },
+          "tax_total": {
+            "type": "object",
+            "properties": {
+              "tax_amount": {
+                "type": "number",
+                "minimum": 0,
+                "multipleOf": 0.01
+              },
+              "tax_subtotal": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "taxable_amount": {
+                      "type": "number",
+                      "minimum": 0,
+                      "multipleOf": 0.01
+                    },
+                    "tax_amount": {
+                      "type": "number",
+                      "minimum": 0,
+                      "multipleOf": 0.01
+                    },
+                    "tax_category": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "percent": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 100
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "percent"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "taxable_amount",
+                    "tax_amount",
+                    "tax_category"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "tax_amount",
+              "tax_subtotal"
+            ],
+            "additionalProperties": false
+          },
+          "hsn_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "product_category": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "isic_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "service_category": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "invoiced_quantity",
+          "line_extension_amount",
+          "item",
+          "price",
+          "tax_total"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "billing_reference": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "irn": {
+            "type": "string",
+            "minLength": 1
+          },
+          "issue_date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "irn"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "business_id",
+    "irn",
+    "issue_date",
+    "invoice_type_code",
+    "invoice_kind",
+    "document_currency_code",
+    "tax_currency_code",
+    "accounting_supplier_party",
+    "accounting_customer_party",
+    "tax_total",
+    "legal_monetary_total",
+    "invoice_line"
+  ],
+  "additionalProperties": false
+}

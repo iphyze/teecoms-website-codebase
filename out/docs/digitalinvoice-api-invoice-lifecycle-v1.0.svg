@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 420" role="img" aria-labelledby="title desc">
+<title id="title">DigitalInvoice invoice lifecycle</title>
+<desc id="desc">Browser workflow: draft goes to pending approval; pending approval can be approved or rejected; rejected invoices can be edited and returned to draft. ERP v1 can only read these states. Payment and NRS readiness are separate from approval.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#61d6eb"/></marker><style>.title{font:700 29px system-ui,sans-serif;fill:#f7fbff}.sub{font:400 16px system-ui,sans-serif;fill:#bbcbdf}.box{fill:#173655;stroke:#6686ae;stroke-width:1.5}.step{font:700 20px system-ui,sans-serif;fill:#f7fbff}.hint{font:400 14px system-ui,sans-serif;fill:#cbd6e3}.flow{stroke:#61d6eb;stroke-width:3;fill:none;marker-end:url(#arrow)}.edge{font:600 13px system-ui,sans-serif;fill:#84e0ee}.muted{font:500 15px system-ui,sans-serif;fill:#bbcbdf}</style></defs>
+<rect x="0" y="0" width="1160" height="420" rx="24" fill="#0c213b"/>
+<text x="42" y="54" class="title">Invoice approval lifecycle</text><text x="42" y="81" class="sub">Business application workflow | ERP OAuth clients have read-only access</text>
+<rect class="box" x="42" y="130" width="223" height="94" rx="14"/><text class="step" x="153" y="166" text-anchor="middle">Draft</text><text class="hint" x="153" y="191" text-anchor="middle">Editable</text>
+<rect class="box" x="368" y="130" width="242" height="94" rx="14"/><text class="step" x="489" y="166" text-anchor="middle">Pending approval</text><text class="hint" x="489" y="191" text-anchor="middle">Waiting for approver</text>
+<rect class="box" x="720" y="110" width="222" height="94" rx="14"/><text class="step" x="831" y="148" text-anchor="middle">Approved</text><text class="hint" x="831" y="173" text-anchor="middle">Invoice number assigned</text>
+<rect class="box" x="720" y="241" width="222" height="94" rx="14"/><text class="step" x="831" y="278" text-anchor="middle">Rejected</text><text class="hint" x="831" y="302" text-anchor="middle">May be corrected</text>
+<path class="flow" d="M265 177 H368"/><text class="edge" x="316" y="164" text-anchor="middle">Submit</text>
+<path class="flow" d="M610 166 H660 V157 H720"/><text class="edge" x="678" y="143">Approve</text>
+<path class="flow" d="M610 190 H660 V286 H720"/><text class="edge" x="666" y="271">Reject</text>
+<path class="flow" d="M720 313 H650 V378 H153 V224"/><text class="edge" x="414" y="369" text-anchor="middle">Edit after rejection → draft</text>
+<rect x="967" y="128" width="156" height="189" rx="14" fill="#23354b" stroke="#9ab1ca" stroke-dasharray="5 6"/><text x="1045" y="157" text-anchor="middle" class="step" font-size="17">Separate</text><text x="1045" y="189" class="muted" text-anchor="middle">Payments</text><text x="1045" y="220" class="muted" text-anchor="middle">Local NRS checks</text><text x="1045" y="250" class="muted" text-anchor="middle">Future clearance</text><text x="1045" y="287" class="hint" text-anchor="middle">No ERP writes</text>
+</svg>

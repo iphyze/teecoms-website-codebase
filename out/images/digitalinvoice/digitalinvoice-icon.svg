@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 495 510" width="495" height="510" role="img" aria-label="DigitalInvoice">
+  <title>DigitalInvoice</title>
+  <defs><linearGradient id="dii" x1="0" y1="0" x2="0" y2="510" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#19D8A4"/><stop offset="1" stop-color="#2295D0"/></linearGradient></defs>
+  <path d="M185 0H465a30 30 0 0 1 30 30V325A185 185 0 0 1 310 510H30A30 30 0 0 1 0 480V185A185 185 0 0 1 185 0Z" fill="url(#dii)"/>
+  <path d="M323.4 155.4L203.7 293.8M169.0 194.1L134.9 233.8M359.3 253.4L272.7 353.8" fill="none" stroke="#FFFFFF" stroke-width="57" stroke-linecap="round"/>
+</svg>

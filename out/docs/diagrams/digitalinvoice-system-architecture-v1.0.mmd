@@ -1,0 +1,38 @@
+flowchart LR
+  subgraph BrowserBoundary[Browser and organisation trust boundary]
+    User[Business user / approver]
+    Web[DigitalInvoice React web app]
+    User -->|Browser UI| Web
+  end
+  subgraph ApiBoundary[DigitalInvoice API boundary]
+    API[PHP application API / role and tenant checks]
+    ERPAPI[ERP read-only OAuth2 API]
+    NRSAdapter[UBL adapter / local readiness]
+    Queue[Local NRS staging queue / dry-run worker]
+    Hooks[Outbound webhook outbox]
+    API --> ERPAPI
+    API --> NRSAdapter
+    NRSAdapter --> Queue
+    API --> Hooks
+  end
+  subgraph DataBoundary[Private data boundary]
+    DB[(MySQL: organisation data, sessions, audit, queue)]
+  end
+  subgraph External[External service boundary]
+    ERP[External ERP client]
+    Receiver[ERP webhook receiver]
+    Google[Google Sign-In]
+    Paystack[Paystack]
+    Email[Configured email provider]
+    NRSSandbox[NRS MBS sandbox]
+    NRSProd[NRS MBS production - licence gated]
+  end
+  Web -->|HTTPS / JWT cookies / CSRF| API
+  ERP -->|HTTPS / OAuth2 client credentials / scoped bearer| ERPAPI
+  API -->|Prepared SQL / tenant scoping / selected AES-256-GCM secrets| DB
+  Hooks -->|HTTPS / HMAC-SHA256 / signed event| Receiver
+  Google -->|Verified Google ID token| API
+  Paystack <-->|HTTPS / verified provider webhook| API
+  API -->|Configured mail transport| Email
+  NRSAdapter -.->|Explicit sandbox HTTPS + API credentials| NRSSandbox
+  Queue -.->|Not implemented: licence and review required| NRSProd
