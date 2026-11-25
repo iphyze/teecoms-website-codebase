@@ -1,4 +1,4 @@
-import { ExternalLink, Mail, MapPin, Phone, ShieldCheck, Workflow, BookOpenText } from 'lucide-react'
+import { ExternalLink, Mail, MapPin, Phone, ShieldCheck, Workflow, BookOpenText, BadgeCheck } from 'lucide-react'
 import { documentationExists, getDocumentation } from '@/lib/docs'
 import { docsMetadata } from '@/lib/docs/metadata'
 import { getSampleAvailability } from '@/lib/docs/sampleAvailability'
@@ -90,6 +90,14 @@ export default function DevelopersPage() {
             <span className={styles.statusValue} data-state="review">Sandbox-controlled</span>
           </div>
           <div className={styles.statusItem}>
+            <span className={styles.statusIcon}><BadgeCheck size={19} aria-hidden="true" /></span>
+            <div>
+              <h3>ISO/IEC 27001:2022 certification</h3>
+              <p>Teecoms Integrated Solutions Limited is certified to ISO/IEC 27001:2022 for its Information Security Management System (certificate SCK/05/TIS/26/23/9804). <a href="/developers/security/">Certificate details and verification</a> are in the security overview; independent DigitalInvoice VAPT remains in progress.</p>
+            </div>
+            <span className={styles.statusValue}>Certified</span>
+          </div>
+          <div className={styles.statusItem}>
             <span className={styles.statusIcon}><ExternalLink size={19} aria-hidden="true" /></span>
             <div>
               <h3>NRS production submissions</h3>
@@ -109,7 +117,7 @@ export default function DevelopersPage() {
         <div className={styles.support}>
           <div>
             <h3>Need help with DigitalInvoice?</h3>
-            <p>Contact Teecoms for integration enquiries, documentation clarifications or details about the MBS onboarding process. The draft SLA does not establish contractual support response times.</p>
+            <p>Contact Teecoms for integration enquiries, documentation clarifications or details about the MBS onboarding process. The approved SLA takes effect on 27 November 2026 and sets out the applicable support response targets.</p>
             {(email || phone) && (
               <div className={styles.contactMethods}>
                 {email && (

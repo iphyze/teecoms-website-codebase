@@ -1,17 +1,16 @@
+# Internal NRS v1.1 alignment review — 25 November 2026
+
+**Internal working document. Not for publication, indexing, or submission as a public assurance statement.**
+
+This file preserves the assessment previously displayed at `/developers/nrs-alignment/` for internal technical planning. Some references to the former public page or download are retained as historical context; the live site no longer exposes either resource.
+
 ---
-title: NRS MBS v1.1 alignment review
-description: Dated crosswalk of official NRS e-invoicing requirements, verified DigitalInvoice capabilities and pre-production gaps.
-version: 1.1
-effective:
-updated: 2026-11-13
-status: published
-pdf: /docs/digitalinvoice-nrs-v1.1-alignment-review-2026-11.pdf
----
+
 
 # NRS MBS v1.1 alignment review
 
 :::warning Scope of this review
-This is a **technical compatibility review**, not evidence of NRS certification, a completed accreditation assessment, a signed SLA, production connectivity or successful regulator validation. The application-side findings include the **13 November 2026 Phase 5 backend/admin update**, reviewed from the supplied source and offline test suite; they are not a claim about a newer production deployment. NRS requirements are based on the public official pages reviewed **13 November 2026**. Items marked **Gap**, **Planned** or **Requires verification** are not implemented/verified assurances.
+This is a **technical compatibility review**, not evidence of NRS certification, a completed accreditation assessment, production connectivity or successful regulator validation. The application-side findings include the **13 November 2026 Phase 5 backend/admin update**, reviewed from the supplied source and offline test suite; they are not a claim about a newer production deployment. NRS requirements are based on the public official pages reviewed **13 November 2026**. Items marked **Gap**, **Planned** or **Requires verification** are not implemented/verified assurances.
 :::
 
 ## Official documentation and latest changes
@@ -45,7 +44,7 @@ The official documentation displays **API v1.1**. The published [API changelog](
 | Cryptographic stamp/signing; ECDSA/JAdES | Phase 5 inspects ECDSA X.509 public certificates and reports certificate/HSM/JAdES/enrolment readiness; the client retains a sandbox `sign` operation | **Gap:** no functioning JAdES signer, protected signing service or NRS certificate enrolment evidence |
 | Signing, confirmation, transmission and fiscal reporting | Local queue and offline dry-run worker exist; Phase 5 production readiness review always reports `production_submission_enabled: false` | **Licence-gated:** no production worker, clearance or NRS-confirmed IRN/CSID/QR |
 | Audit trails and role-based access | Organisation-scoped workflows, audit activity records, webhook logs, and MFA exist | **Implemented in supplied code;** independent operational testing is still needed |
-| SLA service levels | Draft Teecoms SLA proposes 99.5% monthly availability and limited staffed hours | **Alignment gap:** NRS published SI/APP template describes 99.9%, 24/7 support and faster incident targets; no equivalent commitment may be claimed without operational review and signature |
+| SLA service levels | Management-approved Teecoms subscriber SLA effective 27 Nov 2026: 99.5% monthly availability, staffed support hours and Severity 1 on-call | **Alignment gap:** NRS SI/APP reference lists 99.9%, 24/7 support and faster incident targets; do not claim equivalence without separate NRS approval |
 
 :::info Payment and classification precision
 The **local JSON Schema accepting a value is not proof that the DigitalInvoice product can originate, manage, report and reconcile that transaction with NRS**. Similarly, a now-implemented authenticated sync route does not mean current official data was actually fetched or cached on the deployed service. Local `ready` and `submitted`-like labels cannot be used as evidence of an NRS response.
@@ -77,20 +76,22 @@ The downloaded [DigitalInvoice invoice schema](/docs/digitalinvoice-invoice-sche
 
 The [NRS published SI/APP template](https://einvoice.nrs.gov.ng/serivce-level-agreement) lists **99.9% availability**, **24/7 support**, critical response **30 minutes** / resolution **1 hour**, high-priority response **1 hour** / resolution **4 hours**, and normal response **4 hours** / resolution **8 hours**. Its visible reference dates are **1 October 2024** (effective) and **10 October 2024** (updated). These dates belong **to NRS's template**, not Teecoms' agreement.
 
-The current [Teecoms SLA](/sla/) is **unsigned and proposed** and does **not** automatically inherit the NRS template figures. Management must decide whether Teecoms is applying as an SI, an APP or both; validate 24/7 on-call staffing, monitoring, backup/restore and business continuity evidence; set achievable service terms; and execute the final agreement. Existing draft terms remain explicitly unapproved until that process is complete.
+The [Teecoms SLA](/sla/) is **approved for publication**, with effect from **27 November 2026**. Its 99.5% availability commitment does **not** automatically satisfy NRS's separate SI/APP 99.9% reference template; service-provider category and any distinct NRS commitments must still be confirmed during accreditation. Teecoms reports ISO/IEC 27001:2022 ISMS certification (**SCK/05/TIS/26/23/9804**, [certificate](/docs/teecoms-iso-iec-27001-2022-certificate.pdf)) as **obtained**. Independent DigitalInvoice **VAPT remains in progress**. Neither establishes live NRS production accreditation.
 
 ## Pre-production blockers and ownership
 
 1. **Integration engineering:** Complete the required B2G/G2B workflows and new tax/identification rules; run authenticated code-list sync with approved credentials; repair invoice classification and historic snapshots; design persistent collision-safe NRS invoice aliases; implement payment-update and response reconciliation.
-2. **Signing and security:** Assign SI/APP signing responsibilities, provision approved HSM/KMS custody, implement/test JAdES and certificate enrolment, and validate recovery/revocation. The Phase 5 public-certificate inspector is not a signer. Document completed VAPT only with signed evidence.
+2. **Signing and security:** Assign SI/APP signing responsibilities, provision approved HSM/KMS custody, implement/test JAdES and certificate enrolment, and validate recovery/revocation. The Phase 5 public-certificate inspector is not a signer. VAPT is in progress; describe it as complete only after the signed final report and retest letter are available.
 3. **Regulatory access and testing:** Obtain authorised NRS sandbox and applicable service-provider credentials; test actual reference sync and B2B/B2C validation with approved test invoices; then sign/confirm/report, error/retry, IRN/CSID/QR and reconciliation scenarios before any independently reviewed production activation.
-4. **Service operations:** Compare the proposed SLA to the official service-provider reference, staff the agreed support model and obtain legal sign-off. Verify hosting/data region, encryption-in-transit and actual backup/restore performance from deployment evidence.
+4. **Service operations:** Assess the approved SLA against NRS's separate service-provider reference and retain evidence of support coverage, hosting, backup/restore and operational controls. Verify hosting/data region, encryption-in-transit and actual backup/restore performance from deployment evidence.
 5. **Publishing:** Confirm the exact production website/API origin, test all [documentation downloads](/developers/), and supply the NRS portal with public links only after the required approvals.
 
 :::warning Dates and approval evidence
-Document review date: **13 November 2026**. A 2024 example date in the NRS template or fictional tests does **not** authorize backdating a Teecoms agreement, pretending a 2025 security audit happened, or listing an unapproved production service as active. The SLA's effective date must be the genuine date of execution/commencement.
+Original technical review: **13 November 2026**; service/certification update: **25 November 2026**. A 2024 example date in the NRS template or fictional tests does **not** authorize backdating a Teecoms agreement, pretending a 2025 security audit happened, or listing an unapproved production service as active. The SLA was approved by management on 25 November 2026 and takes effect on 27 November 2026; these dates must not be confused with NRS's template dates.
 :::
 
 ## Documentation update record
 
 **13 November 2026 — v1.1 alignment review, Phase 5 revision:** Added the verified backend/admin source delta for guarded sandbox sync, official-code preflight, approved-invoice sandbox validation, certificate inspection and fail-closed production review. Earlier source gaps are retained where no actual production feature or external evidence exists. This remains a technical comparison, **not a regulatory approval or legal opinion**.
+
+**25 November 2026 — certification and SLA publication update:** Management-approved standard SLA dated 27 November 2026; ISO/IEC 27001:2022 certificate particulars recorded; independent VAPT still in progress, and NRS production accreditation remains pending.

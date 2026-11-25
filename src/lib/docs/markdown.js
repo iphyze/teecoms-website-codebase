@@ -78,7 +78,7 @@ export function renderMarkdown(source, { status = 'published', title = '' } = {}
     level: 'block',
     start: (input) => input.indexOf('!['),
     tokenizer(input) {
-      const match = /^!\[([^\]\n]{5,250})\]\((\/docs\/diagrams\/[a-z0-9-]+\.svg)\)(?=\n|$)/.exec(input)
+      const match = /^!\[([^\]\n]{5,250})\]\((\/docs\/diagrams\/[a-z0-9-]+(?:\.[a-z0-9-]+)*\.svg)\)(?=\n|$)/.exec(input)
       if (!match) return undefined
       return { type: 'docsDiagram', raw: match[0], alt: match[1], src: match[2] }
     },

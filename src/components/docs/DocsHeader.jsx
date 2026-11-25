@@ -29,7 +29,7 @@ export default function DocsHeader({ document, breadcrumbs = [] }) {
             <span>Version {version}</span>
             {effective && <span>Effective {effective}</span>}
             <span>Updated {updated}</span>
-            <span className={styles.status} data-status={status}>{status === 'foundation' ? 'In preparation' : status === 'draft' ? 'Draft for management review' : status}</span>
+            <span className={styles.status} data-status={status}>{status === 'foundation' ? 'In preparation' : status === 'draft' ? 'Draft for management review' : status === 'approved' ? 'Approved' : status}</span>
           </div>
           <div className={styles.actions}>
             {pdf && ['published', 'approved'].includes(status) ? <Button href={pdf} variant="outline" size="sm" arrow={false} download><FileDown size={16} aria-hidden="true" /> Download PDF</Button> : null}

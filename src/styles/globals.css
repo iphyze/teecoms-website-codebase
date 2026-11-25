@@ -129,7 +129,7 @@ a {
 }
 
 .container {
-  width: min(100% - 2 * var(--gutter), var(--container));
+  width: var(--content-width);
   margin-inline: auto;
 }
 

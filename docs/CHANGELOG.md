@@ -1,5 +1,48 @@
 # Teecoms website changelog
 
+## 2026-11-25 — About collaboration image, buttons, scroll replay and visual polish
+
+- Replaced the duplicated leadership portraits in the homepage About media panel with a purpose-created **illustrative** collaboration image at `public/images/about/team-collaboration.webp` (the actual team portraits remain intact in the Our Team section). The new image is explicitly described as illustrative, not as a photograph of Teecoms employees.
+- Aligned shared primary blue `Button` components with the Dynabase-inspired cobalt gradient, white label/arrow and refined hover treatment in both themes; DigitalInvoice green and secondary button variants are unchanged.
+- Reduced the fixed back-to-top control to 2.7rem on desktop and 2.5rem on phones, with an 18px icon; retained keyboard accessibility and reduced-motion behaviour.
+- Removed `once` from the About section's `Reveal` instances so they reuse the existing reset/replay logic when the content completely leaves and later re-enters the viewport; reduced-motion visitors remain unaffected.
+- Removed the extra brand-mark illustration from the About statement to avoid conflicting logo variants, retaining the original approved statement and quotation mark.
+- Adjusted only the light-mode About background to a clean off-white gradient (#FDFEFE → #FAFCFF → #FFFFFF). The current charcoal/slate dark palette and green accents are preserved.
+- Local source checks: 9 tests passed, JSX/CSS parsing passed, isolated Chromium layout preview showed no horizontal overflow at 320/390/1440px in light and dark themes. Full Next.js build and interactive real-route scroll replay still require local verification.
+
+## 2026-11-25 — Compact mobile menu and quiet dotted hero mat
+
+- Reduced the mobile navigation drawer's Teecoms logo from 28px to 22px and its link typography from 17px to 15px. Kept comfortable full-width touch targets, focus styling, active underline, sheet animation and menu controls intact.
+- Replaced both light- and dark-mode hero wave/shine layers with one crisp, very low-contrast CSS dot pattern spanning the full width; its vertical fade lets the content remain dominant. Removed the unused wave motion styles and dependencies from the hero.
+- Preserved all homepage copy, slide CTAs, carousel motion, header layout, site gutters, theme tokens, previews and responsiveness. The former `public/images/hero/flow-{light,dark}.svg` assets are no longer used and may be removed from deployments.
+- Validated CSS structure, mobile drawer bindings, hero background rules and responsive layout in a Chromium fixture. Full Next.js production build must still be run in the actual project.
+
+## 2026-11-25 — Hero visual sharpness, CTA contrast and mobile layout follow-up
+
+- Removed the product-preview window’s perspective/3D transform and replaced the detailed illustration’s transform-based entrance with an opacity-only entrance. Floating card depth now animates its shadow, not the card’s text position; chart and meter drawing stay vector/CSS based.
+- Corrected the actual mobile preview layout: no zero-width sidebar grid, full-width content and chart, two readable service cards with the third spanning the row, and no floating overlap. This eliminates the narrow vertically broken labels reported at phone widths.
+- Kept both original hero CTAs side by side at phone widths (allowing their unchanged text to wrap inside individual buttons), and hid the three capability chips on mobile only.
+- Strengthened the secondary hero action background/border/shadow for both themes. For the light-theme DigitalInvoice slide, made the main CTA white-on-deep-green to preserve legibility; the dark-theme DI button remains unchanged.
+- Reduced the mobile header logo and header control sizes and restored right alignment of the theme toggle + hamburger after the desktop navigation hides.
+- Preserved every approved slide title, description, button label and destination, desktop capability chips, the shared gutter system, light/dark tokens and existing carousel behaviour.
+- QA: JSX transpilation and CSS parsing passed; Chromium static-layout fixture at 320, 360, 390, 590, 768 and 1366px measured no horizontal overflow and usable mobile preview widths in both themes. The real `npm run build` could not run here because `sharp` is not installed; interactive Next.js visual review is still required locally.
+
+## 2026-11-25 — Header logo sizing and quiet hero atmosphere
+
+- Reduced the Teecoms logo in the fixed header from 34px to 29px tall; the mobile menu logo is now 28px, with a 26px small-phone header logo so navigation remains comfortably spaced.
+- Softened the existing hero wave artwork in both themes with lower layer opacity, more restrained background gradients and a much slower, lower-contrast luminous wash. No large circles were reintroduced, and the SVG asset shapes were not changed.
+- Preserved shared gutters, headings, body copy, CTAs, carousel behaviour, other page sections, light/dark theme switching and reduced-motion behaviour.
+- CSS and file-reference checks completed; full Next.js build and interactive visual checks require the project dependencies.
+
+
+## 2026-11-25 — Shared horizontal gutter alignment (homepage, docs, footer)
+
+- Made the existing 1480px header/hero width the single site-wide content grid through semantic `--container`, `--gutter` and `--content-width` tokens. The About, Services, DigitalInvoice, Why, Team, Commitments, CTA, Contact, documentation/SLA containers and footer now use the same left/right edges as the header.
+- Removed the marketing header's special width override and the hero slider's duplicated desktop/mobile width rules. Both now inherit the central token; the responsive mobile gutter is 16px, matching the prior header and hero spacing.
+- Kept section-specific text measures, internal card padding, full-bleed section backgrounds, carousel behaviour, approved wording, light/dark colours and all links unchanged. Print documents take margins from `@page` without an additional container gutter.
+- Parsed all affected stylesheets and measured the computed left/right edges of 14 layout regions at 10 Chromium viewport widths (360–1920px): all matched, with no horizontal overflow in the layout fixture. Full Next.js build and actual-route visual testing still need to run with local project dependencies.
+
+
 ## 2026-11-07 — D1: DigitalInvoice documentation foundation
 
 - Added a strict build-time Markdown/front-matter loader, HTML renderer, TOC heading extraction, and documented syntax for callouts, HTTP method badges, and proposed SLA figures.
@@ -166,3 +209,63 @@
 - Preserved all eight original fictional sample PDFs and eight PNGs and the existing six local JSON fixtures **byte-for-byte**: Phase 5 did not alter document templates or generated test fixtures. Clarified that those assets cannot be treated as NRS clearance or production-signed evidence.
 - Kept `src/content/docs/sla.md` in draft status. No NRS licence, external sandbox acceptance, JAdES signer, production HTTP sender or signing certificate was fabricated or enabled.
 - Added a Phase 5 source-audit delta and updated the deployment/verification notes. This delivery is Teecoms-only documentation: it does **not** install Phase 5 backend/admin changes or grant any production authorisation.
+
+## 25 November 2026 — Management-approved DigitalInvoice SLA and ISO/IEC 27001:2022 disclosure
+
+- Published the standard **DigitalInvoice SLA v1.0**, approved/published 25 November 2026, effective **27 November 2026**, with subscriber-based acceptance, a 99.5% monthly availability objective, 0.5%/3%/4% credit bands and a 4% monthly cap. Removed Customer-specific signature placeholders, management-only comparison, draft callouts and other confirmation markers. NRS production service levels remain licence-gated.
+- Updated the server-side documentation pipeline: missing or corrupt optional SLA print PDF no longer prevents approved HTML publication; download button only appears after `%PDF-`-signature validation. Added a similar guard for certificate links in Markdown content, with a truthful text fallback when the certificate file is absent.
+- Recorded management-supplied **ISO/IEC 27001:2022** ISMS certificate details (SCK/05/TIS/26/23/9804) on security, Developers hub, NRS alignment, SLA and homepage commitments. Independent DigitalInvoice VAPT remains **in progress**; no NRS production licence or successful external verification is claimed. The original certificate PDF was **not attached** in this delivery and must be copied separately.
+- Updated support details, SMTP/DKIM architecture description, Developers integration-status panel, documentation navigation and older draft-SLA references in API, samples and data-structure pages.
+- Re-rendered the downloadable API v1.1 and NRS alignment PDFs from revised content so they do not contradict the published online pages.
+- Extended D8 release verification: normal builds warn rather than fail for the two missing optional PDFs; the stricter `--nrs` submission gate requires both PDFs. Public route, canonical, sitemap and security checks remain unchanged.
+- Audit note: real Next.js export, deployment TLS grade, NRS acceptance and certificate issuer verification require environment access or the original certificate. The terms and monitoring/backup/on-call claims must be confirmed against actual operations.
+
+
+## 25 November 2026 — NRS reviewer-facing publication cleanup and delivery timeline
+
+- Removed the internal NRS v1.1 crosswalk from public routing, the sitemap, hub navigation, documentation slug allowlist and public download inventory. Retained its complete body at `docs/internal/NRS-V1.1-ALIGNMENT-REVIEW.md`, which is not part of the static export. Deployment must **delete** the former route and PDF from cPanel, not simply stop linking to them.
+- Updated public API, architecture, data structure, samples, security and Developers pages to remove the withdrawn internal links, source-archive wording and team-only review checklist. API breaking-change notices now cite the SLA's 90-day policy, and support hours refer to that SLA.
+- Corrected ISO/IEC 27001:2022 assurance language to **Teecoms Integrated Solutions Limited is certified**, retaining certificate number SCK/05/TIS/26/23/9804, surveillance-dependent expiry, verification resources, VAPT-in-progress status and the NRS production licence boundary.
+- Added `/developers/timeline/`, a versioned A4 timeline PDF, editable Mermaid Gantt, light/dark static SVG diagrams, publication metadata, shared navigation card and sitemap entry. Documented recorded 2026 delivery, VAPT targets, accountable owners, external NRS credential/licence dependencies, conditional Q1 2027 go-live, 30-day hypercare and the 20 October 2027 surveillance audit.
+- Regenerated the downloadable API v1.1 PDF from updated public content and created an A4 print copy of the already-approved 17-section SLA; no management terms were changed. The **genuine** ISO certificate remains a separate externally supplied PDF and is not recreated.
+- Hardened D8 verification so the removed internal route and review PDF fail if present in sources/exports, or if any exported HTML/sitemap or public Markdown links to either; live verification checks both are HTTP 404/410. Added checks for the timeline PDF, two SVG variants and Mermaid source.
+- Tests: JS syntax, front matter, links/assets, static SVG XML and rendered PDF checks performed. The full Next.js build and independent live NRS/ISO verification still require the deployment environment.
+
+
+## 25 November 2026 — Homepage hero redesign (selected Productivity Flow direction)
+
+- Rebuilt all four homepage hero slides into a centred, workflow-first SaaS-style layout with a large responsive product preview beneath the original copy and CTAs. No published heading, description, CTA label/destination, tab, or slide order was altered in `home.content.js`.
+- Replaced the old split-layout illustrations with an accessible, CSS-based, editable service-preview component showing existing Teecoms service categories. Illustrative panels do not imply fabricated usage, customer data, NRS production accreditation or actual platform metrics.
+- Reduced the hero's exterior gutters and aligned the homepage header with the new content width; documentation, SLA, and other page layouts remain unchanged. Added matching bright/light and deep-slate/dark palettes with subtle gradients.
+- Integrated staggered slide entrances, chart line drawing, capability-card meters, soft floating cards, ambient drift and carousel progress controls. Motion pauses out of view and respects reduced-motion preferences.
+- Retired the unused `HeroAurora.jsx` and `HeroAurora.module.css`; no backend/API, DigitalInvoice product UI, or NRS/SLA documentation status was changed.
+- Offline JSX/CSS syntax and source-integrity checks completed; full Next.js build and interactive browser QA require local dependencies.
+
+---
+
+## 2026-11-25 — Hero visual refinement (flowing backgrounds, typography and gutters)
+
+- Replaced five decorative circular/orb elements in the homepage hero and illustration with **two purpose-built flowing SVG backgrounds** (light and dark). Curved ribbon layers and fine blue highlight lines now match the approved Productivity Flow direction without oversized blue circles.
+- Adjusted the homepage hero and marketing-page header to the same slightly wider side gutters, capped at a 1480px content area. Documentation page widths remain unchanged.
+- Reduced headline size and line height at desktop/mobile sizes. The unchanged approved descriptions now use a smaller font and wider desktop measure to target approximately two lines where viewport width allows; on narrower screens they wrap naturally and no text is truncated.
+- Retained all four slide titles, descriptions, CTAs, navigation destinations, Swiper behaviour, dashboard visuals, and theme support. Kept the existing entrance, chart, progress-meter, and floating-card motion; only the ambient motion changed to a subtle composited ribbon wash, respecting reduced motion and pause states.
+- No backend/API, NRS documentation, approval status, or page content changes. Full Next.js build requires the local installed dependencies; syntax, stylesheet, SVG, and source-preservation checks were performed here.
+
+---
+
+## 2026-11-25 — Site-wide Dynabase-inspired dark palette alignment
+
+- Rebalanced **only the dark theme** to the charcoal/slate visual language of the referenced Dynabase login page: neutral graphite canvas, slate raised/sunken panels, fine cool-blue borders, white/muted text and restrained cobalt highlights. Light-mode colour values and layout remain unchanged.
+- Updated the existing semantic variables in `src/styles/tokens.css` so the header, homepage sections, docs/SLA pages, developer hub, CTA bands, form fields, cards, footer and shared controls inherit one consistent dark palette.
+- Added semantic tokens for the shared primary button, the About feature band, Services showcase and CTA gradient, then used those tokens in the existing components rather than stacking theme-specific CSS overrides.
+- Recoloured the existing SVG wave background to quieter steel-blue, and aligned the hero's workflow chips and product-preview dashboard with the charcoal/slate surfaces. No copy, route, functionality, animations or light-mode visuals were intentionally changed.
+- Checked CSS parsing across all 41 site stylesheets, SVG XML validity, token availability and contrast for major dark-mode foreground/background pairs. This source-only environment lacks installed Next.js dependencies, so a full build and interactive browser inspection must be completed locally.
+
+## 2026-11-25 — Homepage About Us "Story + Metrics" redesign and subtle scroll easing
+
+- Rebuilt `AboutSection.jsx` and its CSS Module around the approved Option 2 split-photo/story composition: real, already-published Teecoms leadership portraits on the left, existing approved headline and paragraphs on the right, three existing Technology/People/Processes pillars as the trust/value row, the approved company statement, expertise labels, and Mission/Vision cards.
+- **No homepage marketing copy was edited.** `src/content/home.content.js` remains unchanged. Did not publish the design mockup's invented customer counts, project totals or fictional testimonial.
+- Introduced a restrained green accent scoped to the About layout through light/dark design tokens; maintained the current charcoal/slate dark-mode surfaces and the site's shared header/section alignment.
+- Restored the low-contrast, non-animated dotted mat over the homepage hero's subtle light/dark gradients (no wave/orb artwork, no change to slides or CTA functionality).
+- Fine-tuned the shared scroll-reveal easing for the whole site: softer entrance travel, 850ms eased transitions, and staggered card entrances. Existing native smooth anchor scrolling and `prefers-reduced-motion` handling remain intact; no scroll-wheel hijacking library or disruptive scroll locking added.
+- Added `tests/about-story-option2.test.mjs` for copy bindings, real portrait assets, theme/dot regression and accessibility motion safeguards. All four Node tests passed; JSX and CSS parsing passed. Isolated Chromium layout-fixture checks found no horizontal overflow at 320px, 390px or 1440px in light/dark themes. Full Next.js build remains unverified without local dependencies.

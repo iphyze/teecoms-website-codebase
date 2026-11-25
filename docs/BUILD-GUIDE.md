@@ -1,3 +1,5 @@
+> **Current NRS resubmission guidance (25 November 2026):** The former public NRS v1.1 gap-analysis route and PDF were withdrawn. Any historical steps below naming `/developers/nrs-alignment/` are superseded. Follow the final checklist at `docs/NRS-PUBLISH-CHECKLIST.md` and remove the withdrawn route/PDF from the source and deployed web root. The public replacement is `/developers/timeline/`.
+
 # Teecoms website: build guide
 
 How to finish the single-page Teecoms website, section by section, so it matches the approved design previews. Written so any developer or AI coding assistant can pick it up.
@@ -14,7 +16,7 @@ How to finish the single-page Teecoms website, section by section, so it matches
 | Theme switching (no flash, follows OS) | Done | `src/contexts/ThemeContext.jsx`, inline script in `src/app/layout.js` |
 | Logos (Teecoms + DigitalInvoice, SVG) | Done | `public/images/brand/`, `public/images/digitalinvoice/`, `src/components/brand/BrandLogo.jsx` |
 | Header (always visible, frosted glass, scroll-spy, mobile menu) | Done | `src/components/layout/Header.jsx` + `.module.css` |
-| Hero slider (4 slides, Lambert effects) | Done | `src/components/sections/home/HeroSlider.jsx`, `HeroVisual.jsx` + CSS modules |
+| Hero slider (4 slides, Productivity Flow hero redesign) | Done | `src/components/sections/home/HeroSlider.jsx`, `HeroVisual.jsx` + CSS modules |
 | Buttons | Done | `src/components/ui/Button.jsx` + `.module.css` |
 | Scroll reveal (motion system, section 3) | Done | `src/components/ui/Reveal.jsx` + `.module.css` |
 | Small headings | Done | `src/components/ui/Eyebrow.jsx` + `.module.css` |
@@ -72,6 +74,14 @@ The comps are a **reference, not production code**. Port each section into React
 12. **CSS Modules** per component (`Component.module.css`), like the existing code. Avoid global class names except utilities in `globals.css` (`container`, `num`, `sr-only`, `on-light-only`, `on-dark-only`).
 
 ---
+
+### Shared horizontal alignment (25 November 2026)
+
+- **One grid for the entire site:** `--container: 92.5rem` (1480px), `--gutter: clamp(1.5rem, 3.75vw, 4.25rem)` and `--content-width` live in `src/styles/tokens.css`.
+- `src/styles/globals.css` applies `--content-width` to `.container`. The header uses `.container` directly; `HeroSlider.module.css` uses the same variable for its slide and carousel controls. This aligns the outer edges of About, Services, DigitalInvoice, Why, Team, Commitments, CTA, Contact, Developers/SLA pages and the footer with the header.
+- The mobile gutter is 1rem through 640px, matching the existing mobile header/hero. At widths above 640px the fluid gutter applies; content is capped at 1480px on wide desktops. No section should duplicate these values in a CSS Module.
+- Internal text measures and card padding **remain component-specific** for readability. Full-bleed backgrounds and the About marquee still cover the viewport; only their contained content uses the shared grid. Print documents use their `@page` margins rather than the screen gutter.
+- When changing the spacing system, test at 360, 390, 640, 768, 1024, 1280, 1366 and 1920px. Compare the left/right edges of the header logo, section containers, docs layout and footer; also verify there is no horizontal scrolling.
 
 ## 3. Motion system (build this first)
 
@@ -498,23 +508,26 @@ Build in this order: ~~Reveal~~ → ~~About~~ → ~~Services~~ → ~~DigitalInvo
 
 ## UI refinements — navigation, service selector and social placement
 
-- Header stays fixed and completely transparent over the navy hero for the first **100px** of page scroll. The logo, navigation, active underline and theme toggle use the light-on-dark appearance in this state, regardless of the selected theme. At **100px** the frosted, theme-aware glass appears; logo, text and toggle switch to the selected light/dark presentation. Mobile menu behaviour and scroll-spy remain unchanged.
+- Header stays fixed and transparent above the new theme-aware hero for the first **100px** of page scroll: navy text in light mode and white text in dark mode. The frosted header appears after **100px**. The marketing-page header now aligns with the reduced hero gutters; documentation widths, mobile menu and scroll-spy are unchanged.
 - Contact form: `react-select` still supports searching and clearing, but the indicator separator next to the chevron is removed. The menu uses a slim, rounded, theme-aware scrollbar.
 - DigitalInvoice social icons appear **only in the footer**, beneath its Explore DigitalInvoice button. The duplicate icon group in the DigitalInvoice product section has been removed. The shared `DigitalInvoiceSocialLinks` component is still used by the footer.
 - Delivery note: ensure the previously supplied social-icon build fix is applied (`DigitalInvoiceSocialLinks.jsx` uses inline SVGs rather than non-exported Lucide brand icons).
 
 ---
 
-## Hero background: Aurora
+## Homepage hero: Productivity Flow redesign (25 November 2026)
 
-The hero is theme-aware (light hero in light mode, navy hero in dark mode) with a living background in `src/components/sections/home/HeroAurora.jsx` + `.module.css`.
+The four-slide hero has been **rebuilt as a centred, full-width product-led presentation**, following the approved Option B direction. Its content contract has not changed: `src/content/home.content.js` remains the single source of truth for every slide eyebrow, title, description, tab name and CTA label/destination. The design reference is a *pattern*, not permission to substitute Dynabase or fictional customer metrics for Teecoms copy.
 
-- **Layers (back to front):** three drifting light blobs and a diagonal ribbon (soft radial gradients, no blur filters), a dot grid, a cursor halo and spotlight, a veil that keeps the copy side calm, film grain, and a bottom fade into the next section.
-- **Per-slide colour:** `HeroAurora` receives the active slide's `visual` key. Palettes are set in `.aurora[data-visual='…']`, and the colours glide between slides because `--aurora-1/2/3` are registered with `@property`.
-- **Cursor effects** (mouse/trackpad only, never with reduced motion): the spotlight and halo are fixed-size layers moved with `transform`, and the slide visual (`[data-parallax]`) gets a small 3D tilt. The hero's position is measured on pointer enter, resize and scroll, never on every move, which keeps the main thread free.
-- **Colours** come from the `--hero-*` and `--aurora-alpha-*` tokens in `tokens.css`. Adjust the light or dark look there.
-- **Looping drift** follows `--loop-state`, so it pauses when the hero is off-screen or the visitor presses pause.
-- **Header:** over the hero it follows the theme (navy in light, white in dark) until its glass background appears on scroll.
+- **Composition:** eyebrow, large centred heading, original description, a three-part capabilities flow, original CTA pair, then a large editable dashboard-style illustrative panel with two contextual cards. Slide selectors and controls follow the panel.
+- **Illustrations:** `HeroVisual.jsx` + `HeroVisual.module.css` render four themed scenes through the same component; their labels are taken from the service terms already on the site. The panels avoid invented adoption statistics, financial values or production-status claims.
+- **Themes:** light mode uses airy white/blue surfaces; dark mode uses slate/navy gradients and restrained cyan-blue glows. The full-width abstract ribbon artwork comes from `public/images/hero/flow-light.svg` and `flow-dark.svg`, layered in `HeroSlider.module.css`, with no circular/blob elements. Hero-specific semantic variables live in `HeroSlider.module.css` and `HeroVisual.module.css`, not in page-wide styles.
+- **Gutters:** hero and marketing-page header use the same fluid width, `min(100% - 2 * clamp(1.5rem,3.75vw,4.25rem),1480px)`; mobile uses 2rem total exterior space. The extra desktop breathing room and shared alignment replace the previous overly wide hero presentation; docs and SLA layouts are unchanged.
+- **Typography:** headings use `clamp(2.15rem,3.6vw,4.05rem)` at desktop and `clamp(1.95rem,7.8vw,2.9rem)` on phones. Descriptions use `clamp(.875rem,.93vw,1rem)` with line-height 1.55 and a 1180px desktop maximum so approved long copy reads in roughly two lines at wide viewports; wrapping is natural on smaller screens (never clamp/truncate the content).
+- **Motion:** fade/lift transitions on active slides, line-chart draw-in, capability meters, slow floating contextual cards and a quiet shifting ribbon wash over the static wave SVGs. All loops pause off-screen, in hidden tabs, or when playback is paused; `prefers-reduced-motion` disables them. No pointer-dependent spotlight or decorative parallax tracking is needed.
+- **Carousel:** retains Swiper fade, keyboard controls, progress tabs, next/previous and play/pause. Auto-rotation is slightly slower to keep long approved descriptions readable.
+- **Cleanup:** remove unused `HeroAurora.jsx` and `HeroAurora.module.css`; the new hero uses its own CSS gradient layers and does not import the old aurora.
+- **QA:** test at 1440px, 1280px, 768px, 390px and 360px, light/dark modes, keyboard tabbing, reduced motion, hero carousel and the existing anchor CTAs. The old `design/previews/00-*` images are historical references, not this hero's target layout.
 
 ---
 
@@ -1018,3 +1031,88 @@ This optional Teecoms-only changed-files bundle revises the public docs to match
 5. After cPanel publication, run `node scripts/verify-docs-release.mjs live https://teecomsintegratedsolutions.ng` and open every updated page/PDF on a device outside your local network. A passing site-release test validates **documentation availability**, not NRS production compliance.
 
 **Phase 5 boundaries:** Authenticated sandbox reference-sync and validation code paths are implemented but their successful NRS responses are not evidenced in these sources. Signing-readiness inspection does not sign; the production sender remains absent and disabled; issued hyphenated invoice numbers, missing classifications, payment updates and B2G/G2B workflows still block full completion. See `docs/NRS-V1.1-SOURCE-AUDIT.md`.
+
+## Approved subscriber SLA and ISO/IEC 27001:2022 update — 25 November 2026
+
+This section **supersedes** historical D2/D8 notes that required a signed customer-specific PDF before the SLA could become `approved`.
+
+1. `src/content/docs/sla.md` is the **management-approved standard DigitalInvoice subscriber SLA**, version **1.0**, approved/published **25 November 2026**, **effective 27 November 2026** (or later paid subscription start). It uses online subscription/renewal or a referenced order form for Customer acceptance. There is no fabricated customer signature.
+2. The approved HTML publishes at `/sla/` with indexing and a sitemap entry. `getDocumentation('sla')` no longer throws solely because `public/docs/teecoms-digitalinvoice-sla-v1.0.pdf` has not been printed. The *Download PDF* button is available **only after** that PDF exists and starts with `%PDF-`.
+3. **Create the PDF print copy:** after launching the page, open `/sla/` in Chrome → Print → Save as PDF → save into `public/docs/teecoms-digitalinvoice-sla-v1.0.pdf` → run `npm run build` again. Review all 17 sections, links, typography and effective date before publishing the print copy. It is a **copy of the approved online SLA**, not an independently signed document.
+4. The uploaded 25 November Teecoms source did **not** contain the ISO certificate PDF mentioned in the brief. Do not invent or recreate a certification document. Copy the **original** SCK certificate PDF (certificate `SCK/05/TIS/26/23/9804`) unchanged to `public/docs/teecoms-iso-iec-27001-2022-certificate.pdf` and rebuild. Until a real valid PDF is present, the security and NRS alignment pages display text rather than a broken PDF link. Validate status and surveillance dates using the issuing body and IAF CertSearch independently.
+5. The website records management-supplied ISO/IEC 27001:2022 certificate details. **Independent DigitalInvoice VAPT remains in progress**. The certification is an ISMS claim, not an NRS production licence or DigitalInvoice penetration-test certificate. NRS production submission remains disabled.
+6. The contact email, telephone and address are configured in `src/config/site.js` (`site.contact.email`, `.phone`, `.address`). The environment variables `NEXT_PUBLIC_CONTACT_EMAIL`, `NEXT_PUBLIC_CONTACT_PHONE`, `NEXT_PUBLIC_CONTACT_ADDRESS` override the defaults. The `home.content.js` "To be confirmed" fallback remains in code but should never render while those nonempty defaults are present.
+7. Hosting provider/country have **not** been supplied: the SLA uses the neutral managed-hosting/available-on-request language. SSL Labs grades have **not** been supplied and none are asserted. Confirm the 24/7 Severity 1 answer line and the actual one-minute monitoring/backup controls operationally before relying on the new contractual promises.
+8. The API and NRS alignment PDFs were refreshed from their 25 November Markdown sources to remove obsolete draft-SLA statements; they are **not** live NRS technical approvals. No independent new backend review is claimed.
+
+From the Teecoms Next.js root:
+
+```powershell
+$env:NEXT_PUBLIC_SITE_URL = 'https://teecomsintegratedsolutions.ng'
+npm install
+npm run build
+node scripts/verify-docs-release.mjs local
+# After adding both genuine PDFs, the stricter NRS publication gate can run:
+node scripts/verify-docs-release.mjs local --nrs
+```
+
+Verify `/sla/`, `/developers/`, `/developers/security/`, `/developers/nrs-alignment/` and the homepage in both themes and on mobile. Confirm `/sla/` is indexable and in `out/sitemap.xml`, no draft-only callouts render, and the optional PDF links appear only when the files exist and are valid. After public deployment also run `node scripts/verify-docs-release.mjs live https://teecomsintegratedsolutions.ng`.
+
+
+## Final NRS resubmission publication changes — 25 November 2026
+
+- **Internal analysis only:** `docs/internal/NRS-V1.1-ALIGNMENT-REVIEW.md` retains the historical NRS version 1.1 comparison. Delete `src/content/docs/nrs-alignment.md`, `src/app/developers/nrs-alignment/page.js`, and `public/docs/digitalinvoice-nrs-v1.1-alignment-review-2026-11.pdf`; also remove the corresponding **deployed** `/developers/nrs-alignment/` and PDF. The verifier blocks either public URL or a link to it in any exported page.
+- **Public timeline:** `src/content/docs/timeline.md` drives `/developers/timeline/`, with the shared `DocsLayout`, sticky contents, light/dark diagram assets, A4 print styling and valid `status: published` metadata. The published Mermaid source and pre-rendered SVGs are under `public/docs/diagrams/digitalinvoice-implementation-timeline-v1.0.*`; `public/docs/digitalinvoice-implementation-timeline-v1.0.pdf` is the A4 direct-upload copy.
+- **Approved SLA PDF:** `public/docs/teecoms-digitalinvoice-sla-v1.0.pdf` is the print copy of the management-approved 17-section online terms. Review it against `/sla/` before publication. The original ISO certificate PDF is **not** included in this source package; preserve/upload the actual issued file at `public/docs/teecoms-iso-iec-27001-2022-certificate.pdf`. Do not use a recreated certificate.
+- **Reader-facing wording:** public API, security, architecture, data-structure, sample and hub pages no longer link to the internal crosswalk. The API documents the SLA's 90-day breaking-change notice and support terms; the ISMS certification statement uses **is certified**, while VAPT remains in progress and NRS production submissions remain licence-gated.
+- **Rebuild and verify:** in PowerShell, run `Remove-Item -Recurse -Force .next,out -ErrorAction SilentlyContinue`, then `npm run build` and `node scripts/verify-docs-release.mjs local --nrs`. The strict check requires the original ISO certificate in the exported site. A successful local release check is **not** evidence of NRS accreditation or a live compliance test.
+
+---
+
+## Dark palette refresh — 25 November 2026
+
+The website dark mode uses the charcoal/slate + cobalt system referenced from the Dynabase login screen. Adjust its semantic values centrally in `src/styles/tokens.css` instead of applying individual background overrides to new sections. Shared button fills use `--color-button-*` and `--shadow-button`; the feature, service and final CTA background gradients use `--gradient-feature-band`, `--gradient-service-stage` and `--gradient-cta-panel`. The hero preview retains its own dark illustrative palette in `HeroSlider.module.css` and `HeroVisual.module.css`, and the wave image lives at `public/images/hero/flow-dark.svg`.
+
+Test `/` from the first slide through the footer, and `/developers/`, `/developers/api/`, `/developers/security/`, `/developers/timeline/` and `/sla/` in dark mode at 1440px, 1024px and phone widths. Toggle back to light mode and confirm its previous styling remains intact. This colour-only change does not alter documentation publication state or the NRS release checker.
+
+
+### Header logo and restrained hero background (25 November 2026)
+
+- The fixed header uses `<BrandLogo height={29} priority />`; the mobile menu uses 28px. At phone widths below 480px, the header image is 26px tall. Do not increase the logo back to the earlier 34px without reviewing navigation balance.
+- The full-width wave illustrations remain the existing `public/images/hero/flow-light.svg` and `flow-dark.svg`. Their presence is controlled by the existing `.ambient` layer in `HeroSlider.module.css` at low opacity (light `.33`, dark `.32`), rather than adding extra gradients or independent visual overlays in other files.
+- The ambient wash loops over 28 seconds, moving less than 1% of its width, and obeys the hero's existing pause-state/reduced-motion protections. Keep background effects quieter than content and cards, in both themes.
+- Verify the header and hero in light/dark, at 390, 768, 1280, 1366 and 1920px, and check the four original slide variants and the header after scrolling.
+
+
+### 2026-11-25 — Hero clarity and mobile follow-up
+
+Copy the updated `src/components/layout/Header.jsx`, `Header.module.css`,
+`src/components/sections/home/HeroSlider.module.css`, and
+`HeroVisual.module.css` to the same paths in the existing Teecoms frontend.
+Do not replace `home.content.js`, other section modules, or theme tokens.
+
+Verify both themes on `/` at desktop (1280–1440px) and narrow phones (320,
+360, 390, 590px): no blurred illustration text, no collapsed mobile chart
+or vertical card labels, header icons aligned to the right, no three capability
+chips on phones, both CTAs in one row, and the light-mode DigitalInvoice
+primary CTA in white type. Check the secondary `Request a Demo` button in both
+themes and all four carousel slides. Then run `npm run build`; it requires the
+existing project dependencies, including `sharp`. This update requires no new
+packages, environment variables, database changes, or migrations.
+
+## 25 November 2026 — About section Option 2 and scroll motion
+
+- `src/components/sections/home/AboutSection.jsx` now owns the Option 2 split-media/story layout. Its strings still come entirely from `aboutContent` in `src/content/home.content.js`; the images are existing public `teamContent` portraits. The mockup's numerical metrics and client quotation were not verified, so the current Technology/People/Processes pillars and Teecoms' own closing statement serve those visual roles without invented claims.
+- `AboutSection.module.css` is the single source for the responsive layout, green highlights and card transitions. The additional semantic `--color-about-green*` tokens are defined in `src/styles/tokens.css` for both themes.
+- The hero's dotted mat is a static `radial-gradient` layer in `HeroSlider.module.css` over the existing restrained light/dark backgrounds. There are no wave SVGs or moving backdrop layers.
+- `Reveal.module.css` provides a slightly softer site-wide 850ms eased reveal and stagger. Continue using `Reveal` for scroll entrances and semantic native scrolling for anchors; do not intercept wheel or touch scrolling. Reduced-motion visitors get no transform-based entrances.
+- Verify the About section at 320, 390, 768, 1280 and 1440px in both themes, as well as keyboard focus, `prefers-reduced-motion`, hero slide autoplay and the CTA route to `#services`.
+
+## 25 November 2026 — About section image, CTA and replay polish
+
+- The About media now uses the **illustrative** locally served image `public/images/about/team-collaboration.webp`, not the staff portraits also used in the Our Team section. Keep the image local so production does not depend on a third-party image host. The approved About copy remains in `src/content/home.content.js`.
+- All blue `Button` components with `variant="primary"` now use the common cobalt gradient from `--gradient-button-bg` and `--gradient-button-hover` in `src/styles/tokens.css`. `di`, `glass`, and `outline` variants must remain visually distinct. Validate text contrast in both theme modes.
+- The About section's `Reveal` components intentionally omit `once` so existing intersection-based reset/replay works when visitors return to the section. Verify entering the section, scrolling entirely past each row, and scrolling back to it. Users who prefer reduced motion should not see motion.
+- The About statement deliberately has no separate logo mark; the header/footer are the single source of Teecoms brand imagery. The About light background is off-white, while the dark theme keeps the site's charcoal surface.
+- The fixed back-to-top button now measures 2.7rem desktop / 2.5rem mobile with an 18px arrow. Test mouse/keyboard and `prefers-reduced-motion`.
+- Run `node --test tests/about-story-option2.test.mjs tests/about-polish-followup.test.mjs`, then `npm run build` in the actual Teecoms project before deployment. Do not include generated QA screenshots or test fixture files in the deployment.

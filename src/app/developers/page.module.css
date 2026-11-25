@@ -33,3 +33,5 @@
   .support { align-items: flex-start; flex-direction: column; }
 }
 @media print { .section { break-before: auto; } .statusPanel, .support { box-shadow: none; } .statusItem { break-inside: avoid; } .grid { grid-template-columns: repeat(2, 1fr); } .support > a { display: none; } }
+
+.statusItem a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 3px; }

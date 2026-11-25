@@ -5,6 +5,7 @@
   body { font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   header, footer, nav[aria-label='On this page'], [data-print-hide] { display: none !important; }
   main { padding: 0 !important; min-height: 0 !important; }
+  .container { width: 100% !important; } /* @page already provides print margins */
   a { text-decoration: none; }
   pre, blockquote, figure, img, svg { break-inside: avoid; }
   table { width: 100%; }

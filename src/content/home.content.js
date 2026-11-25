@@ -390,7 +390,7 @@ export const commitmentsContent = {
       title: 'Data Protection & Regulatory Compliance',
       tagline: 'Protecting Information. Building Confidence.',
       body:
-        'We are committed to the responsible handling of personal and corporate information, guided by applicable Nigerian data protection requirements and relevant industry regulations.',
+        'We are committed to responsible handling of personal and corporate information. Teecoms’ Information Security Management System is certified to ISO/IEC 27001:2022; details are available in our security documentation.',
     },
   ],
 }

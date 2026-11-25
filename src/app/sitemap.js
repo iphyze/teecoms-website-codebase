@@ -11,7 +11,7 @@ const DOC_PATHS = [
   ['samples', '/developers/samples/'],
   ['architecture', '/developers/architecture/'],
   ['security', '/developers/security/'],
-  ['nrs-alignment', '/developers/nrs-alignment/'],
+  ['timeline', '/developers/timeline/'],
   ['sla', '/sla/'],
 ]
 

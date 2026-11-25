@@ -45,7 +45,7 @@ export default function BackToTop() {
       title="Back to top"
       onClick={scrollToTop}
     >
-      <ArrowUp size={22} strokeWidth={2.25} aria-hidden="true" />
+      <ArrowUp size={18} strokeWidth={2.1} aria-hidden="true" />
     </button>
   )
 }

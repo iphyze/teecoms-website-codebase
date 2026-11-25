@@ -136,7 +136,7 @@
   position: relative;
   height: 15rem;
   overflow: hidden;
-  background: radial-gradient(90% 120% at 80% 0%, #1b4fa6 0%, #0a2253 45%, #050d20 85%);
+  background: var(--gradient-service-stage);
 }
 
 .visual::before {

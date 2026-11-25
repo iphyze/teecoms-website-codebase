@@ -3,7 +3,7 @@ title: System architecture and data flow
 description: DigitalInvoice application architecture, security trust boundaries, ERP integration and licence-gated NRS transaction flows.
 version: 1.1
 effective:
-updated: 2026-11-13
+updated: 2026-11-25
 status: published
 pdf: /docs/digitalinvoice-architecture-v1.0.pdf
 ---
@@ -18,7 +18,7 @@ DigitalInvoice is a multi-organisation invoicing application. Its browser-based 
 **Implemented** indicates a path or control present in the reviewed application source, not independent verification of a live deployment. **Sandbox-gated** indicates an optional NRS request path which requires explicit server-side approval and authorised credentials. **Future / licence-gated** indicates a process described by the MBS model which is **not** an enabled production transport in DigitalInvoice. Sequence diagrams of NRS exchanges are target workflows, **not** evidence of successful clearance, signing, transmission or receipt.
 :::
 
-The diagrams are public system-design overviews. They intentionally omit credentials, private network addresses, infrastructure topology, internal file paths and customer records. They are based on the supplied DigitalInvoice backend and document generator, including **Phase 5 changes reviewed 13 November 2026**. Hosting provider, geographical data location and independent production verification remain unconfirmed.
+The diagrams are public system-design overviews. They intentionally omit credentials, private network addresses, infrastructure topology, internal file paths and customer records. They are based on the DigitalInvoice service and document generator, including **Phase 5 changes reviewed 13 November 2026**. Hosting provider, geographical data location and independent production verification remain unconfirmed.
 
 ## Layered system and trust boundaries
 
@@ -34,7 +34,7 @@ The **browser boundary** separates end-user devices from the application API. Br
 | API → ERP webhook receiver | Event notifications | Public HTTPS destination, DNS/IP checks, HMAC-SHA256 signed payload, queued delivery and retry logic |
 | API ↔ Paystack | Subscription payments and callbacks | HTTPS provider requests and signature validation of inbound Paystack webhooks |
 | Browser / API ↔ Google | Optional Google sign-in | Google ID token verification by the server; accounts and MFA policy still enforced |
-| API → email service | Verification, notifications, document delivery | Configured mail transport; provider, network encryption and service location are **[CONFIRM]** |
+| API → email service | Verification, notifications, document delivery | Authenticated SMTP over SSL/TLS (port 465) to Teecoms' mail server `mail.teecomsintegratedsolutions.ng`; outbound mail is DKIM-signed for `teecomsintegratedsolutions.ng` |
 | API → NRS MBS sandbox | Authorised reference synchronisation and approved-invoice `/validate` testing | Explicit sandbox flag, approved HTTPS host, credential gate, TLS peer verification, official-code preflight and redacted audit summaries; **no successful external test evidenced** |
 | API → NRS MBS production | Future clearance, reporting and transmission | **Not enabled:** requires licence, testing, independent review and a separate production integration |
 
@@ -56,7 +56,7 @@ The document renderer exposes verified IRN, CSID and QR values only when the rec
 
 For a simplified B2C invoice, the local queue is created at approval with a due timestamp **24 hours after approval**. The current CLI worker supports **dry runs only**: it records what a connector would attempt, produces local events and flags overdue items, but makes **zero NRS network submissions**. An approved B2C invoice in the local queue is therefore **not** proof it has been reported to NRS.
 
-The future workflow requires an authorised production worker to validate and report eligible B2C invoices within the statutory reporting window, monitor acceptance, handle retries according to safe idempotency rules and alert on failures. Scheduled execution, remote acceptance and production delivery performance have not been verified. The proposed faster reporting target in the [draft SLA](/sla/) is not an operational guarantee.
+The future workflow requires an authorised production worker to validate and report eligible B2C invoices within the statutory reporting window, monitor acceptance, handle retries according to safe idempotency rules and alert on failures. Scheduled execution, remote acceptance and production delivery performance have not been verified. The service target in the [approved SLA](/sla/) takes effect only after licensed NRS production go-live; it is not a description of current NRS transmission.
 
 ## Buyer QR verification — intended external workflow
 
@@ -83,7 +83,7 @@ The diagrams above are downloadable as SVG by selecting **View full-size diagram
 
 ## NRS v1.1 protocol and signing boundaries
 
-The latest [NRS System Integrator reference](https://einvoice.nrs.gov.ng/serivce-providers/system-integrators) documents ECDSA/JAdES signing expectations. The diagrams above depict **intended post-licence flows**, not proof that a local JAdES signer, an authorised APP exchange or NRS production sender has been deployed. The reviewed PHP client sends NRS `x-api-key` and secret headers only behind an approved sandbox gate; ERP OAuth clients use separate credentials. See the [NRS v1.1 alignment review](/developers/nrs-alignment/) for newer payment, quantity and tax-category requirements.
+The latest [NRS System Integrator reference](https://einvoice.nrs.gov.ng/serivce-providers/system-integrators) documents ECDSA/JAdES signing expectations. The diagrams above depict **intended post-licence flows**, not proof that a local JAdES signer, an authorised APP exchange or NRS production sender has been deployed. The reviewed PHP client sends NRS `x-api-key` and secret headers only behind an approved sandbox gate; ERP OAuth clients use separate credentials. DigitalInvoice tracks NRS MBS v1.1 guidance for payment status, quantity codes and tax categories; production exchange remains subject to the licensing and testing dependencies in the [implementation timeline](/developers/timeline/).
 
 
 ## Related documentation and changes

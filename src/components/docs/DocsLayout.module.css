@@ -74,9 +74,10 @@
 .article :global(.docs-diagram img) { display: block; width: 100%; height: auto; max-width: none; margin: 0; }
 .article :global(.docs-diagram-expand) { display: inline-flex; margin: 0.65rem 1rem 0.75rem; align-items: center; color: var(--color-primary); font-size: 0.8rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .article :global(.docs-diagram figcaption) { border-top: 1px solid var(--color-line); padding: 0.65rem 1rem 0.85rem; font-size: 0.78rem; color: var(--color-ink-muted); line-height: 1.6; }
-.article :global(.docs-diagram-dark) { display: none; }
-:global(:root[data-theme='dark']) .article :global(.docs-diagram-light) { display: none; }
-:global(:root[data-theme='dark']) .article :global(.docs-diagram-dark) { display: block; }
+/* Theme variants must out-rank `.docs-diagram a { display: block }` above (same element). */
+.article :global(.docs-diagram a.docs-diagram-dark) { display: none; }
+:global(:root[data-theme='dark']) .article :global(.docs-diagram a.docs-diagram-light) { display: none; }
+:global(:root[data-theme='dark']) .article :global(.docs-diagram a.docs-diagram-dark) { display: block; }
 @media print {
   .article :global(.docs-diagram-dark) { display: none !important; }
   .article :global(.docs-diagram-light) { display: block !important; }

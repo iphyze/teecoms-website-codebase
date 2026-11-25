@@ -1,330 +1,222 @@
+/* About — approved Option 2 "Story + Metrics" composition.
+   Uses approved Teecoms copy and an illustrative workplace image; no sample figures. */
 .section {
-  overflow: hidden;
+  overflow: clip;
   padding-block: var(--section-y);
+  /* A clean, near-white About canvas (dark mode keeps the charcoal shell). */
+  background: linear-gradient(180deg, #fdfefe 0%, #fafcff 54%, #ffffff 100%);
+}
+:global(:root[data-theme='dark']) .section {
   background: var(--color-bg);
 }
-
-/* ---- Introduction ------------------------------------------------------------ */
-.intro {
-  max-width: 52rem;
-  margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
-  text-align: center;
-}
-
-.eyebrow {
-  margin-inline: auto;
-}
-
-.title {
-  margin-bottom: 1.25rem;
-  font-size: var(--text-h2);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-}
-
-.lead {
-  color: var(--color-ink);
-  font-size: var(--text-lead);
-  line-height: 1.6;
-}
-
-.body {
-  max-width: 44rem;
-  margin: 1rem auto 0;
-  color: var(--color-ink-muted);
-}
-
-/* ---- Pillars ----------------------------------------------------------------- */
-.pillars {
-  position: relative;
+.storyGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
-  padding: 0;
-  list-style: none;
+  grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.02fr);
+  align-items: center;
+  gap: clamp(1.75rem, 4.6vw, 5.5rem);
 }
-
-/* Line linking the three pillar icons */
-.pillars::before {
-  content: '';
-  position: absolute;
-  top: 4.1rem;
-  left: 16%;
-  right: 16%;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--color-primary) 15%,
-    var(--color-di-green) 50%,
-    var(--color-primary) 85%,
-    transparent
-  );
-  opacity: 0.45;
-}
-
-.pillarItem {
-  display: flex;
-}
-
-.pillar {
+.mediaWrap { min-width: 0; }
+.media {
   position: relative;
-  flex: 1;
-  padding: 2rem 1.75rem 1.9rem;
+  min-height: clamp(22rem, 38vw, 34rem);
+  overflow: hidden;
+  isolation: isolate;
+  padding: clamp(.8rem, 1.4vw, 1.35rem);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-xl);
-  background: var(--card-fill);
-  box-shadow: var(--shadow-sm);
-  text-align: center;
-  transition:
-    transform var(--dur-base) var(--ease-out),
-    box-shadow var(--dur-base) var(--ease-out),
-    border-color var(--dur-base) var(--ease-out);
+  background: linear-gradient(155deg, var(--color-surface), var(--color-surface-sunken));
+  box-shadow: var(--shadow-lg);
 }
-
-.pillarIcon {
-  --glow: rgb(23 102 200 / 0.6);
-  display: grid;
-  place-items: center;
-  width: 4.25rem;
-  height: 4.25rem;
-  margin: 0 auto 1.25rem;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 25%, #2a6fd0, #0a2253);
-  color: #ffffff;
-  box-shadow:
-    0 0 0 6px var(--color-surface),
-    0 0 0 7px var(--color-line),
-    0 12px 30px -10px var(--glow);
-  transition: transform var(--dur-base) var(--ease-out);
+.teamPhoto {
+  position: absolute;
+  inset: clamp(.8rem, 1.4vw, 1.35rem);
+  width: calc(100% - 2 * clamp(.8rem, 1.4vw, 1.35rem));
+  height: calc(100% - 2 * clamp(.8rem, 1.4vw, 1.35rem));
+  object-fit: cover;
+  object-position: center 48%;
+  border-radius: clamp(.85rem, 1.4vw, 1.35rem);
+  background: var(--color-surface-sunken);
 }
-
-.pillar[data-tone='green'] .pillarIcon {
-  --glow: rgb(25 216 164 / 0.6);
-  background: radial-gradient(circle at 30% 25%, #2ee5b3, #0e7f68);
+.mediaAccents {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 42%;
+  height: 4px;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-about-green));
 }
-
-.pillarTitle {
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: -0.015em;
-}
-
-.pillarBody {
-  color: var(--color-ink-muted);
-  font-size: 0.9375rem;
-}
-
-@media (hover: hover) {
-  .pillar:hover {
-    transform: translate3d(0, -4px, 0);
-    border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-line));
-    box-shadow: var(--shadow-lg);
-  }
-
-  .pillar:hover .pillarIcon {
-    transform: scale(1.06);
-  }
-}
-
-.closingWrap {
-  display: grid;
-  justify-items: center;
-  gap: 1.5rem;
-  max-width: 46rem;
-  margin: 2rem auto 0;
-  text-align: center;
-}
-
-.closing {
-  color: var(--color-ink-muted);
-}
-
-.closing strong {
-  color: var(--color-ink);
-}
-
-/* ---- Expertise ribbon -------------------------------------------------------- */
-.marquee {
-  position: relative;
-  overflow: hidden;
-  margin-block: clamp(2.75rem, 5vw, 3.5rem) clamp(2.5rem, 5vw, 3rem);
-  padding: 1.1rem 0;
-  border-block: 1px solid var(--color-line);
-  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-}
-
-/* The ribbon fades in without travelling; its scroll is the motion */
-.marquee[data-visible] {
-  transform: none !important;
-}
-
-.track {
+.mediaCaption {
+  position: absolute;
+  left: clamp(1.3rem, 2.6vw, 2.5rem);
+  right: clamp(1.3rem, 2.6vw, 2.5rem);
+  bottom: clamp(1.3rem, 2.6vw, 2.25rem);
   display: flex;
-  width: max-content;
-  animation: ribbon 42s linear infinite;
-  animation-play-state: paused;
-}
-
-/* Scroll only while on screen (Reveal sets data-visible), pause on hover */
-.marquee[data-visible='true'] .track {
-  animation-play-state: running;
-}
-
-.marquee:hover .track {
-  animation-play-state: paused;
-}
-
-.group {
-  display: flex;
-  flex-shrink: 0;
-  gap: 2.5rem;
-  margin: 0;
-  padding: 0 1.25rem;
-  list-style: none;
-}
-
-.chip {
-  display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-  color: var(--color-ink);
-  font-size: 1.0625rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.chip svg {
-  color: var(--color-primary);
-}
-
-/* Small green separator after each item */
-.chip::after {
-  content: '';
-  width: 6px;
-  height: 6px;
-  margin-left: 1.85rem;
-  border-radius: 50%;
-  background: var(--color-di-green);
-}
-
-@keyframes ribbon {
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-/* ---- Mission & Vision ---------------------------------------------------------- */
-.cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-}
-
-.card {
-  position: relative;
-  overflow: hidden;
-  padding: clamp(1.6rem, 3vw, 2.25rem);
-  border-radius: var(--radius-xl);
+  gap: .8rem;
+  width: max-content;
+  max-width: calc(100% - 2.6rem);
+  padding: .7rem 1rem;
+  border-radius: var(--radius-md);
   background: var(--color-surface);
   border: 1px solid var(--color-line);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-lg);
+  color: var(--color-ink);
 }
-
+.captionIcon,
+.pillarIcon,
+.expertiseIcon,
 .cardIcon {
   display: grid;
+  flex-shrink: 0;
   place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 0.8rem;
+  border-radius: .8rem;
   background: var(--color-primary-soft);
   color: var(--color-primary);
 }
+.captionIcon { width: 2.55rem; height: 2.55rem; }
+.mediaCaption strong,
+.mediaCaption small { display: block; }
+.mediaCaption strong { font-size: .875rem; }
+.mediaCaption small { font-size: .73rem; color: var(--color-ink-muted); }
 
-.cardLabel {
-  margin: 1.1rem 0 0.5rem;
-  color: var(--color-primary);
-  font-size: 0.8125rem;
-  font-weight: 700;
+.storyCopy { min-width: 0; }
+.eyebrow { margin-bottom: 1.2rem; }
+.title {
+  max-width: 23ch;
+  font-size: clamp(1.9rem, 2.3vw + .75rem, 3.05rem);
+  font-weight: 800;
+  line-height: 1.14;
+  letter-spacing: -.035em;
+  margin-bottom: 1.45rem;
+  color: var(--color-ink);
+}
+.lead { max-width: 65ch; color: var(--color-ink); font-size: clamp(1rem, 1.04vw, 1.125rem); line-height: 1.72; }
+.body { max-width: 65ch; margin-top: .9rem; color: var(--color-ink-muted); line-height: 1.74; }
+.storyActions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.65rem; }
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.7rem, 1.5vw, 1.3rem);
+  padding: 0;
+  margin-top: clamp(1.75rem, 3.1vw, 3rem);
+  list-style: none;
+}
+.pillarItem { display: flex; min-width: 0; }
+.pillar {
+  width: 100%;
+  min-width: 0;
+  min-height: 12.2rem;
+  padding: clamp(1.2rem, 2vw, 1.75rem);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--card-fill);
+  box-shadow: var(--shadow-sm);
+  transition: transform 340ms var(--ease-out), border-color 340ms var(--ease-out), box-shadow 340ms var(--ease-out);
+}
+.pillarIcon { width: 2.85rem; height: 2.85rem; margin-bottom: .95rem; }
+.pillarTitle { font-size: clamp(1.06rem, 1.25vw, 1.23rem); font-weight: 750; margin-bottom: .4rem; }
+.pillarBody { color: var(--color-ink-muted); font-size: .9rem; line-height: 1.6; }
+.pillar[data-tone='green'] {
+  background: linear-gradient(145deg, var(--color-about-green-soft), var(--color-surface));
+  border-color: color-mix(in srgb, var(--color-about-green) 36%, var(--color-line));
+}
+.pillar[data-tone='green'] .pillarIcon {
+  background: color-mix(in srgb, var(--color-about-green) 18%, var(--color-surface));
+  color: var(--color-about-green);
 }
 
-.cardTitle {
-  max-width: 22ch;
-  margin-bottom: 0.75rem;
-  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.015em;
+.statement {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(.8rem, 1.8vw, 1.5rem);
+  align-items: center;
+  margin-top: clamp(1.4rem, 2.5vw, 2.5rem);
+  padding: clamp(1.25rem, 2.6vw, 2rem);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+.quoteMark { align-self: start; color: var(--color-about-green); }
+.statementText { max-width: 82ch; color: var(--color-ink-muted); line-height: 1.72; }
+.statementText strong { color: var(--color-ink); font-weight: 650; }
+
+/* The expertise content is unchanged, now displayed as calm service chips.
+   No continuously scrolling ribbon to compete with scroll-reveal motion. */
+.expertise {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: .7rem;
+  padding: 0;
+  margin: clamp(1.75rem, 3.2vw, 3rem) 0;
+  list-style: none;
+}
+.expertiseItem {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: .7rem;
+  padding: .82rem 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: .88rem;
+  font-weight: 650;
+}
+.expertiseIcon { width: 2.25rem; height: 2.25rem; border-radius: .65rem; }
+.expertiseItem:nth-child(3n+2) .expertiseIcon {
+  color: var(--color-about-green);
+  background: var(--color-about-green-soft);
 }
 
-.cardBody {
-  color: var(--color-ink-muted);
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(.85rem, 1.5vw, 1.35rem); margin: 0; padding: 0; list-style: none; }
+.cardItem { display: flex; min-width: 0; }
+.card {
+  flex: 1;
+  min-width: 0;
+  padding: clamp(1.45rem, 2.7vw, 2.3rem);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--card-fill);
+  box-shadow: var(--shadow-sm);
+  transition: transform 340ms var(--ease-out), box-shadow 340ms var(--ease-out);
 }
+.card:nth-child(2) { background: linear-gradient(150deg, var(--color-surface), var(--color-about-green-soft)); }
+.cardIcon { width: 2.9rem; height: 2.9rem; }
+.card:nth-child(2) .cardIcon { background: var(--color-about-green-soft); color: var(--color-about-green); }
+.cardLabel { margin-top: 1rem; color: var(--color-primary); font-size: .82rem; font-weight: 750; }
+.cardTitle { max-width: 32ch; margin: .5rem 0 .85rem; font-size: clamp(1.18rem, 1.45vw, 1.5rem); line-height: 1.32; }
+.cardBody { max-width: 85ch; color: var(--color-ink-muted); font-size: .94rem; line-height: 1.7; }
 
-.cardDark {
-  background: radial-gradient(90% 120% at 100% 0%, #16418c 0%, #071636 60%);
-  border-color: rgb(255 255 255 / 0.06);
-  color: #eaf1fb;
+@media (hover: hover) {
+  .pillar:hover,
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .pillar:hover { border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-line)); }
 }
-
-/* Faint dot texture in the vision card's lit corner */
-.cardDark::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgb(255 255 255 / 0.1) 1px, transparent 1.6px);
-  background-size: 22px 22px;
-  mask-image: radial-gradient(70% 90% at 100% 0%, #000, transparent 70%);
-  -webkit-mask-image: radial-gradient(70% 90% at 100% 0%, #000, transparent 70%);
-  pointer-events: none;
+@media (max-width: 1020px) {
+  .storyGrid { gap: 2rem; }
+  .media { min-height: 26rem; }
+  .title { font-size: clamp(1.8rem, 3.2vw, 2.5rem); }
 }
-
-.cardDark .cardIcon {
-  background: rgb(255 255 255 / 0.08);
-  color: #9fd0ff;
+@media (max-width: 740px) {
+  .storyGrid { grid-template-columns: minmax(0, 1fr); gap: 1.7rem; }
+  .media { min-height: clamp(18rem, 63vw, 27rem); }
+  .title { max-width: 24ch; }
+  .pillars { grid-template-columns: minmax(0, 1fr); }
+  .pillar { min-height: 0; }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .expertise { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-
-.cardDark .cardLabel {
-  color: #9fd0ff;
+@media (max-width: 430px) {
+  .media { min-height: 19rem; }
+  .mediaCaption { padding: .55rem .7rem; }
+  .statement { grid-template-columns: auto minmax(0, 1fr); }
+  .expertise { grid-template-columns: minmax(0, 1fr); }
 }
-
-.cardDark .cardBody {
-  color: #a6b4ce;
-}
-
-:global([data-theme='dark']) .cardDark {
-  border-color: var(--color-line);
-}
-
-/* ---- Responsive ---------------------------------------------------------------- */
-@media (max-width: 860px) {
-  .pillars,
-  .cards {
-    grid-template-columns: 1fr;
-  }
-
-  .pillars::before {
-    display: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .track {
-    animation: none;
-    width: auto;
-  }
-
-  .group {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem 2rem;
-  }
-
-  .group[aria-hidden] {
-    display: none;
-  }
+  .pillar, .card { transition: none; }
+  .pillar:hover, .card:hover { transform: none; }
 }

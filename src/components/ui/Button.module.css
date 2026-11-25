@@ -1,9 +1,9 @@
 .button {
-  --btn-bg: #1766c8;
-  --btn-bg-hover: #1255a8;
-  --btn-ink: #ffffff;
-  --btn-border: rgb(255 255 255 / 0.1);
-  --btn-shadow: 0 1px 2px rgb(10 30 69 / 0.22), 0 8px 22px -10px rgb(23 102 200 / 0.6);
+  --btn-bg: var(--color-button-bg);
+  --btn-bg-hover: var(--color-button-hover);
+  --btn-ink: var(--color-button-ink);
+  --btn-border: var(--color-button-border);
+  --btn-shadow: var(--shadow-button);
   --btn-sheen: rgb(255 255 255 / 0.28);
 
   position: relative;
@@ -137,6 +137,15 @@
   padding: 0 1rem;
   font-size: 0.8125rem;
   border-radius: 0.5rem;
+}
+
+/* Site-wide cobalt gradient for primary CTAs, aligned to the Dynabase
+   button language. Green DigitalInvoice / glass / outline remain distinct. */
+.button[data-variant='primary'] {
+  --btn-bg: var(--gradient-button-bg);
+  --btn-bg-hover: var(--gradient-button-hover);
+  --btn-ink: #ffffff;
+  --btn-sheen: rgb(255 255 255 / 0.17);
 }
 
 /* DigitalInvoice: green fill, navy text (10:1) */

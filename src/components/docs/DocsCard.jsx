@@ -1,7 +1,7 @@
-import { ArrowUpRight, ClipboardCheck, Code2, Database, FileText, Network, ScrollText, ShieldCheck } from 'lucide-react'
+import { ArrowUpRight, CalendarRange, ClipboardCheck, Code2, Database, FileText, Network, ScrollText, ShieldCheck } from 'lucide-react'
 import styles from './DocsCard.module.css'
 
-const ICONS = { ClipboardCheck, Code2, Database, FileText, Network, ScrollText, ShieldCheck }
+const ICONS = { CalendarRange, ClipboardCheck, Code2, Database, FileText, Network, ScrollText, ShieldCheck }
 
 /** Server-rendered hub card: status comes from the corresponding Markdown metadata. */
 export default function DocsCard({ title, description, href, icon = 'FileText', available = true, statusLabel = '', statusTone = 'neutral' }) {

@@ -9,40 +9,18 @@ import 'swiper/css'
 import 'swiper/css/effect-fade'
 import Button from '@/components/ui/Button'
 import { site } from '@/config/site'
-import HeroAurora from './HeroAurora'
-import HeroVisual from './HeroVisual'
+import HeroVisual, { HeroFlow } from './HeroVisual'
 import styles from './HeroSlider.module.css'
 
-const DELAY = 7000
-const SPEED = 1000
+const DELAY = 9500
+const SPEED = 900
 
-// Words animate individually; screen readers get the plain sentence once.
-// Trailing punctuation sits in its own span so it can be tucked against the
-// word (Plus Jakarta's heavy full stop has a wide left side bearing).
-const SlideTitle = ({ as: Tag, text }) => {
-  const words = text.split(' ')
-  return (
-    <Tag className={styles.title}>
-      <span className="sr-only">{text}</span>
-      <span aria-hidden="true">
-        {words.map((word, index) => {
-          const [, base, punct] = word.match(/^(.*?)([.,!?]*)$/)
-          return (
-            <span key={`${word}-${index}`}>
-              <span className={styles.word} data-word={base} style={{ '--i': index }}>
-                {base}
-                {punct ? <span className={styles.punct}>{punct}</span> : null}
-              </span>
-              {index < words.length - 1 ? ' ' : null}
-            </span>
-          )
-        })}
-      </span>
-    </Tag>
-  )
-}
+// Text is deliberately taken verbatim from src/content/home.content.js.
+const SlideTitle = ({ as: Tag, text }) => (
+  <Tag className={styles.title}>{text}</Tag>
+)
 
-const HeroSlider = ({ slides = [] }) => {
+export default function HeroSlider({ slides = [] }) {
   const reduceMotion = useReducedMotion()
   const sectionRef = useRef(null)
   const swiperRef = useRef(null)
@@ -54,23 +32,21 @@ const HeroSlider = ({ slides = [] }) => {
   const [keyboardFocus, setKeyboardFocus] = useState(false)
 
   const canAutoplay = !reduceMotion && slides.length > 1
-  // Mouse hover doesn't pause; keyboard focus inside the hero does (accessibility)
   const shouldPlay = canAutoplay && !userPaused && inView && pageVisible && !keyboardFocus
-  // Looping effects (title shine, floating cards) stop when nobody can see them
-  const loopsRunning = !reduceMotion && !userPaused && inView && pageVisible
+  const loopsRunning = shouldPlay && !reduceMotion
 
-  // Pause everything while the hero is scrolled out of view or the tab is hidden
   useEffect(() => {
     const node = sectionRef.current
     if (!node) return undefined
-    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: 0.15,
-    })
-    observer.observe(node)
+    const observer = typeof IntersectionObserver !== 'undefined'
+      ? new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.12 })
+      : null
+    observer?.observe(node)
     const onVisibility = () => setPageVisible(document.visibilityState === 'visible')
+    onVisibility()
     document.addEventListener('visibilitychange', onVisibility)
     return () => {
-      observer.disconnect()
+      observer?.disconnect()
       document.removeEventListener('visibilitychange', onVisibility)
     }
   }, [])
@@ -81,24 +57,13 @@ const HeroSlider = ({ slides = [] }) => {
     if (shouldPlay) {
       if (autoplay.paused) autoplay.resume()
       else if (!autoplay.running) autoplay.start()
-    } else if (autoplay.running && !autoplay.paused) {
-      autoplay.pause()
-    }
+    } else if (autoplay.running && !autoplay.paused) autoplay.pause()
   }, [shouldPlay, canAutoplay])
 
   const onTimeLeft = useCallback((_swiper, _timeLeft, progress) => {
-    // Written straight to the element: no React render per animation frame
     if (fillRef.current) fillRef.current.style.transform = `scaleX(${1 - progress})`
   }, [])
-
   const goTo = (index) => swiperRef.current?.slideTo(index)
-
-  const onFocusIn = (event) => {
-    if (event.target.matches?.(':focus-visible')) setKeyboardFocus(true)
-  }
-  const onFocusOut = (event) => {
-    if (!sectionRef.current?.contains(event.relatedTarget)) setKeyboardFocus(false)
-  }
 
   if (!slides.length) return null
 
@@ -111,68 +76,53 @@ const HeroSlider = ({ slides = [] }) => {
       aria-label="Teecoms highlights"
       data-loops={loopsRunning ? 'running' : 'paused'}
       data-accent={slides[active]?.accent || 'brand'}
-      onFocus={onFocusIn}
-      onBlur={onFocusOut}
+      onFocus={(event) => { if (event.target.matches?.(':focus-visible')) setKeyboardFocus(true) }}
+      onBlur={(event) => {
+        if (!sectionRef.current?.contains(event.relatedTarget)) setKeyboardFocus(false)
+      }}
     >
-      <HeroAurora visual={slides[active]?.visual} />
-
+      <div className={styles.ambient} aria-hidden="true" />
       <Swiper
         className={styles.swiper}
         modules={[Autoplay, EffectFade, Keyboard, A11y]}
         effect="fade"
         fadeEffect={{ crossFade: true }}
-        speed={reduceMotion ? 300 : SPEED}
+        speed={reduceMotion ? 0 : SPEED}
         rewind
         keyboard={{ enabled: true, onlyInViewport: true }}
         autoplay={canAutoplay ? { delay: DELAY, disableOnInteraction: false } : false}
-        a11y={{
-          enabled: true,
-          slideRole: 'group',
-          slideLabelMessage: '{{index}} of {{slidesLength}}',
-        }}
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper
-        }}
+        a11y={{ enabled: true, slideRole: 'group', slideLabelMessage: '{{index}} of {{slidesLength}}' }}
+        onSwiper={(swiper) => { swiperRef.current = swiper }}
         onSlideChange={(swiper) => setActive(swiper.activeIndex)}
         onAutoplayTimeLeft={onTimeLeft}
       >
         {slides.map((slide, index) => {
           const isActive = index === active
+          const demoLink = slide.id === 'digitalinvoice' && site.digitalInvoiceDemoUrl
           return (
             <SwiperSlide key={slide.id} className={styles.slide}>
-              <div
-                className={styles.frame}
-                data-active={isActive}
-                data-visual={slide.visual}
-                data-accent={slide.accent || 'brand'}
-              >
-                <div className={`container ${styles.inner}`} inert={!isActive}>
+              <div className={styles.frame} data-active={isActive} data-accent={slide.accent || 'brand'}>
+                <div className={styles.inner} inert={!isActive}>
                   <div className={styles.copy}>
                     <p className={styles.eyebrow}>{slide.eyebrow}</p>
                     <SlideTitle as={index === 0 ? 'h1' : 'h2'} text={slide.title} />
                     <p className={styles.description}>{slide.description}</p>
+                    <HeroFlow type={slide.visual} />
                     <div className={styles.actions}>
-                      <Button
-                        href={slide.primary.href}
-                        variant={slide.accent === 'di' ? 'di' : 'primary'}
-                        shine
-                      >
+                      <Button href={slide.primary.href} variant={slide.accent === 'di' ? 'di' : 'primary'} shine>
                         {slide.primary.label}
                       </Button>
                       <Button
-                        href={slide.id === 'digitalinvoice' ? (site.digitalInvoiceDemoUrl || slide.secondary.href) : slide.secondary.href}
+                        href={demoLink ? site.digitalInvoiceDemoUrl : slide.secondary.href}
                         variant="glass"
-                        {...(slide.id === 'digitalinvoice' && site.digitalInvoiceDemoUrl
-                          ? { target: '_blank', rel: 'noopener noreferrer' }
-                          : {})}
+                        {...(demoLink ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                       >
                         {slide.secondary.label}
                       </Button>
                     </div>
                   </div>
-
-                  <div className={styles.visual} aria-hidden="true" data-parallax>
-                    <HeroVisual type={slide.visual} active={isActive} />
+                  <div className={styles.visual} aria-hidden="true">
+                    <HeroVisual type={slide.visual} />
                   </div>
                 </div>
               </div>
@@ -180,9 +130,8 @@ const HeroSlider = ({ slides = [] }) => {
           )
         })}
       </Swiper>
-
-      <div className={`container ${styles.controls}`}>
-        <div className={styles.tabs}>
+      <div className={styles.controls}>
+        <div className={styles.tabs} aria-label="Explore Teecoms highlights">
           {slides.map((slide, index) => (
             <button
               key={slide.id}
@@ -193,26 +142,23 @@ const HeroSlider = ({ slides = [] }) => {
               aria-label={`Show slide ${index + 1}: ${slide.tab}`}
               onClick={() => goTo(index)}
             >
-              <span className={styles.tabLabel}>{slide.tab}</span>
+              <span>{slide.tab}</span>
               <span className={styles.track}>
                 <span
                   ref={index === active ? fillRef : undefined}
                   className={styles.fill}
-                  data-static={!canAutoplay}
+                  data-static={!shouldPlay}
                 />
               </span>
             </button>
           ))}
         </div>
-
         <div className={styles.buttons}>
           <button type="button" className={styles.iconButton} onClick={() => swiperRef.current?.slidePrev()}>
-            <ChevronLeft size={18} aria-hidden="true" />
-            <span className="sr-only">Previous slide</span>
+            <ChevronLeft size={18} aria-hidden="true" /><span className="sr-only">Previous slide</span>
           </button>
           <button type="button" className={styles.iconButton} onClick={() => swiperRef.current?.slideNext()}>
-            <ChevronRight size={18} aria-hidden="true" />
-            <span className="sr-only">Next slide</span>
+            <ChevronRight size={18} aria-hidden="true" /><span className="sr-only">Next slide</span>
           </button>
           {canAutoplay ? (
             <button
@@ -230,5 +176,3 @@ const HeroSlider = ({ slides = [] }) => {
     </section>
   )
 }
-
-export default HeroSlider

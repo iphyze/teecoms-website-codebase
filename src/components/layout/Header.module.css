@@ -212,7 +212,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 3rem;
+  min-height: 2.75rem;
 }
 
 .sheetTop .menuButton {
@@ -229,8 +229,11 @@
 .sheetLinks a {
   position: relative;
   display: block;
-  padding: 0.95rem 0;
-  font-size: 1.0625rem;
+  /* Compact mobile typography, without shrinking the touch target. */
+  min-height: 2.85rem;
+  padding: 0.85rem 0;
+  font-size: 0.9375rem;
+  line-height: 1.35;
   font-weight: 600;
   letter-spacing: -0.01em;
   border-bottom: 1px solid var(--color-line);
@@ -303,7 +306,25 @@
 
   .menuButton {
     display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
   }
+  /* The hamburger is borderless; the drawer close button keeps its ring. */
+  .actions .menuButton {
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  .actions .menuButton:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  /* Desktop rule for .nav + .actions used to pull the actions next to the
+     navigation even when that navigation is hidden. Restore right alignment. */
+  .nav + .actions { margin-left: auto; gap: .55rem; }
+  .brand img { height: 24px !important; width: auto !important; }
+  .actions .headerThemeToggle { width: 2.25rem; height: 2.25rem; }
+  .actions .headerThemeToggle svg { width: 1rem; height: 1rem; }
 }
 
 @media (max-width: 30rem) {
@@ -312,8 +333,11 @@
   }
 
   .brand img {
-    height: 30px !important;
+    height: 22px !important;
   }
+  .nav + .actions { gap: .4rem; }
+  .menuButton { width: 2.15rem; height: 2.15rem; }
+  .actions .headerThemeToggle { width: 2.15rem; height: 2.15rem; }
 }
 
 /* Documentation pages have no hero backdrop: keep the fixed header legible
@@ -326,3 +350,6 @@
 :global([data-theme='dark']) .header[data-document='true'] {
   color: var(--color-ink);
 }
+
+/* The .bar also has the shared .container class (Header.jsx), so its
+   edges match every section without a marketing-only width override. */

@@ -22,7 +22,7 @@ const DOC_ROUTES = Object.freeze({
   samples: '/developers/samples/',
   architecture: '/developers/architecture/',
   security: '/developers/security/',
-  'nrs-alignment': '/developers/nrs-alignment/',
+  timeline: '/developers/timeline/',
   sla: '/sla/',
 })
 const STATUSES = new Set(['foundation', 'planned', 'draft', 'published', 'approved'])
@@ -31,7 +31,9 @@ const PDF_MAGIC = Buffer.from('%PDF-')
 
 const resources = [
   { path: '/docs/digitalinvoice-api-documentation-v1.1.pdf', kind: 'pdf', doc: 'api' },
-  { path: '/docs/digitalinvoice-nrs-v1.1-alignment-review-2026-11.pdf', kind: 'pdf', doc: 'nrs-alignment' },
+  { path: '/docs/digitalinvoice-implementation-timeline-v1.0.pdf', kind: 'pdf', doc: 'timeline' },
+  ...['', '-dark'].map((theme) => ({ path: `/docs/diagrams/digitalinvoice-implementation-timeline-v1.0${theme}.svg`, kind: 'svg', doc: 'timeline' })),
+  { path: '/docs/diagrams/digitalinvoice-implementation-timeline-v1.0.mmd', kind: 'text', doc: 'timeline' },
   { path: '/docs/digitalinvoice-invoice-schema-v1.0.json', kind: 'json', doc: 'data-structure' },
   { path: '/docs/digitalinvoice-field-mapping-v1.0.csv', kind: 'csv', doc: 'data-structure' },
   { path: '/docs/digitalinvoice-architecture-v1.0.pdf', kind: 'pdf', doc: 'architecture' },
@@ -55,7 +57,8 @@ const resources = [
       { path: `${prefix}.png`, kind: 'png', doc: 'samples' },
     ]
   })),
-  { path: '/docs/teecoms-digitalinvoice-sla-v1.0.pdf', kind: 'pdf', doc: 'sla' },
+  { path: '/docs/teecoms-digitalinvoice-sla-v1.0.pdf', kind: 'pdf', doc: 'sla', optional: true },
+  { path: '/docs/teecoms-iso-iec-27001-2022-certificate.pdf', kind: 'pdf', doc: 'security', optional: true },
 ]
 
 const counters = { fail: 0, warn: 0, pass: 0 }
@@ -124,6 +127,52 @@ function cli() {
   return { mode, strict, origin: null, out: index >= 0 ? path.resolve(withoutFlags[1]) : DEFAULT_OUT }
 }
 
+// Internal NRS gap analysis must not be exposed as a public page or download.
+const INTERNAL_REVIEW_ROUTE = '/developers/nrs-alignment/'
+const INTERNAL_REVIEW_PDF = '/docs/digitalinvoice-nrs-v1.1-alignment-review-2026-11.pdf'
+const INTERNAL_REVIEW_PATTERNS = [
+  /\/?developers\/nrs-alignment\/?/i,
+  /digitalinvoice-nrs-v1\.1-alignment-review-2026-11\.pdf/i,
+]
+function includesInternalReviewLink(contents) {
+  // Inspect the entire exported HTML, including anchors, hydration attributes
+  // and JSON strings, to avoid missing links introduced in new shared navs.
+  return INTERNAL_REVIEW_PATTERNS.some((pattern) => pattern.test(contents))
+}
+async function walkHtml(directory) {
+  if (!(await exists(directory))) return []
+  const files = []
+  for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
+    const file = path.join(directory, entry.name)
+    if (entry.isDirectory()) files.push(...await walkHtml(file))
+    else if (entry.isFile() && entry.name.endsWith('.html')) files.push(file)
+  }
+  return files
+}
+async function verifyRemovedInternalReviewSource() {
+  for (const file of [
+    'src/app/developers/nrs-alignment/page.js',
+    'src/content/docs/nrs-alignment.md',
+    'public/docs/digitalinvoice-nrs-v1.1-alignment-review-2026-11.pdf',
+  ]) assert(!(await exists(path.join(ROOT, file))), `Internal review removed from source: ${file}`)
+  for (const file of await fs.readdir(DOCS).then((entries) => entries.filter((entry) => entry.endsWith('.md')))) {
+    const source = await text(path.join(DOCS, file))
+    assert(!includesInternalReviewLink(source), `No internal review link in public Markdown: ${file}`)
+  }
+}
+async function verifyRemovedInternalReviewExport(out) {
+  for (const file of [
+    'developers/nrs-alignment/index.html',
+    'docs/digitalinvoice-nrs-v1.1-alignment-review-2026-11.pdf',
+  ]) assert(!(await exists(path.join(out, file))), `Internal review absent from export: ${file}`)
+  for (const file of await walkHtml(out)) {
+    const html = await text(file)
+    assert(!includesInternalReviewLink(html), `No internal review links: ${path.relative(out, file)}`)
+  }
+  const sitemap = path.join(out, 'sitemap.xml')
+  if (await exists(sitemap)) assert(!includesInternalReviewLink(await text(sitemap)), 'No internal review sitemap entry')
+}
+
 async function statusesFromSource() {
   const data = {}
   for (const slug of Object.keys(DOC_ROUTES)) {
@@ -136,6 +185,7 @@ async function statusesFromSource() {
 async function local(options, statuses) {
   const out = options.out
   if (!(await exists(out))) throw new Error(`Static output is missing: ${out}. Run npm run build first.`)
+  await verifyRemovedInternalReviewExport(out)
   const htmlBySlug = {}
   let origin
   for (const [slug, route] of Object.entries(DOC_ROUTES)) {
@@ -166,7 +216,10 @@ async function local(options, statuses) {
   for (const item of resources) {
     if (!isPublic(statuses[item.doc])) continue
     const target = path.join(out, item.path.slice(1))
-    if (!(await exists(target))) { report('fail', item.path, 'Missing published asset'); continue }
+    if (!(await exists(target))) {
+      if (item.optional && !options.strict) { warn(`PDF not yet available: ${item.path}`, 'Link must be hidden until the verified PDF is added'); continue }
+      report('fail', item.path, 'Missing published asset'); continue
+    }
     assert(hasSignature(await read(target), item.kind), `Asset ${item.path}`, `${item.kind} signature/content`)
   }
   const sampleFiles = resources.filter((item) => item.doc === 'samples')
@@ -211,6 +264,12 @@ async function verifyLiveResource(origin, item) {
 }
 async function live(options, statuses) {
   const { origin } = options
+  for (const removed of [INTERNAL_REVIEW_ROUTE, INTERNAL_REVIEW_PDF]) {
+    try {
+      const response = await publicRequest(`${origin}${removed}`)
+      assert([404, 410].includes(response.status), `Internal review not publicly served: ${removed}`, `HTTP ${response.status}`)
+    } catch (error) { report('fail', `Internal review URL check ${removed}`, error.message) }
+  }
   const pages = [{ route: '/', slug: null }, ...Object.entries(DOC_ROUTES).map(([slug, route]) => ({ slug, route }))]
   for (const { slug, route } of pages) {
     try {
@@ -221,6 +280,7 @@ async function live(options, statuses) {
       assert(get.status === 200, `GET ${route}`, `HTTP ${get.status}`)
       if (get.status !== 200) continue
       const html = await get.text()
+      assert(!includesInternalReviewLink(html), `Public HTML excludes internal review: ${route}`)
       assert(/<html\b/i.test(html) && /<h1\b/i.test(html), `HTML ${route}`)
       if (!slug) continue
       assert(canonicalOf(html) === url, `Canonical ${route}`, canonicalOf(html) || 'Missing or unexpected')
@@ -236,12 +296,20 @@ async function live(options, statuses) {
     } catch (error) { report('fail', `Public ${key}`, error.message) }
   }
   if (sitemap) {
+    assert(!includesInternalReviewLink(sitemap), 'Public sitemap excludes internal review')
     for (const [slug, route] of Object.entries(DOC_ROUTES)) {
       assert(sitemap.includes(`${origin}${route}`) === isPublic(statuses[slug]), `Public sitemap ${route}`)
     }
   }
   // Bound concurrency to avoid flooding shared cPanel servers.
-  const targets = resources.filter((item) => isPublic(statuses[item.doc]))
+  const targets = []
+  for (const item of resources.filter((item) => isPublic(statuses[item.doc]))) {
+    if (item.optional && !options.strict && !(await exists(path.join(ROOT, 'public', item.path.slice(1))))) {
+      warn(`Optional PDF not yet published: ${item.path}`, 'Upload and rebuild to expose download')
+      continue
+    }
+    targets.push(item)
+  }
   for (let i = 0; i < targets.length; i += 4) {
     await Promise.all(targets.slice(i, i + 4).map((item) => verifyLiveResource(origin, item)))
   }
@@ -260,9 +328,13 @@ async function main() {
   const options = cli()
   console.log(`DigitalInvoice D8 release verification: ${options.mode}${options.strict ? ' (NRS submission gate)' : ''}\n`)
   const statuses = await statusesFromSource()
+  await verifyRemovedInternalReviewSource()
   if (options.strict) {
     assert(statuses.samples === 'published', 'NRS gate: samples published', `current: ${statuses.samples}`)
-    assert(statuses.sla === 'approved', 'NRS gate: signed SLA approved', `current: ${statuses.sla}`)
+    assert(statuses.sla === 'approved', 'NRS gate: management-approved SLA', `current: ${statuses.sla}`)
+    for (const item of resources.filter((entry) => entry.optional)) {
+      assert(await exists(path.join(ROOT, 'public', item.path.slice(1))), `NRS gate: ${item.path} source PDF present`)
+    }
     try {
       const api = await text(path.join(DOCS, 'api.md'))
       assert(!/\[CONFIRM(?::[^\]]*)?\]/.test(api), 'NRS gate: API publication placeholders resolved')

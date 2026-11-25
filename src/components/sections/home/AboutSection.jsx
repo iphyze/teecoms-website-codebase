@@ -5,6 +5,7 @@ import {
   Cpu,
   Eye,
   MonitorCog,
+  Quote,
   Server,
   Settings2,
   ShieldCheck,
@@ -17,88 +18,122 @@ import Eyebrow from '@/components/ui/Eyebrow'
 import Reveal from '@/components/ui/Reveal'
 import styles from './AboutSection.module.css'
 
-const ICONS = { Cloud, Code2, Compass, Cpu, MonitorCog, Server, Settings2, ShieldCheck, Users, Workflow }
+const ICONS = {
+  Cloud, Code2, Compass, Cpu, MonitorCog, Server, Settings2,
+  ShieldCheck, Users, Workflow,
+}
 
-const AboutSection = ({ content }) => {
+/**
+ * Story + Metrics layout. All public copy comes from the existing approved
+ * home.content.js values. The three pillars replace illustrative numerical
+ * metrics; no invented customer counts or testimonials are displayed.
+ * The illustrative team collaboration image is separate from leadership portraits.
+ */
+export default function AboutSection({ content }) {
   const { mission, vision } = content
 
   return (
     <section id="about" className={styles.section} aria-labelledby="about-title">
       <div className="container">
-        {/* Centred introduction */}
-        <Reveal className={styles.intro}>
-          <Eyebrow className={styles.eyebrow}>{content.eyebrow}</Eyebrow>
-          <h2 id="about-title" className={styles.title}>{content.title}</h2>
-          <p className={styles.lead}>{content.lead}</p>
-          <p className={styles.body}>{content.paragraphs[1]}</p>
-        </Reveal>
+        <div className={styles.storyGrid}>
+          <Reveal from="left" className={styles.mediaWrap}>
+            <div className={styles.media}>
+              <img
+                className={styles.teamPhoto}
+                src="/images/about/team-collaboration.webp"
+                alt="Illustrative image of two professionals collaborating at a laptop"
+                width="1536"
+                height="1024"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className={styles.mediaAccents} aria-hidden="true" />
+              <div className={styles.mediaCaption}>
+                <span className={styles.captionIcon} aria-hidden="true">
+                  <Users size={19} strokeWidth={2} />
+                </span>
+                <span>
+                  <strong>{content.sector.title}</strong>
+                  <small>{content.sector.note}</small>
+                </span>
+              </div>
+            </div>
+          </Reveal>
 
-        {/* Technology, people and processes */}
+          <Reveal from="right" className={styles.storyCopy} delay={90}>
+            <Eyebrow className={styles.eyebrow}>{content.eyebrow}</Eyebrow>
+            <h2 id="about-title" className={styles.title}>{content.title}</h2>
+            <p className={styles.lead}>{content.lead}</p>
+            <p className={styles.body}>{content.paragraphs[1]}</p>
+            <div className={styles.storyActions}>
+              <Button href={content.cta.href} variant="primary">
+                {content.cta.label}
+              </Button>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* The three real Teecoms pillars take the role of the concept's
+            metrics band; unlike mockup numbers these have approved copy. */}
         <Reveal as="ul" stagger className={styles.pillars}>
           {content.pillars.map(({ icon, title, body }, index) => {
             const Icon = ICONS[icon]
             return (
               <li key={title} className={styles.pillarItem}>
-                <div className={styles.pillar} data-tone={index === 1 ? 'green' : 'blue'}>
-                  <span className={styles.pillarIcon}>
-                    <Icon size={24} strokeWidth={2} aria-hidden="true" />
+                <article className={styles.pillar} data-tone={index === 1 ? 'green' : 'blue'}>
+                  <span className={styles.pillarIcon} aria-hidden="true">
+                    <Icon size={24} strokeWidth={1.9} />
                   </span>
                   <h3 className={styles.pillarTitle}>{title}</h3>
                   <p className={styles.pillarBody}>{body}</p>
-                </div>
+                </article>
               </li>
             )
           })}
         </Reveal>
 
-        <Reveal className={styles.closingWrap}>
-          <p className={styles.closing}>
+        {/* Brand statement, NOT a fictional customer testimonial. */}
+        <Reveal className={styles.statement} from="up">
+          <span className={styles.quoteMark} aria-hidden="true">
+            <Quote size={28} strokeWidth={2} />
+          </span>
+          <p className={styles.statementText}>
             <strong>{content.closing.strong}</strong>
             {content.closing.rest}
           </p>
-          <Button href={content.cta.href} variant="outline">
-            {content.cta.label}
-          </Button>
         </Reveal>
-      </div>
 
-      {/* Full-width expertise ribbon; scrolls only while on screen */}
-      <Reveal className={styles.marquee} role="group" aria-label={content.expertiseLabel}>
-        <div className={styles.track}>
-          {[0, 1].map((copy) => (
-            <ul key={copy} className={styles.group} aria-hidden={copy === 1 || undefined}>
-              {content.expertise.map(({ icon, label }) => {
-                const Icon = ICONS[icon]
-                return (
-                  <li key={label} className={styles.chip}>
-                    <Icon size={20} strokeWidth={2} aria-hidden="true" />
-                    {label}
-                  </li>
-                )
-              })}
-            </ul>
-          ))}
-        </div>
-      </Reveal>
+        <Reveal as="ul" stagger className={styles.expertise} aria-label={content.expertiseLabel}>
+          {content.expertise.map(({ icon, label }) => {
+            const Icon = ICONS[icon]
+            return (
+              <li key={label} className={styles.expertiseItem}>
+                <span className={styles.expertiseIcon} aria-hidden="true"><Icon size={19} strokeWidth={1.9} /></span>
+                <span>{label}</span>
+              </li>
+            )
+          })}
+        </Reveal>
 
-      <div className="container">
-        <Reveal stagger className={styles.cards}>
-          <article className={styles.card}>
-            <span className={styles.cardIcon}><Target size={20} strokeWidth={2} aria-hidden="true" /></span>
-            <p className={styles.cardLabel}>{mission.label}</p>
-            <h3 className={styles.cardTitle}>{mission.title}</h3>
-            <p className={styles.cardBody}>{mission.body}</p>
-          </article>
-          <article className={`${styles.card} ${styles.cardDark}`}>
-            <span className={styles.cardIcon}><Eye size={20} strokeWidth={2} aria-hidden="true" /></span>
-            <p className={styles.cardLabel}>{vision.label}</p>
-            <h3 className={styles.cardTitle}>{vision.title}</h3>
-            <p className={styles.cardBody}>{vision.body}</p>
-          </article>
+        <Reveal as="ul" stagger className={styles.cards}>
+          <li className={styles.cardItem}>
+            <article className={styles.card}>
+              <span className={styles.cardIcon} aria-hidden="true"><Target size={23} strokeWidth={2} /></span>
+              <p className={styles.cardLabel}>{mission.label}</p>
+              <h3 className={styles.cardTitle}>{mission.title}</h3>
+              <p className={styles.cardBody}>{mission.body}</p>
+            </article>
+          </li>
+          <li className={styles.cardItem}>
+            <article className={styles.card}>
+              <span className={styles.cardIcon} aria-hidden="true"><Eye size={23} strokeWidth={2} /></span>
+              <p className={styles.cardLabel}>{vision.label}</p>
+              <h3 className={styles.cardTitle}>{vision.title}</h3>
+              <p className={styles.cardBody}>{vision.body}</p>
+            </article>
+          </li>
         </Reveal>
       </div>
     </section>
   )
 }
-
-export default AboutSection

@@ -14,10 +14,7 @@
   padding: clamp(2.5rem, 5vw, 4.5rem);
   overflow: hidden;
   border-radius: var(--radius-xl);
-  background:
-    radial-gradient(60% 90% at 90% 10%, color-mix(in srgb, var(--color-di-green) 22%, transparent), transparent 60%),
-    radial-gradient(70% 90% at 0% 100%, color-mix(in srgb, var(--color-brand-blue) 35%, transparent), transparent 60%),
-    var(--color-band);
+  background: var(--gradient-cta-panel);
   color: var(--color-band-ink);
 }
 

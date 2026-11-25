@@ -89,11 +89,28 @@
   --color-band-line: rgb(234 241 251 / 0.12);
 
   /* DigitalInvoice product accent */
+  --color-about-green: #4a9324; /* restrained green for About story cards */
+  --color-about-green-soft: #eff8e9;
   --color-di-green: #19d8a4;
   --color-di-blue: #2487da;
   --color-di-ink: #087a5b; /* green text on light surfaces, 5.3:1 */
   --color-di-soft: #e2f8f1;
   --color-on-di: #0a1e45; /* navy text on the green fill, 8.9:1 */
+
+  /* Intentional vivid marketing islands; dark theme derives muted variants. */
+  --gradient-feature-band: radial-gradient(90% 120% at 100% 0%, #16418c 0%, #071636 60%);
+  --gradient-service-stage: radial-gradient(90% 120% at 80% 0%, #1b4fa6 0%, #0a2253 45%, #050d20 85%);
+  --gradient-cta-panel:
+    radial-gradient(60% 90% at 90% 10%, color-mix(in srgb, var(--color-di-green) 22%, transparent), transparent 60%),
+    radial-gradient(70% 90% at 0% 100%, color-mix(in srgb, var(--color-brand-blue) 35%, transparent), transparent 60%),
+    var(--color-band);
+  --color-button-bg: #2e6ec7;
+  --color-button-hover: #245bb4;
+  --gradient-button-bg: linear-gradient(125deg, #3173cc 0%, #2962be 56%, #224e9d 100%);
+  --gradient-button-hover: linear-gradient(125deg, #296bc8 0%, #2256ad 56%, #19458f 100%);
+  --color-button-ink: #ffffff;
+  --color-button-border: rgb(255 255 255 / 0.1);
+  --shadow-button: 0 1px 2px rgb(10 30 69 / 0.22), 0 8px 22px -10px rgb(23 102 200 / 0.6);
 
   /* Status (DigitalInvoice states: paid, pending, failed) */
   --color-success: #0e8a5f;
@@ -110,93 +127,115 @@
   --shadow-lg: 0 24px 48px -16px rgb(10 30 69 / 0.22), 0 6px 12px -6px rgb(10 30 69 / 0.08);
 }
 
+/* Dynabase-inspired dark language: charcoal canvas, slate glass and
+   restrained cobalt accents. All site sections inherit these semantic tokens. */
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  /* Matches DigitalInvoice's calmer slate/navy balance, not deep electric blue. */
-  --color-bg: #09131f;
-  --color-surface: #0f1c2c;
-  --color-surface-sunken: #0b1622;
-  --color-surface-raised: #152539;
-  --color-overlay: rgb(3 8 15 / 0.72);
+  /* Site surfaces: neutral-charcoal foundations, not saturated navy panels. */
+  --color-bg: #0e131b;
+  --color-surface: #171e29;
+  --color-surface-sunken: #101720;
+  --color-surface-raised: #202a37;
+  --color-overlay: rgb(3 7 14 / 0.76);
   --gradient-canvas:
-    radial-gradient(70rem 35rem at 86% 0%, rgb(56 111 151 / 0.13), transparent 78%),
-    radial-gradient(45rem 35rem at 2% 36%, rgb(37 114 140 / 0.07), transparent 78%);
-  --card-fill: linear-gradient(145deg, #18293c 0%, #152538 55%, #102031 100%);
-  --card-fill-hover: linear-gradient(145deg, #1b3044 0%, #182b3e 55%, #13273a 100%);
+    radial-gradient(72rem 36rem at 92% -8%, rgb(53 92 153 / 0.14), transparent 74%),
+    radial-gradient(60rem 36rem at -10% 78%, rgb(42 76 130 / 0.08), transparent 78%),
+    linear-gradient(180deg, #0e131b 0%, #111822 100%);
+  --card-fill: linear-gradient(145deg, #202a38 0%, #1a2431 52%, #161f2b 100%);
+  --card-fill-hover: linear-gradient(145deg, #253142 0%, #202c3b 52%, #1b2634 100%);
 
-  --color-header-glass: rgb(13 27 42 / 0.68);
-  --color-header-glass-scrolled: rgb(13 27 42 / 0.88);
-  --color-header-glass-sheen: rgb(255 255 255 / 0.06);
-  --color-header-glass-line: rgb(226 236 248 / 0.12);
-  --shadow-header: 0 12px 32px rgb(0 0 0 / 0.28);
+  /* Frosted header follows the same dark neutral shell. */
+  --color-header-glass: rgb(17 24 34 / 0.74);
+  --color-header-glass-scrolled: rgb(17 24 34 / 0.91);
+  --color-header-glass-sheen: rgb(167 194 229 / 0.045);
+  --color-header-glass-line: rgb(189 206 230 / 0.12);
+  --shadow-header: 0 12px 32px rgb(0 0 0 / 0.32);
 
-  --hero-bg: #09131f;
-  --hero-ink: #ffffff;
-  --hero-muted: rgb(234 241 251 / 0.84);
-  --hero-eyebrow: #ffffff;
-  --hero-sheen: rgb(255 255 255 / 0.95);
-  --hero-dot: rgb(255 255 255 / 0.12);
-  --hero-spot: rgb(124 192 255 / 0.95);
-  --hero-halo-alpha: 16%;
-  --hero-veil: rgb(9 19 31 / 0.53);
-  --hero-grain-opacity: 0.07;
+  /* Hero accent and glass: muted deep-blue behind off-white type. */
+  --hero-bg: #101722;
+  --hero-ink: #f4f7fc;
+  --hero-muted: #aebdd1;
+  --hero-eyebrow: #95bfff;
+  --hero-sheen: rgb(233 243 255 / 0.78);
+  --hero-dot: rgb(209 225 249 / 0.10);
+  --hero-spot: rgb(106 159 230 / 0.62);
+  --hero-halo-alpha: 12%;
+  --hero-veil: rgb(13 19 28 / 0.58);
+  --hero-grain-opacity: 0.045;
   --hero-grain-blend: overlay;
-  --aurora-alpha-1: 52%;
-  --aurora-alpha-2: 34%;
-  --aurora-alpha-3: 28%;
-  --aurora-alpha-ribbon: 24%;
-  --hero-line: rgb(255 255 255 / 0.22);
-  --hero-ring: rgb(255 255 255 / 0.2);
-  --hero-packet: #ffffff;
-  --hero-packet-glow: rgb(122 190 255 / 0.9);
-  --hero-card-shadow: rgb(0 0 0 / 0.5);
-  --hero-tab: rgb(234 241 251 / 0.56);
-  --hero-tab-active: #ffffff;
-  --hero-track: rgb(255 255 255 / 0.16);
-  --hero-control-bg: rgb(255 255 255 / 0.07);
-  --hero-control-border: rgb(255 255 255 / 0.22);
-  --hero-control-ink: #ffffff;
-  --color-scroll-track: #0b1622;
-  --color-scroll-thumb: #2c4259;
-  --color-scroll-thumb-hover: #496781;
+  --aurora-alpha-1: 34%;
+  --aurora-alpha-2: 23%;
+  --aurora-alpha-3: 20%;
+  --aurora-alpha-ribbon: 18%;
+  --hero-line: rgb(160 188 234 / 0.22);
+  --hero-ring: rgb(140 174 229 / 0.16);
+  --hero-packet: #9cc9ff;
+  --hero-packet-glow: rgb(87 153 230 / 0.52);
+  --hero-card-shadow: rgb(0 0 0 / 0.38);
+  --hero-tab: #a9bad1;
+  --hero-tab-active: #f4f7fc;
+  --hero-track: rgb(197 218 247 / 0.14);
+  --hero-control-bg: rgb(25 35 49 / 0.84);
+  --hero-control-border: rgb(146 176 223 / 0.22);
+  --hero-control-ink: #f4f7fc;
+  --color-scroll-track: #111823;
+  --color-scroll-thumb: #42526b;
+  --color-scroll-thumb-hover: #637da1;
 
-  --color-ink: #eef3f9;
-  --color-ink-muted: #aab6c8;
-  --color-ink-subtle: #8a98ad;
+  /* Legible type and dividers across documentation and marketing pages. */
+  --color-ink: #f0f4fb;
+  --color-ink-muted: #b3bfd0;
+  --color-ink-subtle: #94a4ba;
+  --color-line: #2c3849;
+  --color-line-strong: #43536a;
 
-  --color-line: #1f3145;
-  --color-line-strong: #2c4259;
+  /* Bright links/icons; separately controlled cobalt fills retain white text. */
+  --color-primary: #84b5ff;
+  --color-primary-hover: #a3c9ff;
+  --color-on-primary: #0b1626;
+  --color-primary-soft: #1d314a;
+  --color-brand-blue: #84b5ff;
+  --color-focus: #9bc8ff;
+  --color-button-bg: #2e6ec7;
+  --color-button-hover: #245bb4;
+  --gradient-button-bg: linear-gradient(125deg, #3173cc 0%, #2962be 56%, #224e9d 100%);
+  --gradient-button-hover: linear-gradient(125deg, #296bc8 0%, #2256ad 56%, #19458f 100%);
+  --color-button-ink: #ffffff;
+  --color-button-border: rgb(186 214 255 / 0.18);
+  --shadow-button: 0 1px 2px rgb(0 0 0 / 0.24), 0 8px 24px -11px rgb(33 95 195 / 0.4);
 
-  --color-primary: #5ba4f5;
-  --color-primary-hover: #7db7f7;
-  --color-on-primary: #06121f; /* dark text on the light-blue action fill */
-  --color-primary-soft: #13283f;
-  --color-brand-blue: #5ba4f5;
-  --color-focus: #7db7f7;
+  /* Charcoal bands/CTA/footer with subtle indigo illumination. */
+  --color-band: #101925;
+  --color-band-raised: #202d40;
+  --color-band-ink: #f0f4fb;
+  --color-band-muted: #adbacd;
+  --color-band-line: rgb(203 220 241 / 0.12);
+  --gradient-band: radial-gradient(115% 100% at 88% -5%, #233a59 0%, #172435 44%, #101925 78%, #0f1722 100%);
+  --gradient-feature-band: radial-gradient(90% 120% at 100% 0%, #2b4365 0%, #172434 62%, #101722 100%);
+  --gradient-service-stage: radial-gradient(90% 120% at 80% 0%, #2a4873 0%, #1a2d48 47%, #101823 90%);
+  --gradient-cta-panel:
+    radial-gradient(60% 90% at 90% 10%, rgb(37 153 146 / 0.11), transparent 64%),
+    radial-gradient(70% 90% at 0% 100%, rgb(70 126 202 / 0.16), transparent 66%),
+    linear-gradient(140deg, #1a2636, #101925);
 
-  --color-band: #0c1929;
-  --color-band-raised: #172b41;
-  --color-band-ink: #eef3f9;
-  --color-band-muted: #aab6c8;
-  --color-band-line: rgb(226 236 248 / 0.1);
+  /* DigitalInvoice retains its own teal product identity. */
+  --color-about-green: #a4e277; /* green remains visible against charcoal/slate */
+  --color-about-green-soft: #23382a;
+  --color-di-green: #32dcb7;
+  --color-di-blue: #76adf5;
+  --color-di-ink: #58e4c1;
+  --color-di-soft: #15332f;
+  --color-on-di: #071b25;
+  --gradient-di: linear-gradient(180deg, #32dcb7 0%, #3295c7 100%);
 
-  --color-di-green: #2ee5b3;
-  --color-di-blue: #5ba4f5;
-  --color-di-ink: #42e8bb;
-  --color-di-soft: #102e2b;
-  --color-on-di: #041230;
+  --color-success: #49dfa5;
+  --color-warning: #ffbf69;
+  --color-danger: #ff838d;
 
-  --color-success: #3ddc97;
-  --color-warning: #ffb547;
-  --color-danger: #ff6b74;
-
-  --gradient-di: linear-gradient(180deg, #2ee5b3 0%, #2b9fe0 100%);
-  --gradient-band: radial-gradient(120% 90% at 85% 0%, #17344d 0%, #0c1929 56%, #09131f 100%);
-
-  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4);
-  --shadow-md: 0 8px 20px -8px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(226 236 248 / 0.04);
-  --shadow-lg: 0 24px 52px -18px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(226 236 248 / 0.05);
+  --shadow-sm: 0 2px 5px rgb(0 0 0 / 0.28);
+  --shadow-md: 0 10px 26px -9px rgb(0 0 0 / 0.48), 0 0 0 1px rgb(214 227 245 / 0.035);
+  --shadow-lg: 0 28px 56px -18px rgb(0 0 0 / 0.62), 0 0 0 1px rgb(214 227 245 / 0.045);
 }
 
 :root {
@@ -231,9 +270,12 @@
   --space-9: 6rem;
   --section-y: clamp(4.5rem, 3rem + 6vw, 8rem);
 
-  --container: 76rem;
+  /* Shared horizontal grid. Header, hero, home sections, docs and footer
+     use the same measured edges instead of competing width/gutter values. */
+  --container: 92.5rem;
   --container-narrow: 46rem;
-  --gutter: clamp(1.25rem, 0.75rem + 2vw, 2.5rem);
+  --gutter: clamp(1.5rem, 3.75vw, 4.25rem);
+  --content-width: min(calc(100% - 2 * var(--gutter)), var(--container));
   --header-h: 5.125rem;
 
   /* Radius: controls small, cards larger; the leaf shape comes from the
@@ -254,4 +296,9 @@
 
   --z-header: 50;
   --z-overlay: 80;
+}
+
+/* Keep the established 16px mobile margin used by the header and hero. */
+@media (max-width: 640px) {
+  :root { --gutter: 1rem; }
 }

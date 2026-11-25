@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1740" height="1110" viewBox="0 0 1740 1110" role="img" aria-labelledby="t d">
+<title id="t">DigitalInvoice implementation Gantt timeline, 2026–2027</title><desc id="d">Completed 2026 work; VAPT targets through January 2027; illustrative NRS-dependent milestones into Q1 2027; first ISO surveillance in October 2027.</desc>
+<rect x="0.0" y="0.0" width="1740.0" height="1110.0" fill="#f5f8fd" rx="0" />
+<rect x="18.0" y="18.0" width="1704.0" height="1074.0" fill="#ffffff" rx="20" />
+<text x="48" y="65" font-family="Arial,sans-serif" fill="#102a4c" font-weight="800" font-size="29">DigitalInvoice implementation timeline</text>
+<text x="48" y="101" font-family="Arial,sans-serif" fill="#51677e" font-size="17">Recorded milestones and conditional targets  ·  25 November 2026</text>
+<rect x="48.0" y="124.0" width="16.0" height="16.0" fill="#0c9d92" rx="5" />
+<text x="73" y="137" fill="#51677e" font-size="15" font-family="Arial,sans-serif">Implemented / recorded</text>
+<rect x="378.0" y="124.0" width="16.0" height="16.0" fill="#bd801f" rx="5" />
+<text x="403" y="137" fill="#51677e" font-size="15" font-family="Arial,sans-serif">Independent VAPT target</text>
+<rect x="708.0" y="124.0" width="16.0" height="16.0" fill="#326bc4" rx="5" />
+<text x="733" y="137" fill="#51677e" font-size="15" font-family="Arial,sans-serif">NRS-dependent target</text>
+<path d="M460.0 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="464.0" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Oct 26</text>
+<path d="M556.7 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="560.7" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Nov 26</text>
+<path d="M650.2 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="654.2" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Dec 26</text>
+<path d="M746.9 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="750.9" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Jan 27</text>
+<path d="M843.6 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="847.6" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Feb 27</text>
+<path d="M930.9 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="934.9" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Mar 27</text>
+<path d="M1027.6 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="1031.6" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Apr 27</text>
+<path d="M1121.2 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="1125.2" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">May 27</text>
+<path d="M1217.8 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="1221.8" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Jun 27</text>
+<path d="M1311.4 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="1315.4" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Jul 27</text>
+<path d="M1408.1 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="1412.1" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Aug 27</text>
+<path d="M1504.8 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="1508.8" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Sep 27</text>
+<path d="M1598.3 170 V1010" stroke="#d7e3ef" stroke-width="1"/>
+<text x="1602.3" y="160" fill="#71859b" font-size="13" font-family="Arial,sans-serif">Oct 27</text>
+<rect x="34.0" y="165.0" width="1672.0" height="46.0" fill="#edf4fa" rx="4" />
+<text x="48" y="184" fill="#71859b" font-weight="700" font-size="11" font-family="Arial,sans-serif">RECORDED DELIVERY</text>
+<text x="48" y="206" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Platform redesign documented</text>
+<rect x="460.0" y="183.0" width="46.8" height="20.0" fill="#0c9d92" rx="5" />
+<text x="48" y="246" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">UBL adapter + ERP API documented</text>
+<rect x="509.9" y="229.0" width="65.5" height="20.0" fill="#0c9d92" rx="5" />
+<rect x="34.0" y="257.0" width="1672.0" height="46.0" fill="#edf4fa" rx="4" />
+<text x="48" y="292" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">MFA and security safeguards</text>
+<rect x="575.4" y="275.0" width="18.7" height="20.0" fill="#0c9d92" rx="5" />
+<text x="48" y="338" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Payments and onboarding hardening</text>
+<rect x="597.2" y="321.0" width="34.3" height="20.0" fill="#0c9d92" rx="5" />
+<rect x="34.0" y="349.0" width="1672.0" height="46.0" fill="#edf4fa" rx="4" />
+<text x="48" y="384" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Developer documentation published</text>
+<rect x="575.4" y="367.0" width="56.1" height="20.0" fill="#0c9d92" rx="5" />
+<text x="48" y="430" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">ISO certificate issued</text>
+<polygon points="615.9,413.0 625.9,423.0 615.9,433.0 605.9,423.0" fill="#0c9d92" stroke="#ffffff" stroke-width="2"/>
+<text x="630.9" y="428" fill="#51677e" font-size="12" font-family="Arial,sans-serif">20 Nov</text>
+<rect x="34.0" y="441.0" width="1672.0" height="46.0" fill="#edf4fa" rx="4" />
+<text x="48" y="476" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">SLA approved</text>
+<polygon points="631.5,459.0 641.5,469.0 631.5,479.0 621.5,469.0" fill="#0c9d92" stroke="#ffffff" stroke-width="2"/>
+<text x="646.5" y="474" fill="#51677e" font-size="12" font-family="Arial,sans-serif">25 Nov</text>
+<text x="48" y="522" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">SLA effective</text>
+<polygon points="637.8,505.0 647.8,515.0 637.8,525.0 627.8,515.0" fill="#0c9d92" stroke="#ffffff" stroke-width="2"/>
+<text x="652.8" y="520" fill="#51677e" font-size="12" font-family="Arial,sans-serif">27 Nov</text>
+<rect x="34.0" y="533.0" width="1672.0" height="46.0" fill="#edf4fa" rx="4" />
+<text x="48" y="552" fill="#71859b" font-weight="700" font-size="11" font-family="Arial,sans-serif">INDEPENDENT VAPT TARGETS</text>
+<text x="48" y="574" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">VAPT fieldwork</text>
+<rect x="631.5" y="551.0" width="71.7" height="20.0" fill="#bd801f" rx="5" />
+<text x="48" y="614" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Independent VAPT report</text>
+<rect x="706.4" y="597.0" width="37.4" height="20.0" fill="#bd801f" rx="5" />
+<rect x="34.0" y="625.0" width="1672.0" height="46.0" fill="#edf4fa" rx="4" />
+<text x="48" y="660" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Remediation and retest</text>
+<rect x="746.9" y="643.0" width="65.5" height="20.0" fill="#bd801f" rx="5" />
+<text x="48" y="690" fill="#71859b" font-weight="700" font-size="11" font-family="Arial,sans-serif">NRS-DEPENDENT / ILLUSTRATIVE</text>
+<text x="48" y="712" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Credentials planning checkpoint</text>
+<polygon points="840.5,689.0 850.5,699.0 840.5,709.0 830.5,699.0" fill="#326bc4" stroke="#ffffff" stroke-width="2"/>
+<text x="855.5" y="704" fill="#51677e" font-size="12" font-family="Arial,sans-serif">31 Jan</text>
+<rect x="34.0" y="717.0" width="1672.0" height="46.0" fill="#edf4fa" rx="4" />
+<text x="48" y="752" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Sandbox interoperability (4 weeks)</text>
+<rect x="843.6" y="735.0" width="84.2" height="20.0" fill="#326bc4" rx="5" />
+<text x="48" y="798" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Pilot UAT</text>
+<rect x="930.9" y="781.0" width="40.5" height="20.0" fill="#326bc4" rx="5" />
+<rect x="34.0" y="809.0" width="1672.0" height="46.0" fill="#edf4fa" rx="4" />
+<text x="48" y="844" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Production licence checkpoint</text>
+<polygon points="974.6,827.0 984.6,837.0 974.6,847.0 964.6,837.0" fill="#326bc4" stroke="#ffffff" stroke-width="2"/>
+<text x="989.6" y="842" fill="#51677e" font-size="12" font-family="Arial,sans-serif">15 Mar</text>
+<text x="48" y="890" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Q1 2027 go-live target</text>
+<polygon points="1024.5,873.0 1034.5,883.0 1024.5,893.0 1014.5,883.0" fill="#326bc4" stroke="#ffffff" stroke-width="2"/>
+<text x="1039.5" y="888" fill="#51677e" font-size="12" font-family="Arial,sans-serif">31 Mar</text>
+<rect x="34.0" y="901.0" width="1672.0" height="46.0" fill="#edf4fa" rx="4" />
+<text x="48" y="936" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">Hypercare (30 days post launch)</text>
+<rect x="1027.6" y="919.0" width="90.4" height="20.0" fill="#326bc4" rx="5" />
+<text x="48" y="966" fill="#71859b" font-weight="700" font-size="11" font-family="Arial,sans-serif">FUTURE SURVEILLANCE</text>
+<text x="48" y="988" fill="#102a4c" font-size="15" font-family="Arial,sans-serif">ISO surveillance audit</text>
+<polygon points="1657.6,965.0 1667.6,975.0 1657.6,985.0 1647.6,975.0" fill="#326bc4" stroke="#ffffff" stroke-width="2"/>
+<text x="1672.6" y="980" fill="#51677e" font-size="12" font-family="Arial,sans-serif">20 Oct</text>
+<path d="M460 168 V1010" stroke="#d7e3ef" stroke-width="1.5"/>
+<text x="48" y="1049" fill="#102a4c" font-size="15" font-family="Arial,sans-serif" font-weight="700">Critical path:</text>
+<text x="171" y="1049" fill="#51677e" font-size="14" font-family="Arial,sans-serif">NRS credentials → four-week sandbox tests → licence → go-live → 30-day hypercare</text>
+<text x="48" y="1076" fill="#51677e" font-size="12" font-family="Arial,sans-serif">NRS dates from January 2027 onward illustrate planning only. VAPT completion and production authorisation are required before launch.</text>
+</svg>

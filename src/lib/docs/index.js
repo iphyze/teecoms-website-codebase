@@ -4,7 +4,7 @@ import path from 'node:path'
 import { renderMarkdown } from './markdown'
 
 const DOCS_DIR = path.join(process.cwd(), 'src/content/docs')
-const VALID_SLUGS = new Set(['developers', 'api', 'data-structure', 'samples', 'architecture', 'security', 'sla', 'nrs-alignment'])
+const VALID_SLUGS = new Set(['developers', 'api', 'data-structure', 'samples', 'architecture', 'security', 'sla', 'timeline'])
 const FRONT_MATTER_KEYS = new Set(['title', 'description', 'version', 'effective', 'updated', 'status', 'pdf'])
 
 /** Small intentionally strict parser: no executable YAML or third-party YAML runtime. */
@@ -46,23 +46,32 @@ export function getDocumentation(slug) {
   if (slug === 'sla' && !['draft', 'approved'].includes(meta.status)) {
     throw new Error('SLA status must be draft or approved; published/foundation are not valid SLA states.')
   }
-  // An approved SLA must never publish without its reviewed, signed PDF.
-  // Drafts may carry the intended future filename but never expose a download.
-  if (slug === 'sla' && meta.status === 'approved') {
-    if (!meta.effective) throw new Error('Approved SLA requires a confirmed effective date in front matter.')
-    if (!meta.pdf) throw new Error('Approved SLA requires a signed PDF in the pdf front-matter field.')
-    const pdfFile = path.join(process.cwd(), 'public', meta.pdf.replace(/^\//, ''))
-    if (!fs.existsSync(pdfFile)) throw new Error(`Approved SLA PDF is missing: ${meta.pdf}`)
-    const pdfMagic = Buffer.alloc(5)
-    const fd = fs.openSync(pdfFile, 'r')
-    try { if (fs.readSync(fd, pdfMagic, 0, 5, 0) !== 5 || pdfMagic.toString() !== '%PDF-') throw new Error(`Approved SLA file is not a PDF: ${meta.pdf}`) }
+  // Publication of the management-approved *online* SLA is independent of a
+  // downloadable PDF. Never render a broken download link or accept a fake PDF.
+  // The PDF may be added later as a verified print copy of the same version.
+  if (slug === 'sla' && meta.status === 'approved' && meta.effective !== '2026-11-27') {
+    throw new Error('Approved SLA requires the confirmed 2026-11-27 effective date.')
+  }
+  const publicPdfPresent = (url) => {
+    if (!url || !/^\/docs\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.pdf$/.test(url)) return false
+    const file = path.join(process.cwd(), 'public', url.slice(1))
+    if (!fs.existsSync(file)) return false
+    const signature = Buffer.alloc(5)
+    const fd = fs.openSync(file, 'r')
+    try { return fs.readSync(fd, signature, 0, 5, 0) === 5 && signature.toString() === '%PDF-' }
     finally { fs.closeSync(fd) }
   }
-  const rendered = renderMarkdown(body, { status: meta.status, title: meta.title })
+  if (slug === 'sla' && meta.status === 'approved' && !publicPdfPresent(meta.pdf)) {
+    // Keep the approved page indexed but omit its download until the PDF exists.
+    meta.pdf = ''
+  }
+  const certificateUrl = '/docs/teecoms-iso-iec-27001-2022-certificate.pdf'
+  const safeBody = publicPdfPresent(certificateUrl)
+    ? body
+    : body.replace(/\[([^\]\n]+)\]\(\/docs\/teecoms-iso-iec-27001-2022-certificate\.pdf\)/g, '$1 (PDF available from Teecoms on request until uploaded)')
+  const rendered = renderMarkdown(safeBody, { status: meta.status, title: meta.title })
   if (slug === 'sla' && meta.status === 'approved') {
-    if (rendered.html.includes('[CONFIRM:')) throw new Error('Approved SLA contains unresolved [CONFIRM:] placeholders.')
-    meta.version = '1.0'
-    meta.description = 'Service levels, support procedures, security controls and recovery commitments for DigitalInvoice.'
+    if (/\[CONFIRM(?::[^\]]*)?\]/i.test(rendered.html)) throw new Error('Approved SLA has unresolved confirmation markers.')
   }
   return { ...meta, ...rendered, slug }
 }

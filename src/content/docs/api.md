@@ -3,7 +3,7 @@ title: DigitalInvoice API documentation
 description: Versioned ERP read API, OAuth 2.0, webhooks, web application authentication and NRS readiness boundaries.
 version: 1.1
 effective:
-updated: 2026-11-13
+updated: 2026-11-25
 status: published
 pdf: /docs/digitalinvoice-api-documentation-v1.1.pdf
 ---
@@ -11,7 +11,7 @@ pdf: /docs/digitalinvoice-api-documentation-v1.1.pdf
 # DigitalInvoice API documentation
 
 :::warning Integration availability and licensing
-This reference documents interfaces **implemented in the supplied DigitalInvoice backend**, not a guarantee that every interface is enabled on the public server. ERP OAuth access and outbound webhooks are feature-gated and require deployment configuration. The production API origin is distributed privately during authorised integration provisioning; a public endpoint has **not been independently verified**. The NRS sandbox base URL is likewise supplied only through approved configuration. **Teecoms has not yet obtained an NRS MBS licence. External NRS production submission is disabled.** Local readiness and queue results are not NRS clearance, validation, an IRN or a CSID.
+This reference documents interfaces **implemented in DigitalInvoice**, not a guarantee that every interface is enabled on the public server. ERP OAuth access and outbound webhooks are feature-gated and require deployment configuration. The production API origin is distributed privately during authorised integration provisioning; a public endpoint has **not been independently verified**. The NRS sandbox base URL is likewise supplied only through approved configuration. **Teecoms has not yet obtained an NRS MBS licence. External NRS production submission is disabled.** Local readiness and queue results are not NRS clearance, validation, an IRN or a CSID.
 :::
 
 ## Overview
@@ -21,7 +21,7 @@ DigitalInvoice is an invoicing platform developed by Teecoms Integrated Solution
 1. **ERP integration API (v1):** OAuth 2.0 client-credentials access to **organisation-scoped, read-only** customer, item, invoice, credit-note, payment and local NRS-readiness information; signed outbound webhooks for selected events. This is the API intended for external ERP clients.
 2. **Web application API:** cookie-based authenticated business workflows used by the DigitalInvoice web application. These include invoice creation, approval, payments and local NRS readiness. They are **not** writable ERP endpoints.
 
-The ERP route descriptions were checked against the supplied 7 November 2026 backend; the NRS sandbox/resource sections were checked again against the **13 November 2026 Phase 5 backend changes**. Deployment enablement, external reachability and a successful live NRS sandbox call have not been independently verified.
+The ERP route descriptions reflect the DigitalInvoice integration API documented on **7 November 2026**; the NRS sandbox/resource sections incorporate the **13 November 2026 Phase 5 changes**. External sandbox acceptance and live NRS production access are separate from these API definitions.
 
 ## Environments and base URLs
 
@@ -461,14 +461,14 @@ The external NRS API uses **`x-api-key` and `x-api-secret`** headers as describe
 
 The [official NRS v1.1 changelog](https://einvoice.nrs.gov.ng/changelog) includes the April 2026 `PARTIAL` payment update and quantity-code resource, February 2026 tax category additions, and December 2025 invoice kinds `B2B`, `B2C`, `B2G` and `G2B`. The supplied local adapter already maps invoice payments marked `partially_paid` to `PARTIAL` and recognises the NRS quantity-code resource. **The latest backend now implements authenticated sandbox resource-sync operations and an official-code preflight, but neither a completed provider sync in deployment nor an authorised sandbox acceptance test has been evidenced. There is still no production `/update` payment sender or B2G/G2B invoice workflow.**
 
-The NRS [System Integrator requirements](https://einvoice.nrs.gov.ng/serivce-providers/system-integrators) describe cryptographic stamping with **ECDSA** and **JAdES** signatures. The backend has a sandbox-gated remote `sign` operation plus **ECDSA certificate inspection and signing-readiness checks**; it does **not** implement a verified local JAdES/ECDSA signer. Whether DigitalInvoice or an authorised Access Point Provider must apply specific signatures must be resolved in the licensed integration design. See the [requirement crosswalk](/developers/nrs-alignment/).
+The NRS [System Integrator requirements](https://einvoice.nrs.gov.ng/serivce-providers/system-integrators) describe cryptographic stamping with **ECDSA** and **JAdES** signatures. The backend has a sandbox-gated remote `sign` operation plus **ECDSA certificate inspection and signing-readiness checks**; it does **not** implement a verified local JAdES/ECDSA signer. Whether DigitalInvoice or an authorised Access Point Provider must apply specific signatures must be resolved in the licensed integration design. The [NRS System Integrator guidance](https://einvoice.nrs.gov.ng/serivce-providers/system-integrators) remains authoritative for signing responsibilities and approved service-provider roles.
 
 
 ## Data structure and schema
 
 The NRS mapping derives from the backend's **local UBL JSON schema, UBL adapter, generated fixtures and SQL migrations**. The intended public mapping covers supplier, buyer, invoice metadata, lines, discounts, tax categories, monetary totals, payment data, and references. Values such as local `firs_compliance_status` are **internal readiness fields**, not evidence of NRS acceptance.
 
-The versioned machine-readable schema, field mapping CSV, and B2B/B2C/credit-note examples are **published** at [Data structure](/developers/data-structure/). The [NRS v1.1 alignment review](/developers/nrs-alignment/) compares them with more recent official change notices. This API reference intentionally avoids inventing official NRS field names or manually fabricating a compliant UBL payload.
+The versioned machine-readable schema, field mapping CSV, and B2B/B2C/credit-note examples are **published** at [Data structure](/developers/data-structure/). DigitalInvoice tracks current NRS MBS technical documentation (v1.1) and updates its payload mapping as official change notices are published. This API reference intentionally avoids inventing official NRS field names or manually fabricating a compliant UBL payload.
 
 ## Versioning and changelog
 
@@ -477,12 +477,10 @@ The versioned machine-readable schema, field mapping CSV, and B2B/B2C/credit-not
 | 2026-11-07 | `1.0` | Initial public documentation of verified v1 ERP OAuth read endpoints, administration, webhooks, browser session boundaries and NRS licence-gated readiness |
 | 2026-11-13 | `1.1` (documentation only) | NRS v1.1 review, then Phase 5 reconciliation: sandbox reference-sync safeguards, official-code preflight, permission-controlled sandbox `/validate`, ECDSA certificate checks and unchanged production lock; ERP route version remains `/integrations/v1/` |
 
-`/integrations/v1/` is the implemented ERP route version. Any future incompatible API contract changes require a separately communicated version and migration guidance; a specific deprecation notice period has not yet been approved; migration periods will be communicated per release. This documentation's date indicates code review against the provided archive, **not** public deployment validation.
+`/integrations/v1/` is the implemented ERP route version. Breaking changes are announced at least **90 days** in advance, as set out in section 11 of the [Service Level Agreement](/sla/); urgent security fixes may require a shorter notice period, with immediate notice. This reference documents DigitalInvoice API version **1.1** as of **25 November 2026**.
 
 ## Support and Service Level Agreement
 
-For technical access, provisioning and integration issues, contact **info@teecomsintegratedsolutions.ng** or **+2347038020088** (Teecoms general contact channels shown on the website). Dedicated integration support hours remain governed by any executed agreement. Do not email client secrets, access tokens, customer records or webhook signing secrets. The service support and escalation terms are described in the [Service Level Agreement](/sla/) (currently a **draft pending management approval**). There is no contractual API availability or rate-limit SLA established by this API document.
+For technical access, provisioning and integration issues, contact **info@teecomsintegratedsolutions.ng** or **+2347038020088** (Teecoms general contact channels shown on the website). Support hours, severity levels and escalation are defined in the [Service Level Agreement](/sla/), effective **27 November 2026**. For privacy and security, integration enquiries should not include client secrets, access tokens, customer records or webhook signing secrets. This API reference does not independently establish additional availability or rate-limit commitments.
 
-:::warning Items to confirm before submitting these links to NRS
-Confirm the actual public API origin, mounted base path, staging availability, feature-flag enablement, working TLS/certificate, authorised support contact and signed/approved SLA. Test the exact public documentation URL and PDF from an unauthenticated browser. The absence of an NRS MBS licence must remain clearly disclosed.
-:::
+

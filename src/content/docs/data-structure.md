@@ -3,7 +3,7 @@ title: Invoice data structure and field mapping
 description: DigitalInvoice's locally validated NRS MBS UBL-style JSON projection, database mapping and fictional test payloads.
 version: 1.1
 effective:
-updated: 2026-11-13
+updated: 2026-11-25
 status: published
 pdf:
 ---
@@ -12,7 +12,7 @@ pdf:
 
 ## Overview and integration status
 
-This document describes the **outgoing UBL-style invoice JSON structure** produced by DigitalInvoice's PHP `firsUblPayload` adapter and checked by its local preflight validator. It covers standard B2B invoices, simplified B2C invoices, credit notes, line details, tax and payment amounts, classification codes and database traceability. The model is based on the **NRS MBS invoice-schema v1.1 profile** used by the supplied backend.
+This document describes the **outgoing UBL-style invoice JSON structure** produced by DigitalInvoice's PHP `firsUblPayload` adapter and checked by its local preflight validator. It covers standard B2B invoices, simplified B2C invoices, credit notes, line details, tax and payment amounts, classification codes and database traceability. The model is based on the **NRS MBS invoice-schema v1.1 profile** used by DigitalInvoice.
 
 :::warning Local schema — not an official NRS schema
 The downloadable JSON Schema is **DigitalInvoice's own Draft 2020-12 projection**, not a schema exported or certified by NRS. The JSON samples are fictional **generated unit-test fixtures**, not accepted submissions, real customer invoices, NRS-issued IRNs or evidence of clearance. The final NRS specification, official reference data and remote validation remain authoritative.
@@ -33,7 +33,7 @@ The adapter and local validation are implemented, but **Teecoms does not yet hol
 | [Mixed-tax fixture](/docs/sample-payloads/digitalinvoice-multiple-tax-categories-v1.0.json) | Standard-tax and exempt lines with separate tax subtotals | JSON |
 | [Two-level discount fixture](/docs/sample-payloads/digitalinvoice-two-level-discount-v1.0.json) | Line discount plus invoice-level allowance | JSON |
 
-All six JSON examples are **byte-for-byte copies** of the supplied backend's `tests/generated_fixtures/*.json` at the documentation revision date. They are not built from records in the uploaded database export. The documentation download filenames are versioned separately from the internal NRS v1.1-style schema profile.
+All six JSON examples are **byte-for-byte copies** of DigitalInvoice's `tests/generated_fixtures/*.json` at the documentation revision date. They are not built from records in production customer records. The documentation download filenames are versioned separately from the internal NRS v1.1-style schema profile.
 
 ## Structure at a glance
 
@@ -96,7 +96,7 @@ The table below highlights representative mappings. The [complete downloadable C
 | `source_irn` | `billing_reference[].irn` | Original `invoices.nrs_invoice_identifier` | Credit notes require original NRS IRN |
 
 :::info Source-of-truth correction
-An earlier backend CSV described buyer state, LGA and postal-zone data as coming from the **current** customer record. The supplied newer `firsLocalInvoicePayload` implementation instead uses **invoice snapshots**, so this published CSV reflects the newer code and SQL structure. Missing historical snapshots must be corrected through a verified data-migration or reissue process, not silently reconstructed from changed customer details.
+An earlier backend CSV described buyer state, LGA and postal-zone data as coming from the **current** customer record. The current `firsLocalInvoicePayload` implementation instead uses **invoice snapshots**, so this published CSV reflects the newer code and SQL structure. Missing historical snapshots must be corrected through a verified data-migration or reissue process, not silently reconstructed from changed customer details.
 :::
 
 ## Codes and reference data
@@ -120,7 +120,7 @@ The official [NRS API changelog](https://einvoice.nrs.gov.ng/changelog) records 
 
 | Official update | Verified local behaviour | Outstanding condition |
 | --- | --- | --- |
-| `invoice_kind`: B2C/B2B/B2G/G2B | Local JSON Schema and `firsUblValidate` accept all four; invoice workflow and stored transaction type only permit B2B/B2C | B2G/G2B end-to-end creation, approval, queue and reporting **not implemented** in supplied workflow |
+| `invoice_kind`: B2C/B2B/B2G/G2B | Local JSON Schema and `firsUblValidate` accept all four; invoice workflow and stored transaction type only permit B2B/B2C | B2G/G2B end-to-end creation, approval, queue and reporting **not implemented** in the current workflow |
 | `payment_status: PARTIAL` | PHP UBL adapter maps `partially_paid` to `PARTIAL`; local schema admits the value | Production NRS payment-update sender and acknowledgement reconciliation **not verified** |
 | `/resources/invoice-quantity-codes` | Phase 5 supports authenticated sandbox `quantity_codes` synchronisation and compares line `price.price_unit` against the `synced` list | A working provider response and correct codes in historic invoice snapshots still require actual sandbox verification |
 | `Withholding_Tax`, `Stamp_Duty`, `Exempted` | Local tax projection is category-aware and fixtures cover VAT/exempt examples | These 2026 tax classes are **not demonstrated as configured/calculated/reportable**; verify official identifiers and treatment |
@@ -129,7 +129,7 @@ The official [NRS API changelog](https://einvoice.nrs.gov.ng/changelog) records 
 
 The NRS [invoice-schema v1.1 reference](https://einvoice.nrs.gov.ng/docs/system-integrator/invoice-schema?version=1.1) identifies mandatory elements including `BusinessID`, `IRN`, issue date, invoice type and kind, currencies, supplier party, tax totals, monetary totals and invoice lines. Our published schema is a **local snake_case adapter**, not an official NRS-issued JSON Schema. Its `payment_status` enum can include `REJECTED`, but the current adapter only emits `PAID`, `PARTIAL` and `PENDING` from payment records. Schema acceptance is not proof of application workflow coverage.
 
-For the full crosswalk including **ECDSA/JAdES signing, SI/APP responsibilities and service levels**, read [NRS v1.1 alignment](/developers/nrs-alignment/). These specifications are later than May 2025; applying fictitious historical review or implementation dates would be misleading.
+The [NRS System Integrator requirements](https://einvoice.nrs.gov.ng/serivce-providers/system-integrators) and [invoice schema documentation](https://einvoice.nrs.gov.ng/docs/system-integrator/invoice-schema?version=1.1) remain authoritative for signing, SI/APP responsibilities and reference-code changes. DigitalInvoice tracks the current v1.1 specifications and updates its local payload mapping as NRS publishes changes.
 
 
 ## Phase 5 official-code preflight — separate from monetary checks
@@ -173,7 +173,7 @@ The local number parser rejects monetary text with more than two fractional digi
 
 ### Running the local schema test
 
-To validate the published fixtures against the published *local* JSON Schema, save the schema and JSON files from the links above and run a Draft 2020-12-compatible JSON Schema validator. For the original backend repository, the supplied test script is:
+To validate the published fixtures against the published *local* JSON Schema, save the schema and JSON files from the links above and run a Draft 2020-12-compatible JSON Schema validator. For reproducible local validation, the DigitalInvoice backend test command is:
 
 ```bash
 # Requires Python 3 and the optional jsonschema package.
@@ -191,7 +191,7 @@ The command checks the backend source schema and all six generated fixtures. It 
 
 ### B2C simplified invoice
 
-[Open the full B2C JSON payload](/docs/sample-payloads/digitalinvoice-b2c-simplified-v1.0.json). It has `invoice_kind: "B2C"` and code `380`; the UI's simplified document setting is **not** a separate outgoing `firs_document_type` field in the supplied UBL adapter. The fixture retains populated buyer details for test convenience and does **not** establish that every field is mandatory for a real B2C submission.
+[Open the full B2C JSON payload](/docs/sample-payloads/digitalinvoice-b2c-simplified-v1.0.json). It has `invoice_kind: "B2C"` and code `380`; the UI's simplified document setting is **not** a separate outgoing `firs_document_type` field in the DigitalInvoice UBL adapter. The fixture retains populated buyer details for test convenience and does **not** establish that every field is mandatory for a real B2C submission.
 
 ### Credit note
 
@@ -217,4 +217,4 @@ All sample UUIDs, IRNs, addresses, seller/buyer names, tax identifiers, classifi
 
 This **documentation version 1.1** reflects the November 2026 backend review, including the **13 November Phase 5 update**, compared with publicly described NRS v1.1 requirements. The downloadable JSON Schema identifies itself as a local projection of **NRS invoice schema v1.1**; these two version numbers serve different purposes. When adapter fields or database mappings change, update this article, regenerate the CSV and samples from the actual backend, validate them, and publish new versioned filenames without changing `/developers/data-structure/`.
 
-For integration guidance see the [API documentation](/developers/api/) and for contractual service terms see the [SLA draft](/sla/). Unconfirmed production and sandbox access details must be verified before sharing credentials or submitting documentation as formal NRS evidence.
+For integration guidance see the [API documentation](/developers/api/) and for contractual service terms see the [approved SLA](/sla/). Production and sandbox access is provisioned through authorised integration channels; credentials are never distributed through public documentation.

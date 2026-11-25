@@ -110,7 +110,7 @@ const Header = () => {
         <div className={`container ${styles.bar}`}>
           <a href="/" className={styles.brand} aria-label="Teecoms, home">
             {/* The hero follows the theme, so the logo does too */}
-            <BrandLogo height={34} priority />
+            <BrandLogo height={29} priority />
           </a>
 
           <nav className={styles.nav} aria-label="Main">
@@ -134,7 +134,7 @@ const Header = () => {
           </nav>
 
           <div className={styles.actions}>
-            <ThemeToggle />
+            <ThemeToggle className={styles.headerThemeToggle} />
             <Button href={resolveSiteHref('#contact', isHome)} size="sm" className={styles.cta}>
               Talk to an Expert
             </Button>
@@ -146,7 +146,7 @@ const Header = () => {
               aria-controls="mobile-menu"
               onClick={() => setIsMenuOpen(true)}
             >
-              <Menu size={22} aria-hidden="true" />
+              <Menu size={18} aria-hidden="true" />
               <span className="sr-only">Open menu</span>
             </button>
           </div>
@@ -164,9 +164,9 @@ const Header = () => {
         inert={!isMenuOpen}
       >
         <div className={styles.sheetTop}>
-          <BrandLogo height={32} />
+          <BrandLogo height={22} />
           <button ref={closeButtonRef} type="button" className={styles.menuButton} onClick={closeMenu}>
-            <X size={22} aria-hidden="true" />
+            <X size={18} aria-hidden="true" />
             <span className="sr-only">Close menu</span>
           </button>
         </div>
