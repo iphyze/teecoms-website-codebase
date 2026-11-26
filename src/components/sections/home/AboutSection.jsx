@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Eyebrow from '@/components/ui/Eyebrow'
+import HeadingAccent from '@/components/ui/HeadingAccent'
 import Reveal from '@/components/ui/Reveal'
 import styles from './AboutSection.module.css'
 
@@ -62,7 +63,9 @@ export default function AboutSection({ content }) {
 
           <Reveal from="right" className={styles.storyCopy} delay={90}>
             <Eyebrow className={styles.eyebrow}>{content.eyebrow}</Eyebrow>
-            <h2 id="about-title" className={styles.title}>{content.title}</h2>
+            <h2 id="about-title" className={styles.title}>
+              <HeadingAccent title={content.title} phrases={['Built', 'Your Business']} />
+            </h2>
             <p className={styles.lead}>{content.lead}</p>
             <p className={styles.body}>{content.paragraphs[1]}</p>
             <div className={styles.storyActions}>

@@ -306,8 +306,6 @@
 
   .menuButton {
     display: grid;
-    width: 2.25rem;
-    height: 2.25rem;
   }
   /* The hamburger is borderless; the drawer close button keeps its ring. */
   .actions .menuButton {
@@ -322,9 +320,17 @@
   /* Desktop rule for .nav + .actions used to pull the actions next to the
      navigation even when that navigation is hidden. Restore right alignment. */
   .nav + .actions { margin-left: auto; gap: .55rem; }
-  .brand img { height: 24px !important; width: auto !important; }
-  .actions .headerThemeToggle { width: 2.25rem; height: 2.25rem; }
-  .actions .headerThemeToggle svg { width: 1rem; height: 1rem; }
+  /* The original artwork is roughly 6:1. Scale its width within the
+     available space, keeping its intrinsic aspect ratio on narrow phones. */
+  .brand { min-width: 0; flex-shrink: 1; }
+  .brand > span { max-width: 100%; }
+  .brand img {
+    width: clamp(10.5rem, calc(7.5rem + 15vw), 12.5rem) !important;
+    height: auto !important;
+  }
+  .actions { flex-shrink: 0; }
+  .actions .headerThemeToggle { width: 2.75rem; height: 2.75rem; }
+  .actions .headerThemeToggle svg { width: 1.375rem; height: 1.375rem; }
 }
 
 @media (max-width: 30rem) {
@@ -332,12 +338,7 @@
     gap: var(--space-3);
   }
 
-  .brand img {
-    height: 22px !important;
-  }
   .nav + .actions { gap: .4rem; }
-  .menuButton { width: 2.15rem; height: 2.15rem; }
-  .actions .headerThemeToggle { width: 2.15rem; height: 2.15rem; }
 }
 
 /* Documentation pages have no hero backdrop: keep the fixed header legible

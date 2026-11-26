@@ -146,7 +146,7 @@ const Header = () => {
               aria-controls="mobile-menu"
               onClick={() => setIsMenuOpen(true)}
             >
-              <Menu size={18} aria-hidden="true" />
+              <Menu size={24} aria-hidden="true" />
               <span className="sr-only">Open menu</span>
             </button>
           </div>
@@ -164,7 +164,7 @@ const Header = () => {
         inert={!isMenuOpen}
       >
         <div className={styles.sheetTop}>
-          <BrandLogo height={22} />
+          <BrandLogo height={32} />
           <button ref={closeButtonRef} type="button" className={styles.menuButton} onClick={closeMenu}>
             <X size={18} aria-hidden="true" />
             <span className="sr-only">Close menu</span>

@@ -1,0 +1,12 @@
+/* Inline, wrapping underline: no absolute-positioned line to collide with
+   adjacent text or overflow on small screens. The host heading can set its
+   own contrast-aware accent for dark editorial bands. */
+.accent {
+  color: var(--heading-accent, var(--color-primary));
+  font-style: italic;
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 48%, transparent);
+  text-decoration-thickness: 0.075em;
+  text-underline-offset: 0.13em;
+  text-decoration-skip-ink: auto;
+}

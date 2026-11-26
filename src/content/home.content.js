@@ -109,6 +109,8 @@ export const aboutContent = {
 
 export const servicesContent = {
   eyebrow: 'What We Do',
+  exploreLabel: 'Explore Services',
+  catalogueTitle: 'A Complete Suite of Technology Services',
   title: 'Comprehensive Technology Solutions for a Digital World.',
   intro:
     'From building reliable technology infrastructure to developing intelligent software solutions, Teecoms offers services that help organisations operate efficiently, protect their digital assets and adapt to technological change.',

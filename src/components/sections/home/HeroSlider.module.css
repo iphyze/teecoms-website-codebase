@@ -85,7 +85,8 @@
 .eyebrow::before { content: ''; display: inline-block; width: 1.65rem; height: 2px; background: var(--accent); vertical-align: middle; margin-right: .72rem; }
 .title {
   max-width: 1050px;
-  font-size: clamp(2.15rem, 3.6vw, 4.05rem);
+  /* A continuous phone-to-desktop scale avoids the old drop at 640px. */
+  font-size: clamp(2.125rem, max(min(8.4vw, 3.1rem), 4.25vw), 4.65rem);
   line-height: 1.13;
   letter-spacing: -.048em;
   text-wrap: balance;
@@ -187,7 +188,7 @@
 }
 @media (max-width: 640px) {
   .inner { padding-top: calc(var(--header-h) + 2.35rem); }
-  .title { font-size: clamp(1.95rem, 7.8vw, 2.9rem); line-height: 1.16; }
+  .title { line-height: 1.16; }
   .description { max-width: 38rem; font-size: .875rem; line-height: 1.55; }
   .eyebrow { letter-spacing: .075em; margin-bottom: .8rem; }
   /* Both existing CTA labels remain in one row; their text may wrap inside

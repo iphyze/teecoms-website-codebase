@@ -1,5 +1,34 @@
 # Teecoms website changelog
 
+## 2026-11-26 — About and Services typography, card and layout refinement (Update 007)
+
+- Applied a reusable inline blue italic underline treatment to “Built” and “Your Business” in the About title, “Technology Solutions” in the Services introduction, and “Technology Services” in the catalogue title. Kept all approved copy, with no global heading or theme changes.
+- Rebalanced the Services introductory columns from 53/47 to 44/56, maintaining the original photograph's proportions and mobile stacking; expanded the text measure. Restyled only the service cards with near-white/off-white surfaces in light mode and muted slate/charcoal surfaces in dark mode, retaining subtle shadows and interactive states. Changed the closing contact CTA to the shared primary blue variant.
+- Preserved Update 006's slide expansion/collapse, keyboard controls, contact preselection, scroll reveal and reduced-motion behaviour. No new dependency or changes to other sections, images or content data.
+- QA: 14 source regression tests passed; 107 JS/JSX/CSS files parsed. Source-rendered Chromium fixtures passed 28 layout cases (14 widths, 320–1920px, both themes) and 24 intermediate-height slide cases plus reduced-motion checks. All eight contact and expansion callbacks passed the component harness. Full production build attempted but blocked by missing `sharp`; live Next.js hydration remains unverified.
+
+## 2026-11-26 — Services details slide animation (Update 006)
+
+- Replaced the immediate hidden/show toggle and entrance fade with an intrinsic-height, 280ms slide in both directions using CSS grid tracks and the shared easing token. No fixed maximum height or new dependency.
+- Kept one open service at a time, contact preselection, all existing content and styling. Closed details are inert and excluded from assistive technology immediately; reduced-motion visitors see an instant state change. The equal-height collapsed grid is restored after the closing transition, with a fallback for interrupted transitions.
+- QA: 13 regression tests passed, JSX/CSS parsed, and the component callback harness passed all eight service actions. Chromium source-rendered fixtures verified intermediate and final opening/closing heights, full content height, inert focus, and horizontal overflow for two cards at six widths in both themes (24 cases); reduced motion passed. Production build attempted but blocked by missing `sharp`; live Next.js hydration remains unverified.
+
+## 2026-11-26 — Services redesign: photo-led Option 2
+
+- Replaced the Services Explorer with the selected editorial split introduction and eight numbered cards; the original heading, introductory copy, service titles, taglines, full descriptions, icons and closing CTA are preserved. Added the approved concept's catalogue heading and an Explore Services anchor.
+- Used navy, slate, soft blue and neutral surfaces, with no green UI accents or additional logos; both themes inherit existing tokens. The selected concept's illustrative collaboration photograph is cropped to a local WebP asset, separate from the About photograph.
+- Added accessible per-card expand/collapse, one open detail at a time, 44px detail controls, keyboard navigation and equal-height collapsed cards. Preserved the exact service-selection event and contact links, shared gutters, repeatable scroll reveal and reduced-motion support.
+- Responsive layout: four columns at ≥1200px, two at 561–1199px, one at ≤560px; intro stacks at ≤800px. No unrelated source changes or new dependencies. Retained Update 004's prior documentation entries.
+- QA: existing and new source regression tests passed. Chromium source-rendered layout fixtures passed 76 cases across 19 widths (320–1920px), both themes, and collapsed/longest-title expanded states, with no horizontal overflow. A component callback harness exercised all eight expand/collapse and contact-selection events. Full Next.js build attempted but blocked by missing `sharp`; real-route hydration, contact-form integration and animation review remain to be verified locally.
+
+## 2026-11-26 — Mobile navigation sizing and larger homepage hero headlines
+
+- Increased the mobile header logo fluidly to 168–200px wide (about 28–33px high), retaining its original aspect ratio and the existing high-resolution light/dark artwork. The desktop logo remains 29px high; the shared gutters and header height are unchanged.
+- Restored 44 × 44px header touch targets and increased the sun/moon icons to 22px and the borderless hamburger to 24px. Kept the controls right-aligned, with the existing focus feedback and menu behaviour. Increased the mobile drawer logo from 22px to 32px, preserving the close button and menu-link typography.
+- Increased all four hero headlines via a single continuous responsive font-size scale (34–74.4px at the tested viewport widths), removing the previous font-size drop across 640px. Kept all wording, heading weight, line height, tracking, supporting text, CTA typography, illustrations, gradients, dotted background and carousel settings unchanged.
+- Updated the typography specification in the build guide; no build/deployment steps or dependencies changed.
+- QA: all 9 existing regression tests passed; 64 JavaScript/JSX files and 41 CSS files parsed without errors. Chromium source-rendered layout fixtures (16 widths, both themes, all 4 slides; 128 updated cases compared with 128 original cases) passed the size, text-wrap, gutter, touch-target and overflow checks. The real Next.js build was attempted but could not complete because `sharp` and other project dependencies were unavailable and npm registry DNS resolution failed. Interactive Next.js route, theme-switch, menu, carousel and scroll-reveal tests remain to be performed locally.
+
 ## 2026-11-25 — About collaboration image, buttons, scroll replay and visual polish
 
 - Replaced the duplicated leadership portraits in the homepage About media panel with a purpose-created **illustrative** collaboration image at `public/images/about/team-collaboration.webp` (the actual team portraits remain intact in the Our Team section). The new image is explicitly described as illustrative, not as a photograph of Teecoms employees.

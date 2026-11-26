@@ -320,18 +320,11 @@ For each section:
 
 ### 5.2 Services (`#services`): `ServicesSection.jsx`
 
-**Reference:** `02-services-light.png` / `-dark.png`, `.svc-grid` in `comps.css`.
+**Current reference:** the approved photo-led Option 2 (26 November 2026), described in the Services section below. The earlier `02-services-light.png` / `-dark.png` and `.svc-grid` are historical references only.
 
-- **Header row:** two columns. The eyebrow and h2 sit on the left, and the intro paragraph sits right-aligned at the bottom right.
-- **Grid:** 4 × 2 on desktop, 2 columns under 1100px, 1 column under 560px.
-- **Each card:**
-  - Top row: an icon tile (3rem, `--color-primary-soft`) and the number `01`–`08`, matching the numbering in the copy document.
-  - The title as an h3, the bold tagline in primary blue, and the description.
-  - **Icons:** Server, Cloud, ShieldCheck, MonitorCog, Code2, Workflow, GraduationCap, Presentation.
-- **Hover:** the card lifts 4px, the border tints blue, the shadow grows and the icon tile turns solid blue (shown on card 03 in the preview).
-- **Below the grid:** a centred primary button "Let's Build Your Next Solution" linking to `#contact`.
-- **Motion:** the heading reveals, then the 8 cards `stagger`, then the button.
-**Status: built.** Cards are not links: there's no per-service page to go to.
+- Use a photographic split introduction, with the original headline, eyebrow and intro copy, followed by a numbered service catalogue.
+- All eight service titles, icons, taglines and descriptions remain sourced from `servicesContent`; each card expands to reveal the full description and original contact actions.
+- Use blue/slate/neutral accents only, the shared container, tokens, buttons and repeatable reveal animation. Do not introduce a new logo or change other sections.
 
 ### 5.3 DigitalInvoice (`#digitalinvoice`): `DigitalInvoiceSection.jsx`
 
@@ -523,7 +516,7 @@ The four-slide hero has been **rebuilt as a centred, full-width product-led pres
 - **Illustrations:** `HeroVisual.jsx` + `HeroVisual.module.css` render four themed scenes through the same component; their labels are taken from the service terms already on the site. The panels avoid invented adoption statistics, financial values or production-status claims.
 - **Themes:** light mode uses airy white/blue surfaces; dark mode uses slate/navy gradients and restrained cyan-blue glows. The full-width abstract ribbon artwork comes from `public/images/hero/flow-light.svg` and `flow-dark.svg`, layered in `HeroSlider.module.css`, with no circular/blob elements. Hero-specific semantic variables live in `HeroSlider.module.css` and `HeroVisual.module.css`, not in page-wide styles.
 - **Gutters:** hero and marketing-page header use the same fluid width, `min(100% - 2 * clamp(1.5rem,3.75vw,4.25rem),1480px)`; mobile uses 2rem total exterior space. The extra desktop breathing room and shared alignment replace the previous overly wide hero presentation; docs and SLA layouts are unchanged.
-- **Typography:** headings use `clamp(2.15rem,3.6vw,4.05rem)` at desktop and `clamp(1.95rem,7.8vw,2.9rem)` on phones. Descriptions use `clamp(.875rem,.93vw,1rem)` with line-height 1.55 and a 1180px desktop maximum so approved long copy reads in roughly two lines at wide viewports; wrapping is natural on smaller screens (never clamp/truncate the content).
+- **Typography:** headings use one continuous scale, `clamp(2.125rem, max(min(8.4vw, 3.1rem), 4.25vw), 4.65rem)`, across all viewports. Descriptions use `clamp(.875rem,.93vw,1rem)` with line-height 1.55 and a 1180px desktop maximum so approved long copy reads in roughly two lines at wide viewports; wrapping is natural on smaller screens (never clamp/truncate the content).
 - **Motion:** fade/lift transitions on active slides, line-chart draw-in, capability meters, slow floating contextual cards and a quiet shifting ribbon wash over the static wave SVGs. All loops pause off-screen, in hidden tabs, or when playback is paused; `prefers-reduced-motion` disables them. No pointer-dependent spotlight or decorative parallax tracking is needed.
 - **Carousel:** retains Swiper fade, keyboard controls, progress tabs, next/previous and play/pause. Auto-rotation is slightly slower to keep long approved descriptions readable.
 - **Cleanup:** remove unused `HeroAurora.jsx` and `HeroAurora.module.css`; the new hero uses its own CSS gradient layers and does not import the old aurora.
@@ -604,15 +597,15 @@ If PHP isn't running, the form shows its error message and the browser console e
 
 ---
 
-## Services section: Explorer layout (current)
+## Services section: photo-led catalogue (current)
 
-`ServicesSection.jsx` (now a client component) replaces the eight-card grid in section 5.2 with the approved Explorer design:
+The selected Option 2 replaces the former Explorer with a photo-led editorial introduction and eight individually expandable service cards.
 
-- **Desktop:** the list of services (number, title, tagline) sits beside a sticky showcase panel. The panel shows the chosen service's icon with two accent icons (`ACCENTS` map), the "03 / 08" count, title, tagline, full description, "Discuss this service" and a progress strip. Panel content fades/slides in on each change.
-- **Mobile (≤900px):** an accordion. The single panel is moved directly below the chosen service with CSS `order` (`--i` on each button, `--active` on the container), so content isn't duplicated.
-- **Accessibility:** each service is a `button` with `aria-expanded` and `aria-controls="services-panel"`; the panel is a labelled region. Arrow Up/Down, Home and End move between services.
-- **"Discuss this service"** dispatches `teecoms:select-service` with the service title, which `ContactForm` uses to preselect the option (titles match `serviceOptions`), then scrolls to `#contact`.
-- **Layout detail:** the grid has `repeat(8, auto) 1fr` rows, and the panel spans all nine, so a tall panel grows the last row instead of spacing the services apart.
+- **Introduction:** a rounded two-column band using `--gradient-band`, with an illustrative photo on the left and the original approved copy on the right. The image takes 44% of the available two-column width, with 56% reserved for copy; its original aspect ratio is preserved. The words “Technology Solutions” use a light blue italic underline accent, shared with the About headline (“Built” and “Your Business”) and catalogue heading (“Technology Services”); no green UI accents or extra logos are used. At 800px and below, the image stacks above the copy. The photo is a clean crop of the selected design concept, stored locally as `public/images/services/technology-collaboration.webp` (508×356). It is illustrative, not a representation of actual employees.
+- **Catalogue:** the existing eight services in the original order, numbered 01–08, with title, tagline, icon and accessible “Learn more” button. Four columns at 1200px and wider, two from 561–1199px, and one at 560px and below. The cards use a near-white to off-white fill in light mode and a soft slate-to-charcoal fill in dark mode, with subtle existing shadow tokens. Collapsed cards use equal-height grid rows on tablets and desktops; an expanded card uses its natural height.
+- **Interaction:** initially collapsed. Activating a card smoothly slides open its own labelled region with the full approved body, “Discuss this service” and “Or ask about anything else”; activating it again slides it closed. Only one detail is open at a time. The panel transitions between 0fr and 1fr using the shared 280ms motion token; closed panels are inert and hidden from assistive technology. Equal-height rows return after the closing transition, not during it. Reduced motion skips the transition. Buttons retain 44px touch targets, `aria-expanded`/`aria-controls` and native Enter/Space activation. Arrow Up/Down, Home and End move focus between card controls.
+- **Navigation:** the introductory button links to `#service-offerings`. The original section ID `#services` and closing CTA destination remain unchanged; the closing CTA uses the shared primary blue button. “Discuss this service” dispatches `teecoms:select-service` with the exact service title and links to `#contact`, preserving the existing ContactForm preselection.
+- **Motion and themes:** independent `Reveal` instances replay as the section is revisited; card lift, details entrance and icon rotation respect reduced motion. All colour choices inherit existing band, primary, ink and surface tokens. The refinements are scoped to Services and the About headline; the global theme, header, hero, other product accents and existing shared controls remain unchanged.
 
 
 ---
